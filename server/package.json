@@ -1,0 +1,27 @@
+{
+  "name": "sipepes-server",
+  "version": "1.0.0",
+  "description": "Backend API Server untuk Sistem Informasi Pelaporan Pencemaran Sungai (SIPEPES)",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": ["sipepes", "river-care", "express", "supabase", "postgresql"],
+  "author": "Tech Lead & Backend Developer (Tim 3 MuSilaban)",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.12.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
