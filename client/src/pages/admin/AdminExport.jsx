@@ -305,7 +305,7 @@ export default function AdminExport() {
         </div>
 
         {/* Kolom Kanan: Pratinjau Dokumen Resmi (Format A4) */}
-        <div className="lg:col-span-6 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div className="lg:col-span-6 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2">
               <span className="text-[#0088cc]">📑</span>
@@ -313,32 +313,37 @@ export default function AdminExport() {
                 Pratinjau Dokumen Resmi (Format A4)
               </h3>
             </div>
+            <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+              Q4 / 2026
+            </span>
           </div>
 
-          <div className="bg-slate-50/60 p-4 rounded-xl border border-slate-200 space-y-3">
-            <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider pb-1 border-b border-slate-200">
+          <div className="bg-slate-50/60 p-3 sm:p-4 rounded-xl border border-slate-200 space-y-2.5 sm:space-y-3">
+            <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider pb-1 border-b border-slate-200">
               <span>NAMA DOKUMEN BERKAS</span>
-              <span>TUJUAN AUDIENSI / TARGET</span>
+              <span>TARGET AUDIENSI</span>
             </div>
 
             {advocacyArchives.map((doc) => (
               <div
                 key={doc.id}
-                className="p-3 bg-white rounded-xl border border-slate-200 hover:border-[#0088cc]/50 transition flex items-center justify-between gap-3 text-xs shadow-sm"
+                className="p-3 bg-white rounded-xl border border-slate-200 hover:border-[#0088cc]/50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 text-xs shadow-sm"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+                <div className="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                  <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
                     <FileText className="w-4 h-4" />
                   </div>
-                  <div>
-                    <p className="font-bold text-slate-900 text-xs">{doc.nama}</p>
-                    <p className="text-[10px] font-mono text-slate-400">HASH: {doc.hash}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-bold text-slate-900 text-xs break-all sm:truncate leading-snug">{doc.nama}</p>
+                    <p className="text-[10px] font-mono text-slate-400 truncate">HASH: {doc.hash}</p>
                   </div>
                 </div>
 
-                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0 ${doc.target_badge}`}>
-                  {doc.target}
-                </span>
+                <div className="flex items-center justify-between sm:justify-end gap-2 pt-1.5 sm:pt-0 border-t sm:border-0 border-slate-100 shrink-0">
+                  <span className={`text-[9px] sm:text-[10px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap ${doc.target_badge}`}>
+                    {doc.target}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
@@ -346,7 +351,7 @@ export default function AdminExport() {
       </div>
 
       {/* Bagian Bawah: Riwayat & Arsip Berkas Advokasi */}
-      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
           <div>
             <h3 className="font-bold text-slate-900 text-sm sm:text-base">
@@ -361,8 +366,61 @@ export default function AdminExport() {
           </span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[680px] text-left text-xs">
+        {/* Tampilan Mobile: Kartu Arsip Rapi & Lega Tanpa Nabrak (< md) */}
+        <div className="grid grid-cols-1 gap-3.5 md:hidden">
+          {advocacyArchives.map((doc) => (
+            <div key={doc.id} className="p-4 bg-slate-50/70 rounded-2xl border border-slate-200 space-y-3 text-xs shadow-sm">
+              {/* Baris 1: Target Audiensi Badge & Waktu di kanan */}
+              <div className="flex items-center justify-between gap-2">
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${doc.target_badge}`}>
+                  {doc.target}
+                </span>
+                <span className="text-[10px] font-mono text-slate-400">{doc.waktu}</span>
+              </div>
+
+              {/* Baris 2: Ikon Dokumen + Nama Berkas + HASH (Nama berkas tidak tertabrak badge) */}
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-slate-900 text-xs sm:text-sm break-all leading-snug">
+                    {doc.nama}
+                  </p>
+                  <p className="text-[10px] font-mono text-slate-400 mt-0.5 truncate">HASH: {doc.hash}</p>
+                </div>
+              </div>
+
+              {/* Baris 3: Format & Ukuran + Pengunduh */}
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/60 text-[11px]">
+                <div>
+                  <span className="text-[10px] text-slate-400 block font-medium">Format &amp; Ukuran:</span>
+                  <span className="font-mono font-bold text-slate-800">{doc.format}</span>
+                  <span className="text-slate-400 text-[10px] ml-1">({doc.ukuran})</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-400 block font-medium">Pengunduh:</span>
+                  <span className="text-slate-700 font-medium truncate block">{doc.pengunduh}</span>
+                </div>
+              </div>
+
+              {/* Baris 4: Tombol Unduh Lega */}
+              <div className="pt-2 border-t border-slate-200/60 flex justify-end">
+                <button
+                  onClick={() => handleDownload(doc.nama)}
+                  className="w-full sm:w-auto px-4 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-[#0088cc] font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Unduh Berkas</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Tampilan Desktop / Tablet Lebar: Tabel Utuh Klasik (>= md) */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="py-3 px-4">NAMA DOKUMEN BERKAS</th>

@@ -506,7 +506,7 @@ export default function AdminVerifyPage() {
                   LAPORAN KESAKSIAN PELAPOR
                 </span>
                 <span className="text-[10px] font-bold text-[#0088cc]">
-                  {currentReport.reporter_source || 'Via SIPEPES Mobile App'}
+                  {currentReport.reporter_source || 'Via Portal Pelaporan Warga'}
                 </span>
               </div>
 

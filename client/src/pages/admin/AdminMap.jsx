@@ -51,9 +51,10 @@ export default function AdminMap({ onNavigate }) {
   const [layerReports, setLayerReports] = useState(true);
   const [layerDAS, setLayerDAS] = useState(true);
   const [layerFactory, setLayerFactory] = useState(true);
-  const [selectedPin, setSelectedPin] = useState(reports[0]);
+  const [selectedPin, setSelectedPin] = useState(null);
   const [copied, setCopied] = useState(false);
-  const [isClusterOpen, setIsClusterOpen] = useState(true);
+  const [isClusterOpen, setIsClusterOpen] = useState(false);
+  const [isLegendOpen, setIsLegendOpen] = useState(false);
 
   // Koordinat Jembatan Ampera sebagai titik pusat (0 KM)
   const centerMusi = [-2.9912, 104.7635];
@@ -234,29 +235,38 @@ export default function AdminMap({ onNavigate }) {
           })}
         </MapContainer>
 
-        {/* Floating Card: Klaster DAS Terpadat (Dapat di-collapse di mobile agar tidak menutupi peta) */}
-        <div className="absolute top-3 left-3 z-20 w-64 sm:w-72 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 p-3 sm:p-4 shadow-xl space-y-2.5 pointer-events-auto transition">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-            <div className="flex items-center gap-1.5">
+        {/* Floating Card: Klaster DAS Terpadat (Collapsible agar tidak menumpuk di mobile) */}
+        <div className="absolute top-3 left-3 z-20 pointer-events-auto transition">
+          {!isClusterOpen ? (
+            <button
+              onClick={() => setIsClusterOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md text-xs font-bold text-slate-800 hover:bg-white transition"
+            >
               <span className="text-[#0088cc]">📶</span>
-              <h3 className="font-bold text-slate-900 text-xs truncate">Klaster Terpadat</h3>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-sky-50 text-[#0088cc]">
-                Realtime
-              </span>
-              <button
-                onClick={() => setIsClusterOpen(!isClusterOpen)}
-                className="p-1 text-slate-400 hover:text-slate-600"
-                title={isClusterOpen ? 'Sembunyikan' : 'Buka'}
-              >
-                {isClusterOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-              </button>
-            </div>
-          </div>
+              <span>Klaster (3)</span>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+            </button>
+          ) : (
+            <div className="w-64 sm:w-72 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 p-3 sm:p-4 shadow-xl space-y-2.5 animate-fade-in">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[#0088cc]">📶</span>
+                  <h3 className="font-bold text-slate-900 text-xs truncate">Klaster Terpadat</h3>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-sky-50 text-[#0088cc]">
+                    Realtime
+                  </span>
+                  <button
+                    onClick={() => setIsClusterOpen(false)}
+                    className="p-1 text-slate-400 hover:text-slate-600 rounded"
+                    title="Kecilkan"
+                  >
+                    <ChevronUp className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
 
-          {isClusterOpen && (
-            <>
               <div className="space-y-1.5 text-xs">
                 <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
                   <div className="min-w-0 flex-1 pr-1">
@@ -311,13 +321,13 @@ export default function AdminMap({ onNavigate }) {
                   Hubungi
                 </button>
               </div>
-            </>
+            </div>
           )}
         </div>
 
-        {/* Floating Card: Pop-up Detail Tiket Terpilih */}
+        {/* Floating Card: Pop-up Detail Tiket Terpilih (Bottom Sheet di Mobile, Center di Desktop) */}
         {selectedPin && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-72 sm:w-80 max-w-[calc(100vw-2rem)] bg-white rounded-2xl border border-slate-200 shadow-2xl overflow-hidden pointer-events-auto animate-fade-in">
+          <div className="absolute bottom-3 inset-x-3 sm:inset-x-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-30 sm:w-80 max-w-[calc(100vw-1.5rem)] bg-white rounded-2xl border border-slate-200 shadow-2xl overflow-hidden pointer-events-auto animate-fade-in">
             <div className="relative">
               <img
                 src={selectedPin.photo_url}
@@ -335,7 +345,7 @@ export default function AdminMap({ onNavigate }) {
               </div>
               <button
                 onClick={() => setSelectedPin(null)}
-                className="absolute top-2 right-2 w-5 h-5 rounded-full bg-black/60 text-white flex items-center justify-center text-xs hover:bg-black/80"
+                className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center text-xs hover:bg-black/80 transition"
               >
                 &times;
               </button>
@@ -377,57 +387,78 @@ export default function AdminMap({ onNavigate }) {
           </div>
         )}
 
-        {/* Bottom Right: Koordinat & Legenda Spasial */}
-        <div className="absolute bottom-3 right-3 z-20 space-y-2 pointer-events-auto max-w-[200px] sm:max-w-none">
+        {/* Bottom Right: Koordinat & Legenda Spasial (Collapsible di Mobile) */}
+        <div className="absolute bottom-3 right-3 z-20 space-y-2 pointer-events-auto">
           {/* Koordinat & Elevasi */}
           <div className="hidden sm:block bg-white/95 backdrop-blur-sm px-3 py-1 rounded-xl border border-slate-200 shadow-md text-[10px] font-mono text-slate-600 text-right">
             -2.99281, 104.76402 &bull; Elevasi: 4m
           </div>
 
           {/* Legenda Spasial */}
-          <div className="bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-xl w-44 sm:w-52 space-y-1.5 sm:space-y-2 text-xs">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-1 text-[10px]">
-              <span className="font-bold text-slate-800">Legenda Spasial</span>
-              <span className="font-mono text-slate-400">1:15.000</span>
+          {!isLegendOpen ? (
+            <div className="flex justify-end">
+              <button
+                onClick={() => setIsLegendOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md text-xs font-bold text-slate-800 hover:bg-white transition"
+              >
+                <span>🗺️ Legenda</span>
+                <ChevronUp className="w-3.5 h-3.5 text-slate-400" />
+              </button>
             </div>
-
-            <div className="space-y-1 text-[10px] sm:text-[11px]">
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-slate-700">
-                  <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
-                  <span className="truncate">Tercemar Berat</span>
-                </span>
-                <strong className="font-mono text-slate-900">24</strong>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-slate-700">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
-                  <span className="truncate">Tercemar Sedang</span>
-                </span>
-                <strong className="font-mono text-slate-900">52</strong>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-slate-700">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                  <span className="truncate">Tercemar Ringan</span>
-                </span>
-                <strong className="font-mono text-slate-900">28</strong>
-              </div>
-
-              <div className="pt-1 border-t border-slate-100 space-y-1 text-[9px] sm:text-[10px] text-slate-500">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3.5 h-0.5 bg-emerald-600 rounded shrink-0"></div>
-                  <span className="truncate">Buffer Sempadan (100m)</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3.5 h-0.5 bg-sky-300 rounded shrink-0"></div>
-                  <span className="truncate">Alur Palung Musi</span>
+          ) : (
+            <div className="bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-xl w-44 sm:w-52 space-y-1.5 sm:space-y-2 text-xs animate-fade-in">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-1 text-[10px]">
+                <span className="font-bold text-slate-800">Legenda Spasial</span>
+                <div className="flex items-center gap-1">
+                  <span className="font-mono text-slate-400">1:15.000</span>
+                  <button
+                    onClick={() => setIsLegendOpen(false)}
+                    className="p-0.5 text-slate-400 hover:text-slate-600 rounded"
+                    title="Kecilkan Legenda"
+                  >
+                    <ChevronDown className="w-3 h-3" />
+                  </button>
                 </div>
               </div>
+
+              <div className="space-y-1 text-[10px] sm:text-[11px]">
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-slate-700">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                    <span className="truncate">Tercemar Berat</span>
+                  </span>
+                  <strong className="font-mono text-slate-900">24</strong>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-slate-700">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                    <span className="truncate">Tercemar Sedang</span>
+                  </span>
+                  <strong className="font-mono text-slate-900">52</strong>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-slate-700">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                    <span className="truncate">Tercemar Ringan</span>
+                  </span>
+                  <strong className="font-mono text-slate-900">28</strong>
+                </div>
+
+                <div className="pt-1 border-t border-slate-100 space-y-1 text-[9px] sm:text-[10px] text-slate-500">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3.5 h-0.5 bg-emerald-600 rounded shrink-0"></div>
+                    <span className="truncate">Buffer Sempadan (100m)</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-3.5 h-0.5 bg-sky-300 rounded shrink-0"></div>
+                    <span className="truncate">Alur Palung Musi</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

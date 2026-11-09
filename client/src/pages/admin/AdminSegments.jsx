@@ -230,9 +230,93 @@ export default function AdminSegments({ onNavigate }) {
             </div>
           </div>
 
-          {/* Tabel Master */}
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] text-left text-xs">
+          {/* Tampilan Mobile: List Card Rapi Tanpa Perlu Digeser Horizontal (< md) */}
+          <div className="p-3.5 space-y-3 md:hidden divide-y divide-slate-100">
+            {filteredPoints.map((p) => {
+              const isSelected = selectedPoint.kode === p.kode;
+              return (
+                <div
+                  key={p.kode}
+                  onClick={() => setSelectedPoint(p)}
+                  className={`p-3 rounded-xl border transition cursor-pointer space-y-2 text-xs ${
+                    isSelected
+                      ? 'bg-sky-50/60 border-[#0088cc] shadow-sm'
+                      : 'bg-white border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-xs text-[#0088cc]">{p.kode}</span>
+                        <span className="text-[10px] text-slate-400">&bull; {p.wilayah}</span>
+                      </div>
+                      <h4 className="font-bold text-slate-900 text-xs mt-0.5">{p.nama}</h4>
+                    </div>
+
+                    <span
+                      className={`font-mono font-bold text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0 ${
+                        p.ika_status === 'Kritis'
+                          ? 'bg-rose-50 text-rose-600 border border-rose-200'
+                          : p.ika_status === 'Sedang'
+                          ? 'bg-amber-50 text-amber-600 border border-amber-200'
+                          : 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+                      }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          p.ika_status === 'Kritis'
+                            ? 'bg-rose-500'
+                            : p.ika_status === 'Sedang'
+                            ? 'bg-amber-500'
+                            : 'bg-emerald-500'
+                        }`}
+                      ></span>
+                      {p.ika} ({p.ika_status})
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1.5 border-t border-slate-100 text-[11px]">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">Buffer Sempadan:</span>
+                      <span className="font-mono font-bold text-slate-800">{p.buffer}</span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">Laporan Warga:</span>
+                      <span className="font-mono font-bold text-slate-800">{p.laporan_warga} <span className="text-[10px] text-slate-400 font-normal">aktif</span></span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-[11px] font-mono text-slate-600">
+                    <span className="truncate">{p.lat}, {p.lon}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCopy(`${p.lat}, ${p.lon}`, p.kode);
+                      }}
+                      className="flex items-center gap-1 text-[10px] font-sans font-semibold text-[#0088cc] hover:underline shrink-0"
+                    >
+                      {copiedCode === p.kode ? (
+                        <>
+                          <Check className="w-3 h-3 text-emerald-600" />
+                          <span className="text-emerald-600">Disalin</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3 h-3 text-slate-400" />
+                          <span>Salin Koordinat</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Tampilan Desktop / Tablet Lebar: Tabel Klasik Penuh (>= md) */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
                 <tr>
                   <th className="py-3 px-4">KODE TITIK</th>
