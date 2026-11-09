@@ -11,7 +11,8 @@ import {
   Database,
   Key,
   RotateCcw,
-  Check
+  Check,
+  ChevronDown
 } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 
@@ -39,24 +40,34 @@ export default function AdminAuditLog() {
         </div>
       </div>
 
-      {/* Header Utama & Tombol Export */}
+      {/* Header Utama & Tombol Export Stacked Sesuai Desain Figma */}
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
             Log Audit Aktivitas &amp; Rekam Jejak Petugas
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-3xl leading-relaxed">
-            Rekam jejak tidak dapat diubah (<strong>immutable audit trail</strong>) untuk setiap tindakan verifikasi, perubahan status laporan, dan ekspor data advokasi sesuai standar <span className="font-semibold text-slate-700">NFR-5 &amp; UU PPLH No. 32/2009</span>.
+          {/* Subtitle dengan Penekanan Warna Biru pada NFR-5 Sesuai Desain */}
+          <p className="text-xs sm:text-sm text-slate-500 mt-1.5 max-w-2xl leading-relaxed">
+            Rekam jejak tidak dapat diubah (<strong>immutable audit trail</strong>) untuk setiap tindakan verifikasi, perubahan status laporan, dan ekspor data advokasi sesuai standar <strong className="text-[#0088cc] font-bold">NFR-5 &amp; UU PPLH No. 32/2009</strong>.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-600 shadow-sm">
-            <Calendar className="w-3.5 h-3.5 text-slate-400" />
-            <span>01 Nov 2026 - 14 Nov 2026</span>
+        {/* Kolom Kanan: Filter Tanggal di Baris 1 & Tombol Unduh Laporan di Baris 2 (Vertically Stacked) */}
+        <div className="flex flex-col items-start lg:items-end gap-2.5 shrink-0 self-start lg:self-auto w-full sm:w-auto">
+          {/* Baris 1: Filter Tanggal */}
+          <div className="flex items-center justify-between sm:justify-start gap-2 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 shadow-sm font-medium w-full sm:w-auto cursor-pointer">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-3.5 h-3.5 text-slate-400" />
+              <span>01 Nov 2026 - 14 Nov 2026</span>
+            </div>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1" />
           </div>
 
-          <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition">
+          {/* Baris 2: Tombol Unduh Laporan Audit Kriptografis */}
+          <button
+            onClick={() => alert('Mengunduh Laporan Audit Kriptografis (SHA-256 Timestampped PDF)...')}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#075985] hover:bg-[#0369a1] text-white text-xs font-bold shadow-md shadow-[#075985]/20 transition"
+          >
             <Download className="w-3.5 h-3.5" />
             <span>Unduh Laporan Audit (PDF Kriptografis)</span>
           </button>
@@ -333,4 +344,3 @@ export default function AdminAuditLog() {
     </div>
   );
 }
-

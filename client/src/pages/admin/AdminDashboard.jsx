@@ -40,22 +40,30 @@ export default function AdminDashboard({ onNavigate }) {
 
   return (
     <div className="space-y-6">
-      {/* Siklus Pengawasan Badge & Welcome Header */}
+      {/* Siklus Pengawasan Badge & Welcome Header Sesuai Desain Figma */}
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-[#0088cc] border border-sky-200 text-[11px] font-bold mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-[#0088cc] border border-sky-200 text-[11px] font-bold mb-2.5">
             <span className="w-2 h-2 rounded-full bg-[#0088cc] animate-pulse"></span>
-            SIKLUS PENGAWASAN AKTIF &bull; SUMSEL 16.71
+            <span>SIKLUS PENGAWASAN AKTIF &bull; SUMSEL 16.71</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
-            Selamat Bertugas, Tim Pengelola Kerusakan Lingkungan
+
+          {/* Heading Dibatasi Lebarnya agar Pecah Sesuai Desain Figma */}
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-[1.2] max-w-md">
+            Selamat Bertugas, Tim<br />
+            Pengelola<br />
+            Kerusakan Lingkungan
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
-            Konsorsium Pengawasan Daerah Aliran Sungai Musi &bull; Green Generation River Care Palembang
+
+          {/* Subjudul Dibatasi Lebarnya agar Pecah Sesuai Desain Figma */}
+          <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed max-w-md">
+            Konsorsium Pengawasan Daerah Aliran Sungai<br />
+            Musi &bull; Green<br />
+            Generation River Care Palembang
           </p>
         </div>
 
-        {/* Action Buttons Kanan Atas Sesuai Desain (2 Baris: Atas 2 tombol, Bawah tombol Unduh Ringkasan Cepat) */}
+        {/* Action Buttons Kanan Atas: 2 Baris Presisi Sesuai Desain */}
         <div className="flex flex-col gap-2 shrink-0 self-start lg:self-auto w-full sm:w-auto">
           {/* Baris 1: Tanggal & Muat Ulang */}
           <div className="flex items-center gap-2">

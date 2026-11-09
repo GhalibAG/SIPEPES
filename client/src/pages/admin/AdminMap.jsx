@@ -11,9 +11,10 @@ import {
   AlertTriangle,
   ArrowRight,
   Copy,
-  Check
+  Check,
+  Compass
 } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import { useAdmin } from '../../context/AdminContext';
 
@@ -67,32 +68,34 @@ export default function AdminMap({ onNavigate }) {
 
   return (
     <div className="space-y-4">
-      {/* Top Header Geoportal */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-sky-50 text-[#0088cc] flex items-center justify-center shrink-0 border border-sky-100">
-            <MapPin className="w-5 h-5" />
+      {/* Top Header Geoportal DAS Musi Sesuai Desain Figma */}
+      <div className="space-y-3">
+        {/* Baris 1: Icon & Judul Geoportal (Teks memecah 2 baris ke bawah sesuai desain) */}
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl bg-sky-100 text-[#0088cc] flex items-center justify-center shrink-0 border border-sky-200 shadow-sm mt-0.5">
+            <Compass className="w-5 h-5 text-[#0088cc]" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">
                 Geoportal DAS Musi
               </h1>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
                 104 Insiden
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Pemantauan Kualitas Air &amp; Sempadan Sungai 2026
+            <p className="text-xs text-slate-500 mt-1 leading-snug">
+              Pemantauan Kualitas Air &amp; Sempadan<br />
+              Sungai 2026
             </p>
           </div>
         </div>
 
-        {/* Filter Pills Bar Sesuai Desain */}
+        {/* Baris 2: Filter Pills Bar Memanjang Sendiri di Bawah Judul Sesuai Desain */}
         <div className="flex flex-wrap items-center gap-2 text-xs">
           <button
             onClick={() => setLayerReports(!layerReports)}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition shadow-sm ${
               layerReports ? 'bg-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-600'
             }`}
           >
@@ -102,7 +105,7 @@ export default function AdminMap({ onNavigate }) {
 
           <button
             onClick={() => setLayerDAS(!layerDAS)}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition shadow-sm ${
               layerDAS ? 'bg-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-600'
             }`}
           >
@@ -112,7 +115,7 @@ export default function AdminMap({ onNavigate }) {
 
           <button
             onClick={() => setLayerFactory(!layerFactory)}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition shadow-sm ${
               layerFactory ? 'bg-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-600'
             }`}
           >
@@ -124,7 +127,7 @@ export default function AdminMap({ onNavigate }) {
 
           <button
             onClick={() => setFilterType(filterType === 'berat' ? 'all' : 'berat')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold border transition ${
+            className={`px-2.5 py-1.5 rounded-lg font-bold border transition shadow-sm ${
               filterType === 'berat'
                 ? 'bg-rose-500 text-white border-rose-600'
                 : 'bg-rose-50 text-rose-700 border-rose-200'
@@ -135,7 +138,7 @@ export default function AdminMap({ onNavigate }) {
 
           <button
             onClick={() => setFilterType(filterType === 'sedang' ? 'all' : 'sedang')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold border transition ${
+            className={`px-2.5 py-1.5 rounded-lg font-bold border transition shadow-sm ${
               filterType === 'sedang'
                 ? 'bg-amber-500 text-white border-amber-600'
                 : 'bg-amber-50 text-amber-700 border-amber-200'
@@ -146,7 +149,7 @@ export default function AdminMap({ onNavigate }) {
 
           <button
             onClick={() => setFilterType(filterType === 'ringan' ? 'all' : 'ringan')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold border transition ${
+            className={`px-2.5 py-1.5 rounded-lg font-bold border transition shadow-sm ${
               filterType === 'ringan'
                 ? 'bg-emerald-600 text-white border-emerald-700'
                 : 'bg-emerald-50 text-emerald-700 border-emerald-200'
@@ -157,7 +160,7 @@ export default function AdminMap({ onNavigate }) {
 
           <button
             onClick={() => window.open('https://maps.google.com/?q=-2.9912,104.7635', '_blank')}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold shadow-sm"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold shadow-sm ml-auto sm:ml-0"
           >
             <Navigation className="w-3.5 h-3.5 text-[#0088cc]" />
             <span>Ampera (0 KM)</span>

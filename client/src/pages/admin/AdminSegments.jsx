@@ -46,36 +46,44 @@ export default function AdminSegments({ onNavigate }) {
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb & Action Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-1.5 text-slate-500">
-          <span>Portal Admin</span>
-          <span>&gt;</span>
-          <span>Master Data</span>
-          <span>&gt;</span>
-          <span className="text-[#0088cc] font-medium">Titik Sempadan Musi</span>
-        </div>
+      {/* Breadcrumb Sesuai Desain Figma */}
+      <div className="flex items-center gap-1.5 text-xs text-slate-500">
+        <span>Portal Admin</span>
+        <span>/</span>
+        <span>Master Data</span>
+        <span>/</span>
+        <span className="text-[#0088cc] font-medium">Titik Sempadan Musi</span>
       </div>
 
+      {/* Header Utama: Judul Pecah 2 Baris, Badge di Bawahnya, Lalu Paragraf Deskripsi */}
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Kelola Master Titik Sempadan Musi
-            </h1>
+          {/* Judul 2 Baris */}
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+            Kelola Master Titik Sempadan<br />
+            Musi
+          </h1>
+
+          {/* Badge 18 POS DAS AKTIF Tepat di Bawah Judul */}
+          <div className="mt-2.5 mb-2">
             <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-50 text-[#0088cc] border border-sky-200">
               18 POS DAS AKTIF
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-3xl leading-relaxed">
-            Inventarisasi 18 pos pantau dan dermaga sempadan DAS Musi Kota Palembang untuk validasi geofencing laporan warga, pemetaan buangan limbah, &amp; monitoring telemetri indeks kualitas air (IKA).
+
+          {/* Deskripsi Dibatasi Lebarnya agar Pecah 3 Baris Sesuai Desain */}
+          <p className="text-xs sm:text-sm text-slate-500 max-w-xl leading-relaxed">
+            Inventarisasi 18 pos pantau dan dermaga sempadan DAS Musi Kota<br className="hidden sm:inline" />
+            Palembang untuk validasi geofencing laporan warga, pemetaan<br className="hidden sm:inline" />
+            buangan limbah, &amp; monitoring telemetri indeks kualitas air (IKA).
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Tombol Kanan Atas */}
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start lg:self-auto">
           <button
             onClick={() => alert('Sinkronisasi Geospasial dengan Server DLHK Kota Palembang Berhasil.')}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
             <span>Sinkronisasi GIS DLH</span>
@@ -83,7 +91,7 @@ export default function AdminSegments({ onNavigate }) {
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Tambah Titik Sempadan Baru</span>

@@ -43,9 +43,10 @@ export default function AdminExport() {
         </div>
       )}
 
-      {/* Header Utama & Kanan Atas */}
+      {/* Header Utama & Kanan Atas Sesuai Desain Figma */}
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
+          {/* Badge Modul */}
           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
             <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-50 text-[#0088cc] border border-sky-200">
               MODUL FR-8 &bull; ADVOKASI RESMI
@@ -54,28 +55,37 @@ export default function AdminExport() {
               Kuartal IV / 2026
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Pusat Advokasi &amp; Rekapitulasi Data Lingkungan
+
+          {/* Heading Pecah Sesuai Desain */}
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
+            Pusat Advokasi &amp; Rekapitulasi Data<br />
+            Lingkungan
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-3xl leading-relaxed mt-1">
-            Susun dan unduh laporan resmi hasil partisipasi warga untuk bahan audiensi bersama Dinas Lingkungan Hidup &amp; Kebersihan (DLHK) Kota Palembang serta pemangku kebijakan DAS Musi.
+
+          {/* Subtitle Pecah Sesuai Desain */}
+          <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed mt-1.5">
+            Susun dan unduh laporan resmi hasil partisipasi warga untuk bahan audiensi bersama Dinas<br className="hidden sm:inline" />
+            Lingkungan Hidup &amp; Kebersihan (DLHK) Kota Palembang serta pemangku kebijakan DAS Musi.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4" />
+        {/* Kolom Kanan: Card 104 Laporan di Atas dan Tombol Ekspor Cepat di Bawahnya (Vertically Stacked) */}
+        <div className="flex flex-col gap-2.5 shrink-0 self-start lg:self-auto w-full sm:w-60">
+          {/* Card 104 Laporan */}
+          <div className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+              <Check className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <p className="font-extrabold text-slate-900 text-xs">104 LAPORAN</p>
-              <p className="text-[10px] text-slate-400">Status Valid Siap Ekspor</p>
+              <p className="font-black text-slate-900 text-xs tracking-tight">104 LAPORAN</p>
+              <p className="text-[10px] text-slate-400 leading-tight">Status Valid Siap Ekspor</p>
             </div>
           </div>
 
+          {/* Tombol Ekspor Cepat (PDF) Memanjang di Bawahnya */}
           <button
             onClick={() => handleDownload('PDF Eksekutif')}
-            className="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-md shadow-[#0088cc]/20 transition"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-bold shadow-md shadow-[#0088cc]/20 transition"
           >
             <Download className="w-4 h-4" />
             <span>Ekspor Cepat (PDF)</span>

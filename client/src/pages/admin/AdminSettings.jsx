@@ -42,14 +42,14 @@ export default function AdminSettings() {
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb & Notifikasi */}
+      {/* Breadcrumb Sesuai Desain Figma */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-1.5 text-slate-500">
-          <span>Portal Admin</span>
+        <div className="flex items-center gap-1.5 text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+          <span>PORTAL ADMIN</span>
           <span>&gt;</span>
-          <span>Konfigurasi</span>
+          <span>KONFIGURASI</span>
           <span>&gt;</span>
-          <span className="text-[#0088cc] font-medium">Pengaturan Sistem</span>
+          <span className="text-[#0088cc] font-bold">PENGATURAN SISTEM</span>
         </div>
 
         {saveSuccess && (
@@ -60,25 +60,32 @@ export default function AdminSettings() {
         )}
       </div>
 
-      {/* Header Utama & Tombol Action */}
+      {/* Header Utama: Judul Pecah 2 Baris Sesuai Desain Figma */}
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Pengaturan &amp; Konfigurasi Sistem SIPEPES
+          {/* Judul 2 Baris: Pengaturan & Konfigurasi Sistem \n SIPEPES */}
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
+            Pengaturan &amp; Konfigurasi Sistem<br />
+            SIPEPES
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-3xl leading-relaxed">
-            Manajemen parameter operasional pelaporan DAS Musi, ambang batas IKA, integrasi storage bukti, dan protokol kemitraan regulasi DLHK Kota Palembang.
+
+          {/* Subtitle Pecah Sesuai Desain */}
+          <p className="text-xs sm:text-sm text-slate-500 mt-2 max-w-2xl leading-relaxed">
+            Manajemen parameter operasional pelaporan DAS Musi, ambang batas IKA,<br className="hidden sm:inline" />
+            integrasi storage bukti, dan protokol kemitraan regulasi DLHK Kota<br className="hidden sm:inline" />
+            Palembang.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Tombol Kanan Atas */}
+        <div className="flex items-center gap-2.5 shrink-0 self-start lg:self-auto">
           <button
             onClick={() => {
               setGeofenceRadius(100);
               setAutoDeduplicate(true);
               setAutoEscalate(true);
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
             <span>Reset ke Default</span>
@@ -86,7 +93,7 @@ export default function AdminSettings() {
 
           <button
             onClick={handleSave}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-bold shadow-sm shadow-[#0088cc]/20 transition"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Simpan Semua Perubahan</span>
@@ -628,4 +635,3 @@ export default function AdminSettings() {
     </div>
   );
 }
-
