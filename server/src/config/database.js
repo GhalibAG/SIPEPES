@@ -6,14 +6,15 @@ const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL;
 let pool = null;
 
 if (connectionString && !connectionString.includes('yourpassword') && !connectionString.includes('yourprojectid')) {
+  // Bersihkan parameter sslmode dari URL agar pg menggunakan konfigurasi ssl eksplisit
+  const cleanUrl = connectionString.replace(/[?&]sslmode=[^&]+/, '');
+
   pool = new Pool({
-    connectionString,
-    ssl: process.env.NODE_ENV === 'production' || connectionString.includes('supabase')
-      ? { rejectUnauthorized: false }
-      : false,
+    connectionString: cleanUrl,
+    ssl: { rejectUnauthorized: false },
     max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: 10000,
   });
 
   pool.on('error', (err) => {
