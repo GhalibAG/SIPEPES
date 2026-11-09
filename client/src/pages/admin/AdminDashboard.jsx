@@ -15,7 +15,8 @@ import {
   Phone,
   Radio,
   Clock,
-  ChevronRight
+  ChevronRight,
+  CheckCircle2
 } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 
@@ -54,24 +55,28 @@ export default function AdminDashboard({ onNavigate }) {
           </p>
         </div>
 
-        {/* Action Buttons Kanan Atas */}
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start lg:self-auto">
-          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 shadow-sm font-medium">
-            <Calendar className="w-3.5 h-3.5 text-slate-400" />
-            <span>November 2026 (Bulan Berjalan)</span>
+        {/* Action Buttons Kanan Atas Sesuai Desain (2 Baris: Atas 2 tombol, Bawah tombol Unduh Ringkasan Cepat) */}
+        <div className="flex flex-col gap-2 shrink-0 self-start lg:self-auto w-full sm:w-auto">
+          {/* Baris 1: Tanggal & Muat Ulang */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 shadow-sm font-medium">
+              <Calendar className="w-3.5 h-3.5 text-slate-400" />
+              <span>November 2026 <span className="text-slate-400 font-normal">(Bulan Berjalan)</span></span>
+            </div>
+
+            <button
+              onClick={() => window.location.reload()}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+              <span>Muat Ulang</span>
+            </button>
           </div>
 
-          <button
-            onClick={() => window.location.reload()}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
-          >
-            <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
-            <span>Muat Ulang</span>
-          </button>
-
+          {/* Baris 2: Tombol Unduh Ringkasan Cepat di bawahnya */}
           <button
             onClick={() => onNavigate('export')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
+            className="w-full sm:w-auto self-start flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Unduh Ringkasan Cepat</span>
@@ -189,107 +194,194 @@ export default function AdminDashboard({ onNavigate }) {
         </div>
       </div>
 
-      {/* Middle Grid: Chart & Breakdown Kiri + Sidebar Kanan */}
+      {/* Main Grid: Kolom Kiri (Chart + Antrean Mendesak) & Kolom Kanan (Titik Pantau, Aktivitas, Hotline) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Kolom Kiri: Chart & Breakdown Kategori */}
-        <div className="lg:col-span-8 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-          {/* Header Chart */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#0088cc]"></span>
-                <h2 className="font-bold text-slate-900 text-sm sm:text-base">
-                  Dinamika &amp; Tren Pencemaran Mingguan
-                </h2>
+        {/* KOLOM KIRI (lg:col-span-8): Chart Mingguan di atas, Antrean Verifikasi Mendesak di bawahnya */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Card 1: Dinamika & Tren Pencemaran Mingguan */}
+          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#0088cc]"></span>
+                  <h2 className="font-bold text-slate-900 text-sm sm:text-base">
+                    Dinamika &amp; Tren Pencemaran Mingguan
+                  </h2>
+                </div>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  Volume akumulasi laporan masuk vs terverifikasi (Senin – Minggu)
+                </p>
               </div>
-              <p className="text-[11px] text-slate-400 mt-0.5">
-                Volume akumulasi laporan masuk vs terverifikasi (Senin – Minggu)
-              </p>
+
+              {/* Legenda Warna */}
+              <div className="flex items-center gap-3 text-[11px] font-medium text-slate-600">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-slate-800"></span>
+                  <span>Plastik</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-rose-500"></span>
+                  <span>Limbah Cair/B3</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-sm bg-emerald-600"></span>
+                  <span>Organik</span>
+                </div>
+              </div>
             </div>
 
-            {/* Legenda Warna */}
-            <div className="flex items-center gap-3 text-[11px] font-medium text-slate-600">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-slate-800"></span>
-                <span>Plastik</span>
+            {/* Bar Chart Sesuai Tampilan Desain */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              {/* Bagian Bar Chart SVG/Tailwind */}
+              <div className="md:col-span-7 flex flex-col justify-end pt-4">
+                <div className="h-44 w-full flex items-end justify-between gap-3 px-2 border-b border-slate-200 pb-2">
+                  {weeklyTrendData.map((d, idx) => {
+                    const hPlastik = (d.plastik / 50) * 100;
+                    const hB3 = (d.b3 / 50) * 100;
+                    const hOrganik = (d.organik / 50) * 100;
+
+                    return (
+                      <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group">
+                        <div className="w-full max-w-[24px] flex flex-col justify-end rounded-t-md overflow-hidden bg-slate-100 transition hover:brightness-95">
+                          <div style={{ height: `${hB3}%` }} className="bg-rose-500 w-full" title={`B3: ${d.b3}`}></div>
+                          <div style={{ height: `${hPlastik}%` }} className="bg-slate-800 w-full" title={`Plastik: ${d.plastik}`}></div>
+                          <div style={{ height: `${hOrganik}%` }} className="bg-emerald-600 w-full" title={`Organik: ${d.organik}`}></div>
+                        </div>
+                        <span className="text-[10px] font-semibold text-slate-500">{d.day}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center justify-between pt-3 text-[11px] text-slate-500">
+                  <span>Total Laporan Minggu Ini: <strong className="text-slate-800">148 insiden</strong></span>
+                  <span className="flex items-center gap-1 text-emerald-600 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Sinkronisasi Otomatis Terhubung
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-rose-500"></span>
-                <span>Limbah Cair/B3</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-emerald-600"></span>
-                <span>Organik</span>
+
+              {/* Komposisi Kategori Limbah di Samping Chart */}
+              <div className="md:col-span-5 bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-3.5">
+                <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  <span>KOMPOSISI KATEGORI LIMBAH</span>
+                  <span className="text-[10px] text-slate-400">100% Total</span>
+                </div>
+
+                {wasteComposition.map((item, i) => (
+                  <div key={i} className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-semibold text-slate-800">{item.label}</span>
+                      <span className="text-slate-600 font-medium">{item.count} <span className="text-slate-400">({item.percent}%)</span></span>
+                    </div>
+                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${item.color} rounded-full`}
+                        style={{ width: `${item.percent}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="pt-2 border-t border-slate-200/60 flex items-start gap-1.5 text-[11px] text-amber-700">
+                  <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-amber-500 mt-0.5" />
+                  <p className="leading-snug">Indikasi ceceran oli meningkat di sektor Seberang Ulu I.</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Bar Chart Sesuai Tampilan Desain */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            {/* Bagian Bar Chart SVG/Tailwind */}
-            <div className="md:col-span-7 flex flex-col justify-end pt-4">
-              <div className="h-44 w-full flex items-end justify-between gap-3 px-2 border-b border-slate-200 pb-2">
-                {weeklyTrendData.map((d, idx) => {
-                  const total = d.plastik + d.b3 + d.organik;
-                  const hPlastik = (d.plastik / 50) * 100;
-                  const hB3 = (d.b3 / 50) * 100;
-                  const hOrganik = (d.organik / 50) * 100;
-
-                  return (
-                    <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group">
-                      <div className="w-full max-w-[24px] flex flex-col justify-end rounded-t-md overflow-hidden bg-slate-100 transition hover:brightness-95">
-                        <div style={{ height: `${hB3}%` }} className="bg-rose-500 w-full" title={`B3: ${d.b3}`}></div>
-                        <div style={{ height: `${hPlastik}%` }} className="bg-slate-800 w-full" title={`Plastik: ${d.plastik}`}></div>
-                        <div style={{ height: `${hOrganik}%` }} className="bg-emerald-600 w-full" title={`Organik: ${d.organik}`}></div>
-                      </div>
-                      <span className="text-[10px] font-semibold text-slate-500">{d.day}</span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="flex items-center justify-between pt-3 text-[11px] text-slate-500">
-                <span>Total Laporan Minggu Ini: <strong className="text-slate-800">148 insiden</strong></span>
-                <span className="flex items-center gap-1 text-emerald-600 font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  Sinkronisasi Otomatis Terhubung
+          {/* Card 2: Antrean Verifikasi Mendesak (Perlu Penanganan Cepat) */}
+          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+                <h2 className="font-bold text-slate-900 text-sm sm:text-base">
+                  Antrean Verifikasi Mendesak (Perlu Penanganan Cepat)
+                </h2>
+                <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold text-[10px] border border-amber-200">
+                  3 Tiket Prioritas
                 </span>
               </div>
+
+              <button
+                onClick={() => onNavigate('verify')}
+                className="text-xs font-semibold text-[#0088cc] hover:underline flex items-center gap-1 self-start sm:self-auto"
+              >
+                <span>Lihat Seluruh Antrean (9)</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
 
-            {/* Komposisi Kategori Limbah di Samping Chart */}
-            <div className="md:col-span-5 bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-3.5">
-              <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                <span>KOMPOSISI KATEGORI LIMBAH</span>
-                <span className="text-[10px] text-slate-400">100% Total</span>
-              </div>
+            {/* List 3 Tiket dengan layout presisi sesuai Figma */}
+            <div className="space-y-3">
+              {urgentReports.map((report) => (
+                <div
+                  key={report.id}
+                  className="p-3.5 rounded-xl border border-slate-200 hover:border-[#0088cc]/50 hover:bg-slate-50/50 transition flex flex-col md:flex-row md:items-center justify-between gap-3.5"
+                >
+                  <div className="flex items-start gap-3.5">
+                    <img
+                      src={report.photo_url}
+                      alt={report.title}
+                      className="w-14 h-14 rounded-xl object-cover shrink-0 border border-slate-200 shadow-sm"
+                    />
+                    <div>
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="font-mono font-bold text-[#0088cc] text-xs">
+                          #{report.tracking_code}
+                        </span>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            report.estimated_severity === 'berat'
+                              ? 'bg-rose-50 text-rose-600 border border-rose-200'
+                              : 'bg-amber-50 text-amber-600 border border-amber-200'
+                          }`}
+                        >
+                          {report.estimated_severity === 'berat' ? 'Tercemar Berat' : 'Tercemar Sedang'}
+                        </span>
+                        <span className="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
+                          <Clock className="w-3 h-3" />
+                          {report.created_time_str}
+                        </span>
+                      </div>
 
-              {wasteComposition.map((item, i) => (
-                <div key={i} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-800">{item.label}</span>
-                    <span className="text-slate-600 font-medium">{item.count} <span className="text-slate-400">({item.percent}%)</span></span>
+                      <h3 className="font-bold text-slate-900 text-xs sm:text-sm">{report.title}</h3>
+
+                      <p className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 font-mono">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span className="truncate">{report.address_landmark}</span>
+                      </p>
+                    </div>
                   </div>
-                  <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full ${item.color} rounded-full`}
-                      style={{ width: `${item.percent}%` }}
-                    ></div>
+
+                  <div className="flex items-center gap-2 self-end md:self-center shrink-0">
+                    <button
+                      onClick={() => handleReview(report.id)}
+                      className="px-3.5 py-1.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 flex items-center gap-1.5 transition"
+                    >
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                      <span>Review</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleReview(report.id)}
+                      title="Quick Action"
+                      className="p-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white transition shadow-sm"
+                    >
+                      <CheckCircle2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               ))}
-
-              <div className="pt-2 border-t border-slate-200/60 flex items-start gap-1.5 text-[11px] text-amber-700">
-                <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-amber-500 mt-0.5" />
-                <p className="leading-snug">Indikasi ceceran oli meningkat di sektor Seberang Ulu I.</p>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Kolom Kanan: Titik Pantau Sempadan Kritis + Aktivitas Verifikasi + Hotline */}
+        {/* KOLOM KANAN (lg:col-span-4): Titik Pantau Sempadan Kritis + Aktivitas Verifikasi + Hotline Tanggap */}
         <div className="lg:col-span-4 space-y-5">
-          {/* Titik Pantau Sempadan Kritis */}
+          {/* Card 1: Titik Pantau Sempadan Kritis */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -321,13 +413,13 @@ export default function AdminDashboard({ onNavigate }) {
               ))}
             </div>
 
-            <div className="p-2 rounded-lg bg-sky-50 text-[11px] text-[#0088cc] flex items-center justify-between font-medium">
+            <div className="p-2.5 rounded-lg bg-sky-50 text-[11px] text-[#0088cc] flex items-center justify-between font-medium">
               <span>Prioritas drone patroli:</span>
               <strong className="text-slate-800">Sektor Ulu I &amp; 16 Ilir</strong>
             </div>
           </div>
 
-          {/* Aktivitas Verifikasi Terakhir (NFR-5 AUDIT) */}
+          {/* Card 2: Aktivitas Verifikasi Terakhir (NFR-5 AUDIT) */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -372,7 +464,7 @@ export default function AdminDashboard({ onNavigate }) {
             </div>
           </div>
 
-          {/* Hotline Tanggap Sempadan (24 Jam) */}
+          {/* Card 3: Hotline Tanggap Sempadan (SIAGA 24 JAM) */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -402,84 +494,6 @@ export default function AdminDashboard({ onNavigate }) {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Bagian Bawah: Antrean Verifikasi Mendesak (Perlu Penanganan Cepat) */}
-      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-          <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-            <h2 className="font-bold text-slate-900 text-sm sm:text-base">
-              Antrean Verifikasi Mendesak (Perlu Penanganan Cepat)
-            </h2>
-            <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold text-[10px] border border-amber-200">
-              3 Tiket Prioritas
-            </span>
-          </div>
-
-          <button
-            onClick={() => onNavigate('verify')}
-            className="text-xs font-semibold text-[#0088cc] hover:underline flex items-center gap-1 self-start sm:self-auto"
-          >
-            <span>Lihat Seluruh Antrean (9)</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* List 3 Tiket */}
-        <div className="space-y-3">
-          {urgentReports.map((report) => (
-            <div
-              key={report.id}
-              className="p-4 rounded-xl border border-slate-200 hover:border-[#0088cc]/50 hover:bg-slate-50/50 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
-            >
-              <div className="flex items-start gap-4">
-                <img
-                  src={report.photo_url}
-                  alt={report.title}
-                  className="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-200 shadow-sm"
-                />
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono font-bold text-[#0088cc] text-xs">
-                      #{report.tracking_code}
-                    </span>
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        report.estimated_severity === 'berat'
-                          ? 'bg-rose-50 text-rose-600 border border-rose-200'
-                          : 'bg-amber-50 text-amber-600 border border-amber-200'
-                      }`}
-                    >
-                      {report.estimated_severity === 'berat' ? 'Tercemar Berat' : 'Tercemar Sedang'}
-                    </span>
-                    <span className="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
-                      <Clock className="w-3 h-3" />
-                      {report.created_time_str}
-                    </span>
-                  </div>
-
-                  <h3 className="font-bold text-slate-900 text-sm">{report.title}</h3>
-
-                  <p className="text-[11px] text-slate-500 flex items-center gap-1 mt-1 font-mono">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                    <span>{report.address_landmark}</span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 self-end md:self-center shrink-0">
-                <button
-                  onClick={() => handleReview(report.id)}
-                  className="px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 flex items-center gap-1.5 transition"
-                >
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                  <span>Review</span>
-                </button>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

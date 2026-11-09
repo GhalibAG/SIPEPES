@@ -18,7 +18,8 @@ import {
   Clock,
   User,
   Shield,
-  Check
+  Check,
+  ChevronDown
 } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 
@@ -88,7 +89,7 @@ export default function AdminVerifyPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 font-semibold flex items-center justify-between shadow-sm animate-fade-in">
@@ -101,13 +102,13 @@ export default function AdminVerifyPage() {
       )}
 
       {/* Header Validasi Dokumen FR-5 */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div className="flex items-start gap-3.5">
-          <div className="w-10 h-10 rounded-xl bg-sky-50 text-[#0088cc] flex items-center justify-center shrink-0 border border-sky-100">
+      <div className="space-y-3">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl bg-sky-100 text-[#0088cc] flex items-center justify-center shrink-0 border border-sky-200 shadow-sm">
             <FileCheck2 className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Validasi Dokumen FR-5
               </h1>
@@ -121,13 +122,14 @@ export default function AdminVerifyPage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        {/* Baris Tombol Aksi Kiri (Verifikasi Terpilih, Ekspor Data Terpilih, Tanda Tanya) Sesuai Desain Figma */}
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => {
-              setToastMessage(`3 Laporan Terpilih Berhasil Divalidasi Massal.`);
+              setToastMessage(`${checkedIds.length} Laporan Terpilih Berhasil Divalidasi Massal.`);
               setTimeout(() => setToastMessage(''), 3000);
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold shadow-sm transition"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-semibold shadow-sm transition"
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
             <span>Verifikasi Terpilih ({checkedIds.length})</span>
@@ -145,93 +147,115 @@ export default function AdminVerifyPage() {
           </button>
 
           <button
+            onClick={() => alert('Panduan Standardisasi FR-5:\n1. Pastikan foto memiliki stempel spasial asli.\n2. Verifikasi radius toleransi DAS.\n3. Tetapkan klasifikasi keparahan.')}
             title="Bantuan Standardisasi FR-5"
-            className="w-9 h-9 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-500 flex items-center justify-center shadow-sm"
+            className="w-9 h-9 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-500 flex items-center justify-center shadow-sm transition"
           >
             <HelpCircle className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* Filter Bar Lengkap */}
-      <div className="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col xl:flex-row items-center justify-between gap-3 text-xs">
-        {/* Status Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 w-full xl:w-auto">
-          <button
-            onClick={() => setActiveTab('semua')}
-            className={`px-3 py-1.5 rounded-lg font-bold transition ${
-              activeTab === 'semua' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            Semua
-          </button>
-          <button
-            onClick={() => setActiveTab('menunggu')}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
-              activeTab === 'menunggu' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            <span>Menunggu</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-500 text-white font-bold">9</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('valid')}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
-              activeTab === 'valid' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            <span>Valid</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-sky-600 text-white font-bold">104</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('ditolak')}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
-              activeTab === 'ditolak' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            <span>Ditolak</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-500 text-white font-bold">15</span>
-          </button>
-        </div>
-
-        {/* Dropdowns & Search */}
-        <div className="flex flex-wrap items-center gap-2.5 w-full xl:w-auto">
-          <select
-            value={severityFilter}
-            onChange={(e) => setSeverityFilter(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none"
-          >
-            <option>Semua Tingkat Keparahan</option>
-            <option>Tercemar Berat</option>
-            <option>Tercemar Sedang</option>
-            <option>Tercemar Ringan</option>
-          </select>
-
-          <select
-            value={districtFilter}
-            onChange={(e) => setDistrictFilter(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none"
-          >
-            <option>Semua Kecamatan Sungai</option>
-            <option>Seberang Ulu I</option>
-            <option>Ilir Barat II</option>
-            <option>Ilir Timur I</option>
-            <option>Gandus</option>
-          </select>
-
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-600">
-            <Calendar className="w-3.5 h-3.5 text-slate-400" />
-            <span>10 Nov 2026 - 14 Nov 2026</span>
+      {/* Filter Box (Container Berlatar Abu-abu Halus dengan 2 Baris Kontrol Persis Sesuai Figma) */}
+      <div className="bg-[#eef2f6]/70 p-3 sm:p-3.5 rounded-2xl border border-slate-200/80 shadow-sm space-y-2.5 text-xs">
+        {/* Baris 1: Status Tabs di Kiri + Dropdown Keparahan & Kecamatan di Kanan */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
+          {/* Tabs Status */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <button
+              onClick={() => setActiveTab('semua')}
+              className={`px-3 py-1.5 rounded-lg font-bold transition ${
+                activeTab === 'semua'
+                  ? 'bg-[#0088cc] text-white shadow-sm'
+                  : 'bg-white/80 text-slate-700 hover:bg-white'
+              }`}
+            >
+              Semua
+            </button>
+            <button
+              onClick={() => setActiveTab('menunggu')}
+              className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
+                activeTab === 'menunggu'
+                  ? 'bg-[#0088cc] text-white shadow-sm'
+                  : 'bg-white/80 text-slate-700 hover:bg-white'
+              }`}
+            >
+              <span>Menunggu</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-500 text-white font-bold">9</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('valid')}
+              className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
+                activeTab === 'valid'
+                  ? 'bg-[#0088cc] text-white shadow-sm'
+                  : 'bg-white/80 text-slate-700 hover:bg-white'
+              }`}
+            >
+              <span>Valid</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-sky-600 text-white font-bold">104</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('ditolak')}
+              className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition ${
+                activeTab === 'ditolak'
+                  ? 'bg-[#0088cc] text-white shadow-sm'
+                  : 'bg-white/80 text-slate-700 hover:bg-white'
+              }`}
+            >
+              <span>Ditolak</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-500 text-white font-bold">15</span>
+            </button>
           </div>
 
-          <div className="relative flex-1 sm:w-48">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+          {/* Dropdown Keparahan & Kecamatan */}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative">
+              <select
+                value={severityFilter}
+                onChange={(e) => setSeverityFilter(e.target.value)}
+                className="appearance-none pl-3 pr-8 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none shadow-sm cursor-pointer"
+              >
+                <option>Semua Tingkat Keparahan</option>
+                <option>Tercemar Berat</option>
+                <option>Tercemar Sedang</option>
+                <option>Tercemar Ringan</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            <div className="relative">
+              <select
+                value={districtFilter}
+                onChange={(e) => setDistrictFilter(e.target.value)}
+                className="appearance-none pl-3 pr-8 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none shadow-sm cursor-pointer"
+              >
+                <option>Semua Kecamatan Sungai</option>
+                <option>Seberang Ulu I</option>
+                <option>Ilir Barat II</option>
+                <option>Ilir Timur I</option>
+                <option>Gandus</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* Baris 2: Rentang Waktu di Kiri + Search Input Memanjang di Kanan */}
+        <div className="flex flex-col sm:flex-row items-center gap-2.5">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-700 shadow-sm shrink-0 w-full sm:w-auto">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            <span className="font-medium">10 Nov 2026 - 14 Nov 2026</span>
+            <ChevronDown className="w-3 h-3 text-slate-400 ml-1" />
+          </div>
+
+          <div className="relative w-full flex-1">
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchCode}
               onChange={(e) => setSearchCode(e.target.value)}
               placeholder="#SPP-202611-0012"
-              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 placeholder:text-slate-400 focus:outline-none text-xs"
+              className="w-full pl-8 pr-4 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#0088cc] shadow-sm text-xs font-mono"
             />
           </div>
         </div>
@@ -348,7 +372,7 @@ export default function AdminVerifyPage() {
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-slate-100 pb-4">
               <div>
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <span className="text-sm font-mono font-black text-[#0088cc]">
                     #{currentReport.tracking_code}
                   </span>
