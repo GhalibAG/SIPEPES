@@ -1,12 +1,36 @@
 import React, { useState } from 'react';
-import { Waves, AlertTriangle, ShieldCheck, MapPin, Send, CheckCircle2, FileText } from 'lucide-react';
+import {
+  Waves,
+  AlertTriangle,
+  ShieldCheck,
+  MapPin,
+  Send,
+  CheckCircle2,
+  FileText,
+  Lock,
+  ExternalLink
+} from 'lucide-react';
+import { AdminProvider, useAdmin } from './context/AdminContext';
+import AdminLayout from './layouts/AdminLayout';
+import AdminLogin from './pages/admin/AdminLogin';
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState('peta');
+function MainApp() {
+  const { adminUser, stats } = useAdmin();
+  const [viewMode, setViewMode] = useState('admin'); // Bawaan ke 'admin' sesuai tugas tim kita, bisa switch ke 'public'
+  const [publicTab, setPublicTab] = useState('peta');
 
+  // Jika mode Admin dipilih:
+  if (viewMode === 'admin') {
+    if (!adminUser) {
+      return <AdminLogin onBackToPublic={() => setViewMode('public')} />;
+    }
+    return <AdminLayout onSwitchToPublic={() => setViewMode('public')} />;
+  }
+
+  // Tampilan Publik (Portal Warga)
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
-      {/* Top Navigation */}
+      {/* Top Navigation Bar Publik */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -26,11 +50,11 @@ export default function App() {
             </div>
           </div>
 
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-2 sm:gap-3">
             <button
-              onClick={() => setActiveTab('peta')}
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition ${
-                activeTab === 'peta'
+              onClick={() => setPublicTab('peta')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                publicTab === 'peta'
                   ? 'bg-river-50 text-river-700'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
@@ -38,11 +62,21 @@ export default function App() {
               Peta Sebaran
             </button>
             <button
-              onClick={() => setActiveTab('lapor')}
-              className="bg-river-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-river-700 shadow-sm flex items-center gap-1.5 transition"
+              onClick={() => setPublicTab('lapor')}
+              className="bg-river-600 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-river-700 shadow-sm flex items-center gap-1.5 transition"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-3.5 h-3.5" />
               Lapor Sekarang
+            </button>
+
+            {/* Tombol Akses Portal Admin */}
+            <button
+              onClick={() => setViewMode('admin')}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-300 text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5 shadow-sm"
+              title="Akses Dashboard Admin Komunitas"
+            >
+              <Lock className="w-3.5 h-3.5 text-river-600" />
+              <span>Portal Admin</span>
             </button>
           </nav>
         </div>
@@ -76,7 +110,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Status Indikator & Quick Stats */}
+        {/* Status Indikator & Quick Stats Terhubung ke Context */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
@@ -84,7 +118,7 @@ export default function App() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Laporan Menunggu</p>
-              <h3 className="text-2xl font-bold text-slate-900">4</h3>
+              <h3 className="text-2xl font-bold text-slate-900">{stats.menunggu}</h3>
             </div>
           </div>
 
@@ -94,7 +128,7 @@ export default function App() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Laporan Terverifikasi</p>
-              <h3 className="text-2xl font-bold text-slate-900">18</h3>
+              <h3 className="text-2xl font-bold text-slate-900">{stats.valid}</h3>
             </div>
           </div>
 
@@ -104,12 +138,12 @@ export default function App() {
             </div>
             <div>
               <p className="text-xs text-slate-500 font-medium">Rekap Siap Advokasi</p>
-              <h3 className="text-2xl font-bold text-slate-900">2 Dokumen</h3>
+              <h3 className="text-2xl font-bold text-slate-900">{stats.valid} Dokumen</h3>
             </div>
           </div>
         </div>
 
-        {/* Peta Sebaran Placeholder */}
+        {/* Container Peta Sebaran */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -118,19 +152,22 @@ export default function App() {
                 Peta Titik Pencemaran Sungai Musi
               </h2>
               <p className="text-xs text-slate-500">
-                Pembaruan koordinat real-time dengan integrasi Leaflet & MapTiler
+                Pembaruan koordinat real-time titik pencemaran yang telah diverifikasi
               </p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium">
-              Palembang (Sungai Musi)
-            </span>
+            <button
+              onClick={() => setViewMode('admin')}
+              className="text-xs px-3 py-1.5 rounded-lg bg-river-50 text-river-700 font-semibold hover:bg-river-100 transition"
+            >
+              Kelola di Dashboard Admin &rarr;
+            </button>
           </div>
 
-          <div className="w-full h-80 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
-            <Waves className="w-12 h-12 text-river-300 mb-2 animate-pulse" />
-            <p className="font-semibold text-slate-600">Container Peta Siap Terpasang</p>
-            <p className="text-xs text-slate-400 max-w-sm mt-1">
-              Komponen Leaflet.js siap diintegrasikan dengan koordinat database Supabase (Lat: -2.9909, Lng: 104.7565).
+          <div className="w-full h-80 bg-slate-100 rounded-xl border border-slate-200 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
+            <Waves className="w-12 h-12 text-river-400 mb-2" />
+            <p className="font-semibold text-slate-700">Peta Sebaran Laporan Aktif</p>
+            <p className="text-xs text-slate-500 max-w-sm mt-1">
+              {stats.valid} titik pencemaran telah divalidasi oleh Green Generation Palembang di sepanjang aliran Sungai Musi.
             </p>
           </div>
         </div>
@@ -142,5 +179,13 @@ export default function App() {
         <p className="mt-1 text-slate-400">Tech Lead & Backend Developer: M. Naufal Rafif Pratama</p>
       </footer>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AdminProvider>
+      <MainApp />
+    </AdminProvider>
   );
 }
