@@ -12,7 +12,8 @@ import {
   LogOut,
   Menu,
   X,
-  Droplets
+  Droplets,
+  ExternalLink
 } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
 import AdminDashboard from '../pages/admin/AdminDashboard';
@@ -23,7 +24,7 @@ import AdminExport from '../pages/admin/AdminExport';
 import AdminAuditLog from '../pages/admin/AdminAuditLog';
 import AdminSettings from '../pages/admin/AdminSettings';
 
-export default function AdminLayout() {
+export default function AdminLayout({ onSwitchToWarga }) {
   const { adminUser, logout } = useAdmin();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -207,6 +208,16 @@ export default function AdminLayout() {
               <p>DLH Sumsel &times; GG River Care</p>
             </div>
 
+            {onSwitchToWarga && (
+              <button
+                onClick={onSwitchToWarga}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-[#0088cc] bg-sky-50 hover:bg-sky-100 rounded-xl transition border border-sky-200"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Lihat Portal Warga</span>
+              </button>
+            )}
+
             <button
               onClick={logout}
               className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition"
@@ -233,6 +244,17 @@ export default function AdminLayout() {
           </div>
 
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            {onSwitchToWarga && (
+              <button
+                onClick={onSwitchToWarga}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition"
+                title="Buka Halaman Publik Warga"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-[#0088cc]" />
+                <span>Portal Warga</span>
+              </button>
+            )}
+
             {/* Notifikasi Lonceng */}
             <div className="w-9 h-9 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 flex items-center justify-center cursor-pointer relative shadow-sm transition">
               <Bell className="w-4 h-4" />
