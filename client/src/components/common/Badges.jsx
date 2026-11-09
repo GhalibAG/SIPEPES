@@ -84,3 +84,4 @@ export function PollutionTypeBadge({ type, className = '' }) {
     </span>
   );
 }
+

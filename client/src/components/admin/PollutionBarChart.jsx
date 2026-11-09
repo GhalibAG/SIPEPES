@@ -121,3 +121,4 @@ export default function PollutionBarChart() {
     </div>
   );
 }
+

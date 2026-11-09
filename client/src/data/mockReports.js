@@ -1,4 +1,4 @@
-// Acuan: docs/API_CONTRACT.md & docs/ERD_SCHEMA.md
+// Acuan Resmi: docs/API_CONTRACT.md & docs/ERD_SCHEMA.md
 // Data Mock Laporan Pencemaran Sungai Musi (Palembang)
 
 export const initialReports = [
@@ -6,7 +6,7 @@ export const initialReports = [
     id: "c1f7a26b-4e89-4bc7-a123-90d5f8e43210",
     tracking_code: "SPP-202611-0021",
     title: "Penumpukan Sampah Plastik di Bawah Jembatan Ampera",
-    description: "Terlihat tumpukan sampah plastik tebal menyumbat aliran air dermaga jukung di bawah Jembatan Ampera. Bau menyengat dan menghambat perahu ketek warga.",
+    description: "Terlihat tumpukan sampah plastik tebal menyumbat aliran air dermaga jukung di bawah Jembatan Ampera. Bau menyengat dan menghambat perahu ketek warga yang melintas.",
     latitude: -2.9912000,
     longitude: 104.7615000,
     district: "Bukit Kecil",
@@ -18,6 +18,7 @@ export const initialReports = [
     photo_url: "https://images.unsplash.com/photo-1618477461853-cf6ed80faba5?auto=format&fit=crop&w=800&q=80",
     status: "valid",
     rejection_reason: null,
+    admin_notes: "Laporan telah diverifikasi oleh tim lapangan GG River Care. Titik valid dan siap diadvokasikan.",
     verified_by: "M. Ghalib Assiddiq Gusri",
     verified_at: "2026-11-01T16:00:00Z",
     created_at: "2026-11-01T15:30:00Z",
@@ -39,6 +40,7 @@ export const initialReports = [
     photo_url: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=800&q=80",
     status: "menunggu",
     rejection_reason: null,
+    admin_notes: null,
     verified_by: null,
     verified_at: null,
     created_at: "2026-11-03T09:15:00Z",
@@ -48,7 +50,7 @@ export const initialReports = [
     id: "a3d5f04b-2c67-49a5-8901-78b3d6c21098",
     tracking_code: "SPP-202611-0023",
     title: "Pembuangan Air Keruh Berbusa Limbah Tahu Rumahan",
-    description: "Pipa saluran pembuangan langsung mengalirkan air keruh putih berbusa ke bibir sungai. Menimbulkan bau asam di sekitar pemukiman.",
+    description: "Pipa saluran pembuangan langsung mengalirkan air keruh putih berbusa ke bibir sungai. Menimbulkan bau asam di sekitar pemukiman warga.",
     latitude: -3.0125000,
     longitude: 104.7150000,
     district: "Gandus",
@@ -60,6 +62,7 @@ export const initialReports = [
     photo_url: "https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=800&q=80",
     status: "valid",
     rejection_reason: null,
+    admin_notes: "Kadar buangan organik cukup tinggi. Tim telah mengambil sampel foto untuk bahan laporan audiensi.",
     verified_by: "M. Ghalib Assiddiq Gusri",
     verified_at: "2026-11-04T11:20:00Z",
     created_at: "2026-11-04T10:00:00Z",
@@ -81,6 +84,7 @@ export const initialReports = [
     photo_url: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80",
     status: "valid",
     rejection_reason: null,
+    admin_notes: "Dapat dibersihkan secara manual pada aksi GG River Care akhir pekan ini.",
     verified_by: "M. Ghalib Assiddiq Gusri",
     verified_at: "2026-11-05T14:10:00Z",
     created_at: "2026-11-05T13:40:00Z",
@@ -102,6 +106,7 @@ export const initialReports = [
     photo_url: "https://images.unsplash.com/photo-1528323273322-d81458248d40?auto=format&fit=crop&w=800&q=80",
     status: "ditolak",
     rejection_reason: "Lokasi kejadian berada di daratan jalan raya perkotaan dan bukan merupakan kawasan perairan/bantaran Sungai Musi.",
+    admin_notes: "Disarankan melapor ke Dinas Kebersihan Kota untuk penanganan sampah daratan.",
     verified_by: "M. Ghalib Assiddiq Gusri",
     verified_at: "2026-11-06T08:30:00Z",
     created_at: "2026-11-05T19:00:00Z",
@@ -123,6 +128,7 @@ export const initialReports = [
     photo_url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80",
     status: "menunggu",
     rejection_reason: null,
+    admin_notes: null,
     verified_by: null,
     verified_at: null,
     created_at: "2026-11-08T07:20:00Z",
@@ -130,7 +136,7 @@ export const initialReports = [
   }
 ];
 
-// Data Master Segmen Sungai Musi (dari docs/ERD_SCHEMA.md)
+// Data Master Segmen Sungai Musi (Acuan: docs/ERD_SCHEMA.md)
 export const riverSegments = [
   {
     id: "seg-01",
@@ -138,7 +144,7 @@ export const riverSegments = [
     district: "Bukit Kecil",
     default_lat: -2.9912000,
     default_lng: 104.7615000,
-    description: "Titik kumpul aktivitas wisata dan dermaga jukung"
+    description: "Titik kumpul aktivitas wisata dan dermaga jukung perahu ketek"
   },
   {
     id: "seg-02",
@@ -146,7 +152,7 @@ export const riverSegments = [
     district: "Seberang Ulu I",
     default_lat: -2.9935000,
     default_lng: 104.7640000,
-    description: "Kawasan pemukiman padat bantaran sungai"
+    description: "Kawasan pemukiman padat dan dermaga jukung bantaran sungai"
   },
   {
     id: "seg-03",
@@ -154,7 +160,7 @@ export const riverSegments = [
     district: "Gandus",
     default_lat: -3.0125000,
     default_lng: 104.7150000,
-    description: "Titik aliran perbatasan industri dan alam"
+    description: "Titik aliran perbatasan kawasan industri dan alam hulu Sungai Musi"
   },
   {
     id: "seg-04",
@@ -162,11 +168,51 @@ export const riverSegments = [
     district: "Ilir Barat II",
     default_lat: -2.9950000,
     default_lng: 104.7380000,
-    description: "Daerah aliran tepian pemukiman warga"
+    description: "Daerah aliran tepian pemukiman warga dan kerajinan lokal"
   }
 ];
 
-// Data Statistik Bulanan untuk Bar Chart (Tailwind pure component)
+// Data Riwayat Verifikasi Terkini (Acuan: tabel verification_logs di ERD_SCHEMA.md)
+export const recentActivities = [
+  {
+    id: "log-1",
+    report_title: "Penumpukan Sampah Plastik di Bawah Jembatan Ampera",
+    tracking_code: "SPP-202611-0021",
+    admin_name: "M. Ghalib Assiddiq Gusri",
+    action: "valid",
+    severity: "berat",
+    timestamp: "2026-11-01T16:00:00Z"
+  },
+  {
+    id: "log-2",
+    report_title: "Pembuangan Air Keruh Berbusa Limbah Tahu",
+    tracking_code: "SPP-202611-0023",
+    admin_name: "M. Ghalib Assiddiq Gusri",
+    action: "valid",
+    severity: "sedang",
+    timestamp: "2026-11-04T11:20:00Z"
+  },
+  {
+    id: "log-3",
+    report_title: "Sampah Enceng Gondok dan Kemasan Plastik Hanyut",
+    tracking_code: "SPP-202611-0024",
+    admin_name: "M. Ghalib Assiddiq Gusri",
+    action: "valid",
+    severity: "ringan",
+    timestamp: "2026-11-05T14:10:00Z"
+  },
+  {
+    id: "log-4",
+    report_title: "Laporan Sampah di Daratan Jauh dari Sungai",
+    tracking_code: "SPP-202611-0025",
+    admin_name: "M. Ghalib Assiddiq Gusri",
+    action: "ditolak",
+    severity: "ringan",
+    timestamp: "2026-11-06T08:30:00Z"
+  }
+];
+
+// Data Statistik Bulanan untuk Bar Chart (Acuan: Layar 2 Figma)
 export const monthlyStats = [
   { month: "Jun", berat: 2, sedang: 4, ringan: 3 },
   { month: "Jul", berat: 3, sedang: 5, ringan: 6 },
@@ -176,7 +222,7 @@ export const monthlyStats = [
   { month: "Nov", berat: 3, sedang: 4, ringan: 2 }
 ];
 
-// Akun Admin Bawaan untuk Slicing Login (docs/API_CONTRACT.md)
+// Akun Admin Bawaan untuk Slicing Login (Acuan: docs/API_CONTRACT.md)
 export const mockAdminUser = {
   id: "admin-musilaban-01",
   email: "admin@sipepes.or.id",
