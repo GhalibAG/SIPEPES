@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Waves, Lock, Mail, ShieldCheck, ArrowRight, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Droplets } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 
-export default function AdminLogin({ onBackToPublic }) {
+export default function AdminLogin() {
   const { login } = useAdmin();
-  const [email, setEmail] = useState('admin@sipepes.or.id');
+  const [username, setUsername] = useState('19890412-GG-042');
   const [password, setPassword] = useState('admin123');
+  const [accountName, setAccountName] = useState('DLH Palembang × GG River Care');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -16,164 +18,169 @@ export default function AdminLogin({ onBackToPublic }) {
     setIsLoading(true);
 
     setTimeout(() => {
-      const res = login(email, password);
-      setIsLoading(false);
+      const res = login(username, password, accountName);
       if (!res.success) {
-        setErrorMsg(res.message);
+        setErrorMsg(res.message || 'Login gagal. Periksa kembali NIP/Username dan password.');
       }
+      setIsLoading(false);
     }, 300);
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-slate-50 overflow-hidden font-sans">
-      {/* Aksen Diagonal Biru Kanan (Sesuai Layar 1 Figma) */}
-      <div
-        className="hidden md:block absolute top-0 right-0 w-[42%] h-full bg-river-600 z-0"
+    <div className="min-h-screen w-full relative flex items-center justify-between overflow-hidden bg-[#eef2f6]">
+      {/* Background Geometris Miring Sesuai Desain Figma */}
+      <div 
+        className="absolute top-0 right-0 h-full w-[42%] bg-[#0088cc] hidden lg:block"
         style={{
-          clipPath: 'polygon(20% 0, 100% 0, 100% 100%, 0% 100%)'
+          clipPath: 'polygon(28% 0%, 100% 0%, 100% 100%, 0% 100%)'
         }}
       />
-      {/* Garis Aksen Biru Muda Tipis di Samping Aksen Biru */}
-      <div
-        className="hidden md:block absolute top-0 right-[41.5%] w-8 h-full bg-river-300/40 z-0"
+      {/* Garis Aksen Biru Muda Tipis di Belakang Sisi Miring */}
+      <div 
+        className="absolute top-0 right-[39%] h-full w-[5%] bg-[#38bdf8]/40 hidden lg:block"
         style={{
-          clipPath: 'polygon(20% 0, 100% 0, 100% 100%, 0% 100%)'
+          clipPath: 'polygon(28% 0%, 100% 0%, 100% 100%, 0% 100%)'
         }}
       />
 
-      {/* Kontainer Utama */}
-      <div className="relative z-10 max-w-6xl w-full mx-auto px-6 sm:px-12 py-10 flex flex-col md:flex-row items-center justify-between gap-12">
-        {/* Kolom Kiri: Branding Teks SIPEPES */}
-        <div className="max-w-md w-full text-left">
-          <button
-            onClick={onBackToPublic}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-river-600 hover:text-river-700 transition mb-8 group"
-          >
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            <span>Kembali ke Halaman Publik</span>
-          </button>
-
-          <div className="flex items-center gap-3.5 mb-5">
-            <div className="w-12 h-12 rounded-2xl bg-river-600 flex items-center justify-center text-white shadow-md shadow-river-600/25">
-              <Waves className="w-7 h-7" />
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-12 py-12">
+        {/* Kolom Kiri: Brand & Tagline */}
+        <div className="max-w-xl text-left">
+          <div className="flex items-center gap-3.5 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-[#bae6fd] flex items-center justify-center text-[#0284c7] shadow-sm">
+              <Droplets className="w-7 h-7 fill-[#0284c7]/20" />
             </div>
-            <div>
-              <span className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <div className="flex items-baseline gap-2">
+              <span className="text-4xl lg:text-5xl font-black text-[#1e293b] tracking-tight">
                 SIPEPES
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-eco-100 text-eco-700 border border-eco-200">
-                  GG River Care
-                </span>
               </span>
-              <p className="text-xs text-slate-500 font-medium">
-                Kota Palembang, Sumatera Selatan
-              </p>
+              <span className="text-3xl lg:text-4xl font-light text-[#38bdf8]">
+                Enterprise
+              </span>
             </div>
           </div>
-
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-3">
-            Sistem Informasi Pelaporan Pencemaran Sungai
-          </h1>
-          <p className="text-sm text-slate-600 leading-relaxed mb-6">
-            Portal otentikasi tim verifikator Green Generation Palembang untuk memvalidasi bukti temuan pencemaran air dan menyusun berkas audiensi.
+          <p className="text-slate-600 text-lg lg:text-xl font-normal mt-2 tracking-normal">
+            Your Unified Musi River Monitoring Platform.
           </p>
-
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <ShieldCheck className="w-4 h-4 text-eco-600 shrink-0" />
-            <span>Akses khusus admin berwenang (Divisi PKL)</span>
-          </div>
         </div>
 
-        {/* Kolom Kanan: Card Floating Login (Sesuai Layar 1 Figma) */}
-        <div className="w-full max-w-sm bg-white p-8 rounded-2xl border border-slate-200/90 shadow-2xl shadow-slate-300/60">
-          <div className="text-center mb-6">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-              Masuk Akun Admin
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Masukkan email dan kata sandi pengurus
-            </p>
-          </div>
+        {/* Kolom Kanan: Card Login */}
+        <div className="w-full max-w-[450px]">
+          <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 sm:p-10">
+            {errorMsg && (
+              <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
+                {errorMsg}
+              </div>
+            )}
 
-          {errorMsg && (
-            <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
-              <span>{errorMsg}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Email / Username
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Username / NIP */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-2">
+                  Username / NIP
+                </label>
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
                   required
-                  placeholder="admin@sipepes.or.id"
-                  className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-river-500 transition"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Masukkan NIP atau ID Petugas"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0088cc]/30 focus:border-[#0088cc] transition placeholder:text-slate-300"
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Kata Sandi
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              {/* Password */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0088cc]/30 focus:border-[#0088cc] transition pr-11 bg-slate-50/50"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Account Name / Unit Kerja */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 mb-2">
+                  Account Name / Unit Kerja
+                </label>
                 <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-river-500 transition"
+                  type="text"
+                  value={accountName}
+                  onChange={(e) => setAccountName(e.target.value)}
+                  placeholder="Contoh: DLH Palembang × GG River Care"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0088cc]/30 focus:border-[#0088cc] transition placeholder:text-slate-300"
                 />
               </div>
-            </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-600">
-              <label className="flex items-center gap-1.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="rounded text-river-600 focus:ring-river-500"
-                />
-                <span>Ingat saya</span>
-              </label>
-              <a href="#forgot" onClick={(e) => { e.preventDefault(); alert('Kredensial demo: admin@sipepes.or.id / admin123'); }} className="text-river-600 hover:underline">
-                Lupa sandi?
-              </a>
-            </div>
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between text-xs pt-1">
+                <label className="flex items-center gap-2 text-slate-600 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded text-[#0088cc] focus:ring-[#0088cc] border-slate-300"
+                  />
+                  <span>Remember me</span>
+                </label>
+                <button
+                  type="button"
+                  className="text-[#0088cc] hover:underline font-medium"
+                >
+                  Forgot your info?
+                </button>
+              </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-2.5 px-4 bg-river-600 hover:bg-river-700 text-white rounded-xl text-xs font-bold shadow-md shadow-river-600/30 flex items-center justify-center gap-2 transition disabled:opacity-70 mt-2"
-            >
-              {isLoading ? (
-                'Memverifikasi...'
-              ) : (
-                <>
-                  <span>Masuk</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
+              {/* Tombol Sign In */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-3.5 px-4 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white font-semibold text-sm shadow-md shadow-[#0088cc]/20 transition disabled:opacity-70 mt-2"
+              >
+                {isLoading ? 'Memverifikasi Kredensial...' : 'Sign In'}
+              </button>
 
-          {/* Info Akun Demo */}
-          <div className="mt-6 pt-4 border-t border-slate-100 text-center">
-            <p className="text-[11px] text-slate-400">
-              Akun default: <code className="text-slate-700 font-mono font-semibold">admin@sipepes.or.id</code>
-            </p>
+              {/* Separator OR */}
+              <div className="relative flex items-center justify-center my-4">
+                <div className="border-t border-slate-200 w-full"></div>
+                <span className="bg-white px-3 text-[11px] font-bold text-slate-400 uppercase tracking-widest absolute">
+                  OR
+                </span>
+              </div>
+
+              {/* SAML SSO */}
+              <div className="text-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => handleSubmit({ preventDefault: () => {} })}
+                  className="text-xs font-medium text-[#0088cc] hover:underline"
+                >
+                  Log in with email (SAML SSO)
+                </button>
+              </div>
+            </form>
           </div>
         </div>
+      </div>
+
+      {/* Version di pojok kanan bawah */}
+      <div className="absolute bottom-6 right-8 text-[11px] font-mono tracking-widest text-white/90 lg:text-white/80 hidden sm:block select-none z-20">
+        VERSION 2.4.0
       </div>
     </div>
   );

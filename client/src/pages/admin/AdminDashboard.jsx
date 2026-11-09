@@ -1,299 +1,485 @@
 import React from 'react';
 import {
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  XCircle,
-  FileSpreadsheet,
-  ArrowUpRight,
-  MapPin,
   Calendar,
-  Layers,
-  ChevronRight,
-  TrendingUp,
+  RotateCcw,
+  Download,
+  FileText,
+  Hourglass,
   ShieldCheck,
-  UserCheck,
-  FileCheck
+  XCircle,
+  Activity,
+  AlertTriangle,
+  ArrowUpRight,
+  ExternalLink,
+  MapPin,
+  Phone,
+  Radio,
+  Clock,
+  ChevronRight
 } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
-import PollutionBarChart from '../../components/admin/PollutionBarChart';
-import { SeverityBadge, StatusBadge, PollutionTypeBadge } from '../../components/common/Badges';
 
 export default function AdminDashboard({ onNavigate }) {
-  const { stats, reports, riverSegments, activities, setSelectedReportId } = useAdmin();
+  const {
+    stats,
+    weeklyTrendData,
+    wasteComposition,
+    criticalPoints,
+    reports,
+    setSelectedReportId
+  } = useAdmin();
 
-  // 3 Laporan menunggu verifikasi untuk list tindakan cepat
-  const pendingReports = reports.filter(r => r.status === 'menunggu').slice(0, 3);
+  // 3 tiket mendesak di antrean verifikasi
+  const urgentReports = reports.filter(r => r.is_urgent || r.status === 'menunggu').slice(0, 3);
 
-  const handleQuickVerify = (reportId) => {
-    setSelectedReportId(reportId);
-    onNavigate('verify'); // Langsung buka halaman Verifikasi Laporan (Layar 3 Figma)
+  const handleReview = (id) => {
+    setSelectedReportId(id);
+    onNavigate('verify');
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      {/* Header Halaman (Sesuai Layar 2 Figma) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="space-y-6">
+      {/* Siklus Pengawasan Badge & Welcome Header */}
+      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-1">
-            <span>Dashboard</span>
-            <span>&bull;</span>
-            <span className="text-river-600 font-semibold">Ringkasan Sistem</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-[#0088cc] border border-sky-200 text-[11px] font-bold mb-2">
+            <span className="w-2 h-2 rounded-full bg-[#0088cc] animate-pulse"></span>
+            SIKLUS PENGAWASAN AKTIF &bull; SUMSEL 16.71
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            Dashboard Pengawasan & Evaluasi Pencemaran
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
+            Selamat Bertugas, Tim Pengelola Kerusakan Lingkungan
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Monitoring kondisi Sungai Musi Kota Palembang dan tindak lanjut laporan warga
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+            Konsorsium Pengawasan Daerah Aliran Sungai Musi &bull; Green Generation River Care Palembang
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Action Buttons Kanan Atas */}
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start lg:self-auto">
+          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 shadow-sm font-medium">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            <span>November 2026 (Bulan Berjalan)</span>
+          </div>
+
           <button
-            onClick={() => onNavigate('verify')}
-            className="px-4 py-2 bg-river-600 hover:bg-river-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5"
+            onClick={() => window.location.reload()}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
           >
-            <span>Verifikasi Laporan ({stats.menunggu})</span>
-            <ChevronRight className="w-4 h-4" />
+            <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
+            <span>Muat Ulang</span>
+          </button>
+
+          <button
+            onClick={() => onNavigate('export')}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Unduh Ringkasan Cepat</span>
           </button>
         </div>
       </div>
 
-      {/* 5 Cards Statistik Berjajar (Sesuai Layar 2 Figma) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        {/* 1. Total Laporan */}
+      {/* 5 Metrik Utama */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+        {/* Card 1: Total Laporan Masuk */}
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-            Total Laporan
-          </span>
-          <div className="flex items-baseline justify-between mt-2">
-            <h3 className="text-2xl font-black text-slate-900">{stats.total}</h3>
-            <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
-              Semua
+          <div className="flex items-center justify-between text-slate-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              TOTAL LAPORAN MASUK
             </span>
+            <div className="w-7 h-7 rounded-lg bg-sky-50 text-[#0088cc] flex items-center justify-center">
+              <FileText className="w-3.5 h-3.5" />
+            </div>
           </div>
-          <p className="text-[10px] text-slate-400 mt-1 truncate">Seluruh aliran Musi</p>
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-slate-900">{stats.totalMasuk}</span>
+              <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600">
+                ↗ {stats.persenKenaikan}
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1">{stats.subMasuk}</p>
+          </div>
         </div>
 
-        {/* 2. Menunggu Verifikasi */}
-        <div className="bg-white p-4 rounded-2xl border border-amber-200/90 bg-amber-50/20 shadow-sm flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wider flex items-center gap-1">
-            <Clock className="w-3 h-3 text-amber-500" /> Menunggu
-          </span>
-          <div className="flex items-baseline justify-between mt-2">
-            <h3 className="text-2xl font-black text-amber-900">{stats.menunggu}</h3>
-            <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded animate-pulse">
-              Prioritas
-            </span>
-          </div>
-          <p className="text-[10px] text-amber-600 mt-1 truncate">Perlu evaluasi tim</p>
-        </div>
-
-        {/* 3. Terverifikasi Valid */}
-        <div className="bg-white p-4 rounded-2xl border border-eco-200/90 bg-eco-50/20 shadow-sm flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-eco-700 uppercase tracking-wider flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3 text-eco-600" /> Terverifikasi
-          </span>
-          <div className="flex items-baseline justify-between mt-2">
-            <h3 className="text-2xl font-black text-eco-900">{stats.valid}</h3>
-            <span className="text-[10px] font-bold text-eco-700 bg-eco-100 px-1.5 py-0.5 rounded">
-              Valid
-            </span>
-          </div>
-          <p className="text-[10px] text-eco-600 mt-1 truncate">Tampil di peta publik</p>
-        </div>
-
-        {/* 4. Ditolak */}
+        {/* Card 2: Antrean Verifikasi */}
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-            <XCircle className="w-3 h-3 text-slate-400" /> Ditolak
-          </span>
-          <div className="flex items-baseline justify-between mt-2">
-            <h3 className="text-2xl font-black text-slate-700">{stats.ditolak}</h3>
-            <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
-              Hoax/Out
+          <div className="flex items-center justify-between text-slate-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              ANTEAN VERIFIKASI
             </span>
+            <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+              <Hourglass className="w-3.5 h-3.5" />
+            </div>
           </div>
-          <p className="text-[10px] text-slate-400 mt-1 truncate">Bukan titik sungai</p>
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-amber-600">0{stats.antreanVerifikasi}</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-600 text-white">
+                &bull; urgent
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1">SLA kritis tersisa &lt; 3 jam</p>
+          </div>
         </div>
 
-        {/* 5. Rekapitulasi Advokasi */}
-        <div className="bg-white p-4 rounded-2xl border border-river-200/90 bg-river-50/20 shadow-sm flex flex-col justify-between col-span-2 sm:col-span-1">
-          <span className="text-[11px] font-bold text-river-700 uppercase tracking-wider flex items-center gap-1">
-            <FileSpreadsheet className="w-3 h-3 text-river-600" /> Siap Advokasi
-          </span>
-          <div className="flex items-baseline justify-between mt-2">
-            <h3 className="text-2xl font-black text-river-900">{stats.valid}</h3>
-            <span className="text-[10px] font-bold text-river-700 bg-river-100 px-1.5 py-0.5 rounded">
-              Dokumen
+        {/* Card 3: Terverifikasi Valid */}
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between text-slate-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              TERVERIFIKASI VALID
             </span>
+            <div className="w-7 h-7 rounded-lg bg-sky-50 text-[#0088cc] flex items-center justify-center">
+              <ShieldCheck className="w-3.5 h-3.5" />
+            </div>
           </div>
-          <p className="text-[10px] text-river-600 mt-1 truncate">Siap audiensi ke DLH</p>
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-slate-900">{stats.terverifikasiValid}</span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-sky-50 text-[#0088cc]">
+                {stats.persenValid}
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1">{stats.subValid}</p>
+          </div>
+        </div>
+
+        {/* Card 4: Laporan Ditolak */}
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between text-slate-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              LAPORAN DITOLAK
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center">
+              <XCircle className="w-3.5 h-3.5" />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-slate-900">{stats.laporanDitolak}</span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                {stats.persenDitolak}
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-1">{stats.subDitolak}</p>
+          </div>
+        </div>
+
+        {/* Card 5: Rata-Rata IKA Musi */}
+        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between text-slate-400 mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              RATA-RATA IKA MUSI
+            </span>
+            <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+              <Activity className="w-3.5 h-3.5" />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-amber-500">{stats.rataRataIka}</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600">
+                {stats.statusIka}
+              </span>
+            </div>
+            <div className="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden flex">
+              <div className="bg-amber-500 h-full w-[58%] rounded-full"></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Grid 2 Kolom (Sesuai Layar 2 Figma: Kiri ~68%, Kanan ~32%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* ================= KOLOM KIRI (8 Kolom) ================= */}
-        <div className="lg:col-span-8 space-y-6">
-          {/* Box 1: Stacked Bar Chart Tren Laporan */}
-          <PollutionBarChart />
-
-          {/* Box 2: Daftar Laporan Perlu Verifikasi Segera */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="p-4 sm:px-6 border-b border-slate-100 flex items-center justify-between">
-              <div>
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-amber-500" />
-                  Laporan Perlu Tindakan Segera
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Laporan masuk dari warga yang belum diverifikasi validitasnya
-                </p>
+      {/* Middle Grid: Chart & Breakdown Kiri + Sidebar Kanan */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Kolom Kiri: Chart & Breakdown Kategori */}
+        <div className="lg:col-span-8 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          {/* Header Chart */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#0088cc]"></span>
+                <h2 className="font-bold text-slate-900 text-sm sm:text-base">
+                  Dinamika &amp; Tren Pencemaran Mingguan
+                </h2>
               </div>
-
-              <button
-                onClick={() => onNavigate('verify')}
-                className="text-xs font-bold text-river-600 hover:text-river-700 transition"
-              >
-                Lihat Semua &rarr;
-              </button>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                Volume akumulasi laporan masuk vs terverifikasi (Senin – Minggu)
+              </p>
             </div>
 
-            {pendingReports.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-xs">
-                Tidak ada laporan yang sedang menunggu verifikasi.
+            {/* Legenda Warna */}
+            <div className="flex items-center gap-3 text-[11px] font-medium text-slate-600">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-slate-800"></span>
+                <span>Plastik</span>
               </div>
-            ) : (
-              <div className="divide-y divide-slate-100">
-                {pendingReports.map((report) => (
-                  <div
-                    key={report.id}
-                    className="p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition"
-                  >
-                    <div className="flex items-center gap-3.5">
-                      <img
-                        src={report.photo_url}
-                        alt=""
-                        className="w-14 h-14 rounded-xl object-cover shrink-0 border border-slate-200"
-                      />
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-mono text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">
-                            {report.tracking_code}
-                          </span>
-                          <SeverityBadge severity={report.estimated_severity} />
-                        </div>
-                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                          {report.title}
-                        </h4>
-                        <p className="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5">
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-slate-400" /> Kec. {report.district}
-                          </span>
-                          <span>&bull;</span>
-                          <span>{new Date(report.created_at).toLocaleDateString('id-ID')}</span>
-                        </p>
-                      </div>
-                    </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-rose-500"></span>
+                <span>Limbah Cair/B3</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-sm bg-emerald-600"></span>
+                <span>Organik</span>
+              </div>
+            </div>
+          </div>
 
-                    <button
-                      onClick={() => handleQuickVerify(report.id)}
-                      className="px-3.5 py-1.5 bg-river-600 hover:bg-river-700 text-white rounded-lg text-xs font-bold shadow-sm transition flex items-center gap-1 self-end sm:self-center shrink-0"
-                    >
-                      <span>Verifikasi</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ))}
+          {/* Bar Chart Sesuai Tampilan Desain */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            {/* Bagian Bar Chart SVG/Tailwind */}
+            <div className="md:col-span-7 flex flex-col justify-end pt-4">
+              <div className="h-44 w-full flex items-end justify-between gap-3 px-2 border-b border-slate-200 pb-2">
+                {weeklyTrendData.map((d, idx) => {
+                  const total = d.plastik + d.b3 + d.organik;
+                  const hPlastik = (d.plastik / 50) * 100;
+                  const hB3 = (d.b3 / 50) * 100;
+                  const hOrganik = (d.organik / 50) * 100;
+
+                  return (
+                    <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group">
+                      <div className="w-full max-w-[24px] flex flex-col justify-end rounded-t-md overflow-hidden bg-slate-100 transition hover:brightness-95">
+                        <div style={{ height: `${hB3}%` }} className="bg-rose-500 w-full" title={`B3: ${d.b3}`}></div>
+                        <div style={{ height: `${hPlastik}%` }} className="bg-slate-800 w-full" title={`Plastik: ${d.plastik}`}></div>
+                        <div style={{ height: `${hOrganik}%` }} className="bg-emerald-600 w-full" title={`Organik: ${d.organik}`}></div>
+                      </div>
+                      <span className="text-[10px] font-semibold text-slate-500">{d.day}</span>
+                    </div>
+                  );
+                })}
               </div>
-            )}
+
+              <div className="flex items-center justify-between pt-3 text-[11px] text-slate-500">
+                <span>Total Laporan Minggu Ini: <strong className="text-slate-800">148 insiden</strong></span>
+                <span className="flex items-center gap-1 text-emerald-600 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  Sinkronisasi Otomatis Terhubung
+                </span>
+              </div>
+            </div>
+
+            {/* Komposisi Kategori Limbah di Samping Chart */}
+            <div className="md:col-span-5 bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-3.5">
+              <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <span>KOMPOSISI KATEGORI LIMBAH</span>
+                <span className="text-[10px] text-slate-400">100% Total</span>
+              </div>
+
+              {wasteComposition.map((item, i) => (
+                <div key={i} className="space-y-1">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-semibold text-slate-800">{item.label}</span>
+                    <span className="text-slate-600 font-medium">{item.count} <span className="text-slate-400">({item.percent}%)</span></span>
+                  </div>
+                  <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full ${item.color} rounded-full`}
+                      style={{ width: `${item.percent}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+
+              <div className="pt-2 border-t border-slate-200/60 flex items-start gap-1.5 text-[11px] text-amber-700">
+                <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-amber-500 mt-0.5" />
+                <p className="leading-snug">Indikasi ceceran oli meningkat di sektor Seberang Ulu I.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* ================= KOLOM KANAN (4 Kolom) ================= */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* Box 1: Aktivitas Verifikasi Terkini (Timeline) */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-900 mb-0.5 flex items-center gap-2">
-              <FileCheck className="w-4 h-4 text-river-600" />
-              Aktivitas Verifikasi Terkini
-            </h3>
-            <p className="text-xs text-slate-500 mb-4">
-              Rekam jejak tindakan admin (Audit Trail)
+        {/* Kolom Kanan: Titik Pantau Sempadan Kritis + Aktivitas Verifikasi + Hotline */}
+        <div className="lg:col-span-4 space-y-5">
+          {/* Titik Pantau Sempadan Kritis */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-[#0088cc]">📶</span>
+                <h3 className="font-bold text-slate-900 text-xs sm:text-sm">
+                  Titik Pantau Sempadan Kritis
+                </h3>
+              </div>
+              <span className="text-[10px] font-semibold text-slate-400">5 Pos Terpantau</span>
+            </div>
+            <p className="text-[10px] text-slate-400">
+              Indikator ambang batas limbah radius 200m dari bantaran Musi
             </p>
 
-            <div className="space-y-3.5">
-              {activities.slice(0, 4).map((act) => (
-                <div key={act.id} className="flex items-start justify-between gap-2 text-xs pb-3 border-b border-slate-100 last:border-none last:pb-0">
-                  <div className="min-w-0">
-                    <p className="font-bold text-slate-800 line-clamp-1">
-                      {act.report_title}
-                    </p>
-                    <p className="text-[10px] text-slate-400 mt-0.5 flex items-center gap-1">
-                      <span className="font-mono">{act.tracking_code}</span>
-                      <span>&bull;</span>
-                      <span>{act.admin_name}</span>
+            <div className="space-y-2 pt-1">
+              {criticalPoints.map((cp, idx) => (
+                <div key={idx} className="p-2.5 rounded-xl border border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold text-slate-800">{cp.name}</p>
+                    <p className="text-[10px] text-slate-400 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                      {cp.zone}
                     </p>
                   </div>
-
-                  <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
-                      act.action === 'valid'
-                        ? 'bg-eco-50 text-eco-700 border border-eco-200'
-                        : 'bg-red-50 text-red-700 border border-red-200'
-                    }`}
-                  >
-                    {act.action === 'valid' ? 'Valid' : 'Ditolak'}
+                  <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md border ${cp.color}`}>
+                    {cp.percent}% {cp.status}
                   </span>
                 </div>
               ))}
             </div>
+
+            <div className="p-2 rounded-lg bg-sky-50 text-[11px] text-[#0088cc] flex items-center justify-between font-medium">
+              <span>Prioritas drone patroli:</span>
+              <strong className="text-slate-800">Sektor Ulu I &amp; 16 Ilir</strong>
+            </div>
           </div>
 
-          {/* Box 2: Zonasi Titik Rawan Sungai Musi */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-900 mb-0.5 flex items-center gap-2">
-              <Layers className="w-4 h-4 text-river-600" />
-              Zonasi Rawan Sungai Musi
-            </h3>
-            <p className="text-xs text-slate-500 mb-4">
-              Distribusi laporan per segmen wilayah
-            </p>
+          {/* Aktivitas Verifikasi Terakhir (NFR-5 AUDIT) */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-600">⚡</span>
+                <h3 className="font-bold text-slate-900 text-xs sm:text-sm">
+                  Aktivitas Verifikasi Terakhir
+                </h3>
+              </div>
+              <span className="text-[10px] font-mono text-slate-400">NFR-5 AUDIT</span>
+            </div>
 
-            <div className="space-y-3 text-xs">
-              {riverSegments.map((seg) => {
-                const count = reports.filter(r => r.district === seg.district).length;
-                const percent = Math.min(100, (count / reports.length) * 100);
+            <div className="space-y-3 pt-1 text-xs">
+              <div className="border-l-2 border-emerald-500 pl-3 py-0.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-900">Admin Rian F.</span>
+                  <span className="text-[10px] text-slate-400 font-mono">11:42 WIB</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Validasi tiket <strong className="text-[#0088cc]">#SPP-202611-0008</strong>: Kategori Tercemar Berat di Kertapati.
+                </p>
+              </div>
 
-                return (
-                  <div key={seg.id} className="space-y-1">
-                    <div className="flex items-center justify-between font-medium">
-                      <span className="text-slate-800 truncate">{seg.name}</span>
-                      <span className="font-bold text-slate-900">{count} Titik</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-river-500 rounded-full transition-all"
-                        style={{ width: `${percent}%` }}
-                      />
-                    </div>
+              <div className="border-l-2 border-slate-300 pl-3 py-0.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-900">Admin Nadia S.</span>
+                  <span className="text-[10px] text-slate-400 font-mono">10:15 WIB</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Tolak <strong className="text-rose-500">#SPP-202611-0005</strong>: Foto blur, luar bantaran sungai.
+                </p>
+              </div>
+
+              <div className="border-l-2 border-emerald-500 pl-3 py-0.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-900">Admin M. Ridho Pratama</span>
+                  <span className="text-[10px] text-slate-400 font-mono">08:30 WIB</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Rilis dossier advokasi DLH Provinsi Sumsel (28 lembar).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Hotline Tanggap Sempadan (24 Jam) */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-sky-600" />
+                <h3 className="font-bold text-slate-900 text-xs sm:text-sm">
+                  Hotline Tanggap Sempadan
+                </h3>
+              </div>
+              <span className="text-[10px] font-bold text-emerald-600 uppercase">SIAGA 24 JAM</span>
+            </div>
+
+            <div className="space-y-2 text-xs">
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] text-slate-400">Posko DLH Kota Palembang</p>
+                  <p className="font-bold text-slate-900 font-mono text-xs">(0711) 352-101</p>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] text-slate-400">Patroli Relawan Sahabat Musi</p>
+                  <p className="font-bold text-slate-900 font-mono text-xs">+62 812-7390-099 &bull; Radio Ch. 14</p>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bagian Bawah: Antrean Verifikasi Mendesak (Perlu Penanganan Cepat) */}
+      <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+            <h2 className="font-bold text-slate-900 text-sm sm:text-base">
+              Antrean Verifikasi Mendesak (Perlu Penanganan Cepat)
+            </h2>
+            <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold text-[10px] border border-amber-200">
+              3 Tiket Prioritas
+            </span>
+          </div>
+
+          <button
+            onClick={() => onNavigate('verify')}
+            className="text-xs font-semibold text-[#0088cc] hover:underline flex items-center gap-1 self-start sm:self-auto"
+          >
+            <span>Lihat Seluruh Antrean (9)</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* List 3 Tiket */}
+        <div className="space-y-3">
+          {urgentReports.map((report) => (
+            <div
+              key={report.id}
+              className="p-4 rounded-xl border border-slate-200 hover:border-[#0088cc]/50 hover:bg-slate-50/50 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
+            >
+              <div className="flex items-start gap-4">
+                <img
+                  src={report.photo_url}
+                  alt={report.title}
+                  className="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-200 shadow-sm"
+                />
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-mono font-bold text-[#0088cc] text-xs">
+                      #{report.tracking_code}
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        report.estimated_severity === 'berat'
+                          ? 'bg-rose-50 text-rose-600 border border-rose-200'
+                          : 'bg-amber-50 text-amber-600 border border-amber-200'
+                      }`}
+                    >
+                      {report.estimated_severity === 'berat' ? 'Tercemar Berat' : 'Tercemar Sedang'}
+                    </span>
+                    <span className="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
+                      <Clock className="w-3 h-3" />
+                      {report.created_time_str}
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* Box 3: Info Tim Advokasi PKL */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-river-50 to-sky-50 border border-river-100 text-xs">
-            <div className="flex items-center gap-2 font-bold text-river-900 mb-1">
-              <UserCheck className="w-4 h-4 text-river-600" />
-              <span>Tim Advokasi Lingkungan GG</span>
+                  <h3 className="font-bold text-slate-900 text-sm">{report.title}</h3>
+
+                  <p className="text-[11px] text-slate-500 flex items-center gap-1 mt-1 font-mono">
+                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{report.address_landmark}</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 self-end md:self-center shrink-0">
+                <button
+                  onClick={() => handleReview(report.id)}
+                  className="px-4 py-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 flex items-center gap-1.5 transition"
+                >
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span>Review</span>
+                </button>
+              </div>
             </div>
-            <p className="text-slate-600 text-[11px] leading-relaxed">
-              Program GG River Care bermitra dengan warga lokal di sepanjang bantaran Sungai Musi untuk mendata titik kritis pencemaran secara real-time.
-            </p>
-          </div>
+          ))}
         </div>
       </div>
     </div>
