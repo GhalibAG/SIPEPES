@@ -80,10 +80,10 @@ export default function AdminSegments({ onNavigate }) {
         </div>
 
         {/* Tombol Kanan Atas */}
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start lg:self-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2.5 shrink-0 self-start lg:self-auto w-full sm:w-auto">
           <button
             onClick={() => alert('Sinkronisasi Geospasial dengan Server DLHK Kota Palembang Berhasil.')}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
             <span>Sinkronisasi GIS DLH</span>
@@ -91,7 +91,7 @@ export default function AdminSegments({ onNavigate }) {
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Tambah Titik Sempadan Baru</span>
@@ -100,83 +100,83 @@ export default function AdminSegments({ onNavigate }) {
       </div>
 
       {/* 4 Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Total Titik Terdaftar */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-              TOTAL TITIK TERDAFTAR
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
+              TOTAL TITIK
             </span>
-            <div className="w-8 h-8 rounded-lg bg-sky-50 text-[#0088cc] flex items-center justify-center">
-              <MapPin className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-sky-50 text-[#0088cc] flex items-center justify-center shrink-0">
+              <MapPin className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-              18 <span className="text-sm font-semibold text-slate-500">Titik Pantau</span>
+            <div className="text-xl sm:text-3xl font-extrabold text-slate-900">
+              18 <span className="text-xs sm:text-sm font-semibold text-slate-500">Titik Pantau</span>
             </div>
-            <p className="text-[11px] text-slate-500 mt-1 font-mono">
-              <strong className="text-slate-800">12</strong> Seberang Ulu &bull; <strong className="text-slate-800">6</strong> Seberang Ilir
+            <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 font-mono truncate">
+              <strong className="text-slate-800">12</strong> Ulu &bull; <strong className="text-slate-800">6</strong> Ilir
             </p>
           </div>
         </div>
 
         {/* Pos Kritis / Rentan B3 */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-              POS KRITIS / RENTAN B3
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
+              POS KRITIS
             </span>
-            <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
-              <Flame className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+              <Flame className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-rose-600">
-              5 <span className="text-sm font-semibold text-rose-500">Titik Waspada</span>
+            <div className="text-xl sm:text-3xl font-extrabold text-rose-600">
+              5 <span className="text-xs sm:text-sm font-semibold text-rose-500">Waspada</span>
             </div>
-            <p className="text-[11px] text-slate-500 mt-1 truncate">
-              Dermaga 7 Ulu, Kertapati, Tangga Buntung
+            <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 truncate">
+              Dermaga 7 Ulu, Kertapati
             </p>
           </div>
         </div>
 
         {/* Buffer Sempadan Rata-Rata */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-              BUFFER SEMPADAN RATA-RATA
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
+              BUFFER RATA-RATA
             </span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Sliders className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Sliders className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-              100 <span className="text-sm font-semibold text-slate-500">Meter</span>
+            <div className="text-xl sm:text-3xl font-extrabold text-slate-900">
+              100 <span className="text-xs sm:text-sm font-semibold text-slate-500">Meter</span>
             </div>
-            <p className="text-[11px] text-slate-500 mt-1">
-              Sesuai Perda RTRW Sungai Kota Palembang
+            <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 truncate">
+              Perda RTRW Musi
             </p>
           </div>
         </div>
 
         {/* Status Telemetri Sensor */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-              STATUS TELEMETRI SENSOR
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
+              TELEMETRI SENSOR
             </span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Radio className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Radio className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">
-              94.4% <span className="text-sm font-semibold text-emerald-500">Aktif</span>
+            <div className="text-xl sm:text-3xl font-extrabold text-emerald-600">
+              94.4% <span className="text-xs sm:text-sm font-semibold text-emerald-500">Aktif</span>
             </div>
-            <p className="text-[11px] text-slate-500 mt-1 font-mono">
-              <strong className="text-slate-800">17</strong> Online &bull; <strong className="text-amber-600">1</strong> Kalibrasi
+            <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 font-mono truncate">
+              <strong className="text-slate-800">17</strong> On &bull; <strong className="text-amber-600">1</strong> Kalibrasi
             </p>
           </div>
         </div>
@@ -187,11 +187,11 @@ export default function AdminSegments({ onNavigate }) {
         {/* Kolom Kiri: Filter & Tabel Master Sempadan */}
         <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
           {/* Header Filter */}
-          <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2">
+          <div className="p-3.5 sm:p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => setActiveTab('semua')}
-                className={`px-3 py-1.5 rounded-lg font-bold transition ${
+                className={`px-3 py-1.5 rounded-lg font-bold transition text-xs ${
                   activeTab === 'semua' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
@@ -199,7 +199,7 @@ export default function AdminSegments({ onNavigate }) {
               </button>
               <button
                 onClick={() => setActiveTab('ulu')}
-                className={`px-3 py-1.5 rounded-lg font-semibold transition ${
+                className={`px-3 py-1.5 rounded-lg font-semibold transition text-xs ${
                   activeTab === 'ulu' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
@@ -207,14 +207,14 @@ export default function AdminSegments({ onNavigate }) {
               </button>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="relative flex-1 sm:w-60">
                 <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Cari nama pos, kode, kecama..."
+                  placeholder="Cari nama pos, kode..."
                   className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-xs focus:outline-none"
                 />
               </div>
@@ -224,14 +224,15 @@ export default function AdminSegments({ onNavigate }) {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold shadow-sm shrink-0"
               >
                 <Download className="w-3.5 h-3.5 text-slate-400" />
-                <span>Ekspor CSV</span>
+                <span className="hidden sm:inline">Ekspor CSV</span>
+                <span className="sm:hidden">CSV</span>
               </button>
             </div>
           </div>
 
           {/* Tabel Master */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full min-w-[640px] text-left text-xs">
               <thead className="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
                 <tr>
                   <th className="py-3 px-4">KODE TITIK</th>

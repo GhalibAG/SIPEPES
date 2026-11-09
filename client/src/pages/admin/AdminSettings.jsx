@@ -78,14 +78,14 @@ export default function AdminSettings() {
         </div>
 
         {/* Tombol Kanan Atas */}
-        <div className="flex items-center gap-2.5 shrink-0 self-start lg:self-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2.5 shrink-0 self-start lg:self-auto w-full sm:w-auto">
           <button
             onClick={() => {
               setGeofenceRadius(100);
               setAutoDeduplicate(true);
               setAutoEscalate(true);
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
             <span>Reset ke Default</span>
@@ -93,7 +93,7 @@ export default function AdminSettings() {
 
           <button
             onClick={handleSave}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-bold shadow-sm shadow-[#0088cc]/20 transition"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-bold shadow-sm shadow-[#0088cc]/20 transition"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Simpan Semua Perubahan</span>
@@ -102,63 +102,63 @@ export default function AdminSettings() {
       </div>
 
       {/* 4 Status Badges Atas */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center">
-              <Database className="w-4 h-4" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 truncate">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+              <Database className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
-            <div>
-              <p className="text-[10px] text-slate-400 font-semibold uppercase">STATUS BASIS DATA</p>
-              <p className="text-xs font-bold text-slate-800">PostgreSQL &amp; GIS</p>
+            <div className="truncate">
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase truncate">BASIS DATA</p>
+              <p className="text-xs font-bold text-slate-800 truncate">PostgreSQL</p>
             </div>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-            &bull; Aktif
+          <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+            Aktif
           </span>
         </div>
 
-        <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Cloud className="w-4 h-4" />
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 truncate">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Cloud className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
-            <div>
-              <p className="text-[10px] text-slate-400 font-semibold uppercase">S3 MEDIA STORAGE</p>
-              <p className="text-xs font-bold text-slate-800">42ms Latency</p>
+            <div className="truncate">
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase truncate">S3 STORAGE</p>
+              <p className="text-xs font-bold text-slate-800 truncate">42ms Latency</p>
             </div>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
             Terhubung
           </span>
         </div>
 
-        <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-              <Radio className="w-4 h-4" />
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 truncate">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <Radio className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
-            <div>
-              <p className="text-[10px] text-slate-400 font-semibold uppercase">TRC DLH ESCALATION</p>
-              <p className="text-xs font-bold text-slate-800">Standby 24/7</p>
+            <div className="truncate">
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase truncate">TRC DLH</p>
+              <p className="text-xs font-bold text-slate-800 truncate">Standby 24/7</p>
             </div>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+          <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 shrink-0">
             Siaga
           </span>
         </div>
 
-        <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-              <FileCheck className="w-4 h-4" />
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 truncate">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+              <FileCheck className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
-            <div>
-              <p className="text-[10px] text-slate-400 font-semibold uppercase">REGULASI BAKU MUTU</p>
-              <p className="text-xs font-bold text-slate-800">Perda 3 Plg</p>
+            <div className="truncate">
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase truncate">BAKU MUTU</p>
+              <p className="text-xs font-bold text-slate-800 truncate">Perda 3 Plg</p>
             </div>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
+          <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200 shrink-0">
             Valid
           </span>
         </div>
@@ -168,7 +168,7 @@ export default function AdminSettings() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Kolom Kiri: Navigasi Sub-Tab & Pedoman Pengelola */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm space-y-1">
+          <div className="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm flex lg:flex-col overflow-x-auto lg:overflow-visible gap-1.5 scrollbar-none pb-2 lg:pb-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeSubTab === item.id;
@@ -176,7 +176,7 @@ export default function AdminSettings() {
                 <button
                   key={item.id}
                   onClick={() => setActiveSubTab(item.id)}
-                  className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold text-left transition ${
+                  className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 lg:w-full transition ${
                     isActive
                       ? 'bg-sky-50 text-[#0088cc]'
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
@@ -531,13 +531,13 @@ export default function AdminSettings() {
               <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Webhook Kedaruratan TRC DLH (Payload JSON)
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   defaultValue="https://api.dlh.palembang.go.id/v1/emergency-webhook"
                   className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus:outline-none"
                 />
-                <button className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 flex items-center gap-1.5 transition">
+                <button className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 flex items-center justify-center gap-1.5 transition shrink-0">
                   <Send className="w-3.5 h-3.5 text-[#0088cc]" />
                   <span>Uji Ping</span>
                 </button>

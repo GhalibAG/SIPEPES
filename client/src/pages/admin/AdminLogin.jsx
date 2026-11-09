@@ -43,30 +43,30 @@ export default function AdminLogin() {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-12 py-12">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 py-8 sm:py-12">
         {/* Kolom Kiri: Brand & Tagline */}
-        <div className="max-w-xl text-left">
-          <div className="flex items-center gap-3.5 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#bae6fd] flex items-center justify-center text-[#0284c7] shadow-sm">
-              <Droplets className="w-7 h-7 fill-[#0284c7]/20" />
+        <div className="max-w-xl text-left w-full lg:w-auto">
+          <div className="flex items-center gap-3 mb-2 sm:mb-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#bae6fd] flex items-center justify-center text-[#0284c7] shadow-sm shrink-0">
+              <Droplets className="w-6 h-6 sm:w-7 sm:h-7 fill-[#0284c7]/20" />
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl lg:text-5xl font-black text-[#1e293b] tracking-tight">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1e293b] tracking-tight">
                 SIPEPES
               </span>
-              <span className="text-3xl lg:text-4xl font-light text-[#38bdf8]">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-[#38bdf8]">
                 Enterprise
               </span>
             </div>
           </div>
-          <p className="text-slate-600 text-lg lg:text-xl font-normal mt-2 tracking-normal">
+          <p className="text-slate-600 text-sm sm:text-lg lg:text-xl font-normal mt-1 sm:mt-2 tracking-normal">
             Your Unified Musi River Monitoring Platform.
           </p>
         </div>
 
         {/* Kolom Kanan: Card Login */}
         <div className="w-full max-w-[450px]">
-          <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 sm:p-10">
+          <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 sm:p-10">
             {errorMsg && (
               <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
                 {errorMsg}
@@ -179,7 +179,7 @@ export default function AdminLogin() {
       </div>
 
       {/* Version di pojok kanan bawah */}
-      <div className="absolute bottom-6 right-8 text-[11px] font-mono tracking-widest text-white/90 lg:text-white/80 hidden sm:block select-none z-20">
+      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 text-[10px] sm:text-[11px] font-mono tracking-widest text-slate-400 sm:text-white/80 select-none z-20">
         VERSION 2.4.0
       </div>
     </div>

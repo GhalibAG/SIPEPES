@@ -75,90 +75,90 @@ export default function AdminAuditLog() {
       </div>
 
       {/* 4 Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Aktivitas Periode */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
               Aktivitas Periode
             </span>
-            <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center">
-              <FileText className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+              <FileText className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">1,428 Aktivitas</div>
-            <p className="text-[11px] text-emerald-600 font-semibold mt-1">
-              ↗ +12% <span className="text-slate-400 font-normal">vs siklus bulan lalu</span>
+            <div className="text-xl sm:text-3xl font-extrabold text-slate-900">1,428 <span className="text-xs sm:text-sm font-semibold text-slate-500">Aktivitas</span></div>
+            <p className="text-[10px] sm:text-[11px] text-emerald-600 font-semibold mt-1 truncate">
+              ↗ +12% <span className="text-slate-400 font-normal">vs siklus lalu</span>
             </p>
           </div>
         </div>
 
         {/* Verifikasi Selesai */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
               Verifikasi Selesai
             </span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">104 Tiket</div>
-            <p className="text-[11px] text-slate-500 mt-1">
-              Divalidasi ke Tim Reaksi Cepat
+            <div className="text-xl sm:text-3xl font-extrabold text-slate-900">104 <span className="text-xs sm:text-sm font-semibold text-slate-500">Tiket</span></div>
+            <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 truncate">
+              Divalidasi ke TRC
             </p>
           </div>
         </div>
 
         {/* Diskualifikasi */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
               Diskualifikasi
             </span>
-            <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
-              <XCircle className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+              <XCircle className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">15 Tiket Ditolak</div>
-            <p className="text-[11px] text-slate-500 mt-1">
-              100% alasan terdokumentasi
+            <div className="text-xl sm:text-3xl font-extrabold text-slate-900">15 <span className="text-xs sm:text-sm font-semibold text-rose-500">Ditolak</span></div>
+            <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 truncate">
+              100% terdokumentasi
             </p>
           </div>
         </div>
 
         {/* Integritas Hash */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
               Integritas Hash
             </span>
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-              <Shield className="w-4 h-4" />
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+              <Shield className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">100% Sah</div>
-            <p className="text-[11px] text-slate-600 font-medium mt-1 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span>SHA-256 Rantai Valid</span>
+            <div className="text-xl sm:text-3xl font-extrabold text-slate-900">100% Sah</div>
+            <p className="text-[10px] sm:text-[11px] text-slate-600 font-medium mt-1 flex items-center gap-1.5 truncate">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+              <span>SHA-256 Valid</span>
             </p>
           </div>
         </div>
       </div>
 
       {/* Filter Row */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-4 text-xs">
-        <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400 font-semibold">Tipe Aksi:</span>
+      <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 sm:gap-4 text-xs">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full lg:w-auto">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-1 sm:flex-initial">
+            <span className="text-slate-400 font-semibold text-[11px] shrink-0">Aksi:</span>
             <select
               value={actionFilter}
               onChange={(e) => setActionFilter(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none"
+              className="w-full sm:w-auto px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none text-xs"
             >
               <option>Semua Aksi</option>
               <option>Verifikasi Valid</option>
@@ -167,12 +167,12 @@ export default function AdminAuditLog() {
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400 font-semibold">Petugas:</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-1 sm:flex-initial">
+            <span className="text-slate-400 font-semibold text-[11px] shrink-0">Petugas:</span>
             <select
               value={officerFilter}
               onChange={(e) => setOfficerFilter(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none"
+              className="w-full sm:w-auto px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none text-xs"
             >
               <option>Semua Petugas</option>
               <option>M. Ridho Pratama</option>
@@ -181,8 +181,8 @@ export default function AdminAuditLog() {
             </select>
           </div>
 
-          <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-mono text-[10px]">
-            Protokol Audit: ISO 27001 / Annex A.12.4
+          <span className="hidden sm:inline-block px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-mono text-[10px]">
+            ISO 27001 / Annex A.12.4
           </span>
         </div>
 
@@ -192,10 +192,10 @@ export default function AdminAuditLog() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Cari ID Tiket, IP Address, atau..."
+            placeholder="Cari ID Tiket, IP Address..."
             className="w-full pl-9 pr-14 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-xs focus:outline-none focus:ring-1 focus:ring-[#0088cc]"
           />
-          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">
+          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200 hidden sm:inline">
             CTRL+K
           </span>
         </div>
@@ -227,7 +227,7 @@ export default function AdminAuditLog() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full min-w-[700px] text-left text-xs">
             <thead className="bg-slate-50/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="py-3 px-4">TIMESTAMP (WIB)</th>
@@ -311,13 +311,13 @@ export default function AdminAuditLog() {
       </div>
 
       {/* Card Sertifikasi & Keabsahan Bukti Digital */}
-      <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-[#0088cc] flex items-center justify-center shrink-0 shadow-sm">
-            <Key className="w-5 h-5" />
+      <div className="bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
+        <div className="flex items-start gap-3 sm:gap-4">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-slate-200 text-[#0088cc] flex items-center justify-center shrink-0 shadow-sm">
+            <Key className="w-4 h-4 sm:w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
               <h3 className="font-bold text-slate-900 text-sm">
                 Sertifikasi &amp; Keabsahan Bukti Digital
               </h3>
@@ -331,12 +331,12 @@ export default function AdminAuditLog() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shrink-0 shadow-sm">
-          <div className="text-right">
+        <div className="flex items-center justify-between sm:justify-start gap-2 bg-white px-3.5 py-2 rounded-xl border border-slate-200 shrink-0 shadow-sm w-full sm:w-auto">
+          <div className="text-left sm:text-right">
             <p className="text-[10px] text-slate-400 font-semibold">Kunci Publik Otoritas:</p>
-            <p className="text-xs font-mono text-slate-700 font-bold">sip-ppl-sumsel-2026-root.crt</p>
+            <p className="text-xs font-mono text-slate-700 font-bold truncate">sip-ppl-sumsel-2026-root.crt</p>
           </div>
-          <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
             <Check className="w-3.5 h-3.5" />
           </div>
         </div>

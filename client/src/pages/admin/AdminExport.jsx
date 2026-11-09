@@ -115,7 +115,7 @@ export default function AdminExport() {
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               FORMAT EKSPOR
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
               <button
                 type="button"
                 onClick={() => setExportFormat('pdf')}
@@ -165,7 +165,7 @@ export default function AdminExport() {
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               RENTANG WAKTU INSIDEN
             </label>
-            <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs">
               <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
                 <span className="text-[10px] text-slate-400 block">Mulai</span>
                 <input
@@ -189,7 +189,7 @@ export default function AdminExport() {
           </div>
 
           {/* Status & Zonasi */}
-          <div className="grid grid-cols-2 gap-3 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs">
             <div>
               <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
                 STATUS LAPORAN
@@ -362,7 +362,7 @@ export default function AdminExport() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full min-w-[680px] text-left text-xs">
             <thead className="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
               <tr>
                 <th className="py-3 px-4">NAMA DOKUMEN BERKAS</th>
