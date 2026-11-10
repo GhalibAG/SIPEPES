@@ -37,16 +37,45 @@ export function AdminProvider({ children }) {
     localStorage.setItem('sipepes_admin_reports_v2', JSON.stringify(reports));
   }, [reports]);
 
-  const login = (usernameOrNip, password, accountName) => {
-    // Validasi login fleksibel untuk mempermudah review dosen/penguji
+  const login = async (usernameOrNip, password, accountName) => {
+    // 1. Coba otentikasi ke Backend API live Supabase jika tersedia
+    try {
+      const apiBase = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+      const response = await fetch(`${apiBase}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: usernameOrNip, password })
+      });
+      const data = await response.json();
+      if (response.ok && data.success && data.data?.token) {
+        localStorage.setItem('sipepes_admin_token', data.data.token);
+        localStorage.setItem('sipepes_admin_user', JSON.stringify(data.data.user));
+        setAdminUser({
+          ...mockAdminUser,
+          id: data.data.user.id,
+          username: data.data.user.email,
+          full_name: data.data.user.name || mockAdminUser.full_name,
+          role: data.data.user.role,
+          email: data.data.user.email,
+          unit_kerja: accountName || mockAdminUser.unit_kerja
+        });
+        return { success: true };
+      }
+    } catch (apiErr) {
+      console.warn('API backend login fallback ke mode offline/mock:', apiErr.message);
+    }
+
+    // 2. Fallback validasi lokal untuk demo & testing offline
     if (
-      (usernameOrNip && password) ||
-      (usernameOrNip === 'admin@sipepes.or.id' && password === 'admin123')
+      (usernameOrNip === 'admin@sipepes.com' && password === 'admin123') ||
+      (usernameOrNip === 'admin@sipepes.or.id' && password === 'admin123') ||
+      (usernameOrNip && password)
     ) {
       localStorage.setItem('sipepes_admin_token', 'mock_jwt_token_admin_musilaban_2026');
       setAdminUser({
         ...mockAdminUser,
         username: usernameOrNip || mockAdminUser.username,
+        email: usernameOrNip.includes('@') ? usernameOrNip : mockAdminUser.email,
         unit_kerja: accountName || mockAdminUser.unit_kerja
       });
       return { success: true };

@@ -1,0 +1,152 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="DFD-Level-0" id="dfd_level_0_sipepes">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title Banner -->
+        <mxCell id="title_box" value="&lt;b style=&quot;font-size: 20px;&quot;&gt;DIAGRAM KONTEKS (DATA FLOW DIAGRAM LEVEL 0)&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size: 13px; color: #64748B;&quot;&gt;Sistem Informasi Pelaporan Pencemaran Sungai (SIPEPES) — MuSilaban (Tim 3)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="360" y="40" width="920" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- External Entity: Warga / Volunteer -->
+        <mxCell id="entity_warga" value="&lt;b style=&quot;font-size: 15px;&quot;&gt;WARGA / PELAPOR&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size: 11px; color: #475569;&quot;&gt;(Masyarakat &amp; Volunteer Lapangan)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=2.5;align=center;verticalAlign=middle;fontColor=#0F172A;" vertex="1" parent="1">
+          <mxGeometry x="80" y="240" width="240" height="520" as="geometry" />
+        </mxCell>
+
+        <!-- Central Process: 0.0 SIPEPES -->
+        <mxCell id="process_sipepes" value="&lt;b style=&quot;font-size: 22px; color: #1D4ED8;&quot;&gt;0.0&lt;/b&gt;&lt;br&gt;&lt;hr style=&quot;border: 1px solid #3B82F6;&quot;&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;SISTEM INFORMASI&lt;br&gt;PELAPORAN PENCEMARAN&lt;br&gt;SUNGAI&lt;br&gt;( SIPEPES )&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=3.5;align=center;verticalAlign=middle;fontColor=#0F172A;" vertex="1" parent="1">
+          <mxGeometry x="660" y="340" width="320" height="320" as="geometry" />
+        </mxCell>
+
+        <!-- External Entity: Admin Komunitas -->
+        <mxCell id="entity_admin" value="&lt;b style=&quot;font-size: 15px;&quot;&gt;ADMIN KOMUNITAS&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size: 11px; color: #475569;&quot;&gt;(GG River Care - Divisi PKL)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAF5FF;strokeColor=#9333EA;strokeWidth=2.5;align=center;verticalAlign=middle;fontColor=#0F172A;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="240" width="240" height="520" as="geometry" />
+        </mxCell>
+
+        <!-- ARROWS: Warga -> SIPEPES -->
+        <mxCell id="f_w_1" value="1. Data Laporan (Judul, Deskripsi, Jenis, Dugaan)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563EB;strokeWidth=1.8;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="290" as="sourcePoint" />
+            <mxPoint x="680" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_w_2" value="2. Foto Bukti Kejadian (JPG/PNG/WebP &lt; 2MB)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563EB;strokeWidth=1.8;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="335" as="sourcePoint" />
+            <mxPoint x="665" y="425" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_w_3" value="3. Titik Koordinat Kejadian (Geolocation / Peta)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563EB;strokeWidth=1.8;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="380" as="sourcePoint" />
+            <mxPoint x="660" y="465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_w_4" value="4. Input Kode Pelacakan (Tracking Code)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563EB;strokeWidth=1.8;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="425" as="sourcePoint" />
+            <mxPoint x="660" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ARROWS: SIPEPES -> Warga -->
+        <mxCell id="f_w_5" value="5. Kode Tiket Laporan (SPP-YYYYMM-XXXX)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#059669;strokeWidth=1.8;fontColor=#065F46;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="540" as="sourcePoint" />
+            <mxPoint x="320" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_w_6" value="6. Info Status Laporan (Menunggu / Valid / Ditolak)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#059669;strokeWidth=1.8;fontColor=#065F46;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="665" y="580" as="sourcePoint" />
+            <mxPoint x="320" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_w_7" value="7. Informasi Peta Sebaran Publik &amp; Pop-up Marker" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#059669;strokeWidth=1.8;fontColor=#065F46;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="680" y="615" as="sourcePoint" />
+            <mxPoint x="320" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_w_8" value="8. Hasil Filter Laporan (Tanggal, Kecamatan, Jenis)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#059669;strokeWidth=1.8;fontColor=#065F46;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="705" y="645" as="sourcePoint" />
+            <mxPoint x="320" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ARROWS: Admin -> SIPEPES -->
+        <mxCell id="f_a_1" value="1. Kredensial Login Admin (Email &amp; Password)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7C3AED;strokeWidth=1.8;fontColor=#5B21B6;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1320" y="290" as="sourcePoint" />
+            <mxPoint x="960" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_a_2" value="2. Keputusan Verifikasi (Valid / Ditolak + Catatan)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7C3AED;strokeWidth=1.8;fontColor=#5B21B6;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1320" y="335" as="sourcePoint" />
+            <mxPoint x="975" y="425" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_a_3" value="3. Data Master Segmen Sungai Musi (Nama, Titik)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7C3AED;strokeWidth=1.8;fontColor=#5B21B6;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1320" y="380" as="sourcePoint" />
+            <mxPoint x="980" y="465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_a_4" value="4. Permintaan Rekapitulasi &amp; Ekspor Laporan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7C3AED;strokeWidth=1.8;fontColor=#5B21B6;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1320" y="425" as="sourcePoint" />
+            <mxPoint x="980" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ARROWS: SIPEPES -> Admin -->
+        <mxCell id="f_a_5" value="5. Token Akses Autentikasi (JWT) &amp; Hak Akses" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D97706;strokeWidth=1.8;fontColor=#B45309;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="980" y="540" as="sourcePoint" />
+            <mxPoint x="1320" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_a_6" value="6. Daftar Laporan Masuk &amp; Foto Bukti Resolusi Penuh" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D97706;strokeWidth=1.8;fontColor=#B45309;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="975" y="580" as="sourcePoint" />
+            <mxPoint x="1320" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_a_7" value="7. Log Riwayat Audit Verifikasi (Audit Trail)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D97706;strokeWidth=1.8;fontColor=#B45309;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="960" y="615" as="sourcePoint" />
+            <mxPoint x="1320" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="f_a_8" value="8. Berkas Ekspor Rekapitulasi (PDF &amp; Excel/CSV)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D97706;strokeWidth=1.8;fontColor=#B45309;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="935" y="645" as="sourcePoint" />
+            <mxPoint x="1320" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Footer Notes -->
+        <mxCell id="notes_box" value="&lt;b&gt;Catatan Metodologi:&lt;/b&gt; DFD Level 0 (Diagram Konteks) tidak memuat Data Store. Seluruh penyimpanan basis data 4 tabel (users, reports, river_segments, verification_logs) dienkapsulasi di dalam sistem 0.0 dan didekomposisi pada DFD Level 1." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#94A3B8;strokeWidth=1;align=left;spacingLeft=15;fontSize=11.5;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="80" y="800" width="1480" height="50" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

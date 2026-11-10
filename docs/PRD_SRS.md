@@ -58,40 +58,81 @@ flowchart TD
 
 ---
 
-## 🔄 3. Alur Kerja Sistem (End-to-End Flowchart)
+## 🔄 3. Pemodelan Alur Sistem Terstruktur (Flowmap & DFD)
+
+Sesuai metodologi analisis dan perancangan terstruktur, alur sistem dimodelkan secara bertahap mulai dari aliran prosedur fisik (*Flowmap*), batasan sistem makro (*Diagram Konteks / DFD Level 0*), hingga dekomposisi fungsional (*DFD Level 1*):
+
+### 3.1 Flowmap Alur Sistem yang Diusulkan
+Flowmap memetakan interaksi lintas entitas (*swimlane*) antara Warga Pelapor, Sistem Web SIPEPES, Storage & Database Supabase, serta Admin Komunitas GG River Care:
+
+![Flowmap SIPEPES](assets/flowmap_sipepes.png)
+
+*Berkas mentah yang dapat diedit langsung: [`docs/Flowmap_SIPEPES.drawio`](Flowmap_SIPEPES.drawio).*
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor W as Warga
-    participant FE as Frontend (React + Leaflet)
-    participant BE as Backend (Express API)
-    participant DB as PostgreSQL (Supabase)
-    participant S3 as Storage Bucket
-    actor A as Admin Komunitas
+flowchart TD
+    classDef warga fill:#f0fdf4,stroke:#16a34a,stroke-width:2px;
+    classDef sistem fill:#eff6ff,stroke:#2563eb,stroke-width:2px;
+    classDef db fill:#faf5ff,stroke:#9333ea,stroke-width:2px;
+    classDef admin fill:#fffbeb,stroke:#d97706,stroke-width:2px;
 
-    W->>FE: Isi Form Laporan (Judul, Deskripsi, Titik Peta, Foto)
-    FE->>FE: Kompresi foto bukti (maks 2MB)
-    FE->>BE: POST /api/v1/reports (Multipart form)
-    BE->>S3: Simpan file foto bukti
-    S3-->>BE: Return photo_url
-    BE->>DB: INSERT into reports (status = 'menunggu')
-    DB-->>BE: Report created (id & tracking_code)
-    BE-->>FE: Return Tracking Code & Sukses
-    FE-->>W: Tampilkan Nomor Tiket Laporan
+    subgraph LaneWarga ["1. WARGA / VOLUNTEER"]
+        W1["Buka Web SIPEPES"]:::warga --> W2["Isi Form Laporan, Foto & GPS"]:::warga
+        W2 --> W3[/"Form Laporan"/]:::warga
+        W4[/"Tiket SPP-YYYYMM-XXXX"/]:::warga --> W5["Pantau Status & Peta Publik"]:::warga
+    end
 
-    Note over A,BE: Proses Verifikasi oleh Admin
-    A->>FE: Buka Dashboard Admin & Login
-    FE->>BE: POST /api/v1/auth/login
-    BE-->>FE: Return JWT Token
-    A->>FE: Review Laporan Menunggu & Bukti Foto
-    A->>FE: Klik "Validasi" / "Tolak" + Catatan
-    FE->>BE: PATCH /api/v1/admin/reports/:id/verify
-    BE->>DB: UPDATE status = 'valid', INSERT verification_logs
-    DB-->>BE: Updated
-    BE-->>FE: Realtime update via WebSocket
-    FE-->>W: Laporan tampil di Peta Sebaran Publik!
+    subgraph LaneSistem ["2. SISTEM WEB SIPEPES"]
+        S1["Validasi Form & Kompresi Foto (<=2MB)"]:::sistem
+        S2["Generate Tracking Code Unik"]:::sistem
+        S3["Validasi Kredensial Login (bcrypt + JWT)"]:::sistem
+        S4["Proses Verifikasi (UPDATE & Log Audit)"]:::sistem
+        S5["Update Marker Peta Publik Realtime"]:::sistem
+        S6["Generate Rekap Advokasi PDF & Excel"]:::sistem
+    end
+
+    subgraph LaneDB ["3. STORAGE & DATABASE"]
+        DB1[("Storage: Foto Bukti")]:::db
+        DB2[("Tabel: reports")]:::db
+        DB3[("Tabel: users")]:::db
+        DB4[("Tabel: verification_logs")]:::db
+    end
+
+    subgraph LaneAdmin ["4. ADMIN KOMUNITAS (PKL)"]
+        A1["Login Dashboard Admin"]:::admin
+        A2["Tinjau Laporan Menunggu & Foto Penuh"]:::admin
+        A3{"Laporan Valid?"}:::admin
+        A4["Input Alasan Penolakan"]:::admin
+        A5["Validasi & Set Tingkat Keparahan"]:::admin
+        A6["Ekspor Rekap Advokasi"]:::admin
+    end
+
+    W3 --> S1 --> DB1
+    S1 --> S2 --> DB2
+    S2 --> W4
+    A1 --> S3 <--> DB3
+    DB2 -.-> A2 --> A3
+    A3 -->|TIDAK| A4 --> S4
+    A3 -->|YA| A5 --> S4
+    S4 --> DB2
+    S4 --> DB4
+    S4 --> S5 -.-> W5
+    A5 --> A6 --> S6 <--> DB2
 ```
+
+### 3.2 Diagram Konteks (DFD Level 0)
+Diagram Konteks menggambarkan sistem SIPEPES sebagai proses tunggal (`0.0`) dengan 2 entitas luar utama:
+
+![Diagram Konteks DFD Level 0](assets/dfd_level_0_sipepes.png)
+
+*Berkas mentah yang dapat diedit langsung: [`docs/DFD_Level_0_SIPEPES.drawio`](DFD_Level_0_SIPEPES.drawio).*
+
+### 3.3 Data Flow Diagram (DFD) Level 1
+DFD Level 1 memecah sistem menjadi 6 proses utama yang terhubung langsung dengan 4 Data Store basis data relasional:
+
+![DFD Level 1](assets/dfd_level_1_sipepes.png)
+
+*Berkas mentah yang dapat diedit langsung: [`docs/DFD_Level_1_SIPEPES.drawio`](DFD_Level_1_SIPEPES.drawio).*
 
 ---
 
@@ -134,6 +175,48 @@ Sesuai kesepakatan Dokumen *Scope Statement*:
 * ❌ Tanpa integrasi API sistem kementerian/dinas lingkungan hidup (sistem beroperasi secara mandiri / *standalone*).
 * ❌ Tidak menggunakan sensor IoT kualitas air atau hasil uji laboratorium kimiawi (tingkat pencemaran merupakan dugaan visual pelapor dan verifikasi admin).
 * ❌ Tanpa aplikasi *native* Android/iOS (fokus pada *Responsive Web Application*).
+
+---
+
+## 📎 7. Lampiran Teknis Pengembang (Developer Technical Appendix)
+
+<details>
+<summary><b>Klik untuk melihat Sequence Diagram Interaksi Frontend-Backend (Arsip Arsitektur Sistem)</b></summary>
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor W as Warga
+    participant FE as Frontend (React + Leaflet)
+    participant BE as Backend (Express API)
+    participant DB as PostgreSQL (Supabase)
+    participant S3 as Storage Bucket
+    actor A as Admin Komunitas
+
+    W->>FE: Isi Form Laporan (Judul, Deskripsi, Titik Peta, Foto)
+    FE->>FE: Kompresi foto bukti (maks 2MB)
+    FE->>BE: POST /api/v1/reports (Multipart form)
+    BE->>S3: Simpan file foto bukti
+    S3-->>BE: Return photo_url
+    BE->>DB: INSERT into reports (status = 'menunggu')
+    DB-->>BE: Report created (id & tracking_code)
+    BE-->>FE: Return Tracking Code & Sukses
+    FE-->>W: Tampilkan Nomor Tiket Laporan
+
+    Note over A,BE: Proses Verifikasi oleh Admin
+    A->>FE: Buka Dashboard Admin & Login
+    FE->>BE: POST /api/v1/auth/login
+    BE-->>FE: Return JWT Token
+    A->>FE: Review Laporan Menunggu & Bukti Foto
+    A->>FE: Klik "Validasi" / "Tolak" + Catatan
+    FE->>BE: PATCH /api/v1/admin/reports/:id/verify
+    BE->>DB: UPDATE status = 'valid', INSERT verification_logs
+    DB-->>BE: Updated
+    BE-->>FE: Realtime update via WebSocket
+    FE-->>W: Laporan tampil di Peta Sebaran Publik!
+```
+
+</details>
 
 ---
 

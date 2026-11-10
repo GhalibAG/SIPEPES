@@ -12,18 +12,21 @@ export default function AdminLogin({ onSwitchToWarga }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
     setErrorMsg('');
     setIsLoading(true);
 
-    setTimeout(() => {
-      const res = login(username, password, accountName);
+    try {
+      const res = await login(username, password, accountName);
       if (!res.success) {
         setErrorMsg(res.message || 'Login gagal. Periksa kembali NIP/Username dan password.');
       }
+    } catch (err) {
+      setErrorMsg('Terjadi kesalahan saat otentikasi.');
+    } finally {
       setIsLoading(false);
-    }, 300);
+    }
   };
 
   return (

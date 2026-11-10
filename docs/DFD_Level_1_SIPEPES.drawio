@@ -1,0 +1,227 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="DFD-Level-1" id="dfd_level_1_sipepes">
+    <mxGraphModel dx="2100" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2100" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title Banner -->
+        <mxCell id="title_box" value="&lt;b style=&quot;font-size: 20px;&quot;&gt;DATA FLOW DIAGRAM (DFD) LEVEL 1 — SIPEPES&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size: 13px; color: #64748B;&quot;&gt;Dekomposisi 6 Proses Utama &amp; 4 Data Store Basis Data Relasional — MuSilaban (Tim 3)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="540" y="30" width="1020" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Entitas Luar: Warga -->
+        <mxCell id="ent_warga" value="&lt;b style=&quot;font-size: 15px;&quot;&gt;WARGA / PELAPOR&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size: 11px; color: #475569;&quot;&gt;(Masyarakat &amp;amp; Volunteer Lapangan)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#16A34A;strokeWidth=2.5;align=center;verticalAlign=middle;fontColor=#0F172A;" vertex="1" parent="1">
+          <mxGeometry x="50" y="200" width="220" height="1100" as="geometry" />
+        </mxCell>
+
+        <!-- Entitas Luar: Admin -->
+        <mxCell id="ent_admin" value="&lt;b style=&quot;font-size: 15px;&quot;&gt;ADMIN KOMUNITAS&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size: 11px; color: #475569;&quot;&gt;(GG River Care - Divisi PKL)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=2.5;align=center;verticalAlign=middle;fontColor=#0F172A;" vertex="1" parent="1">
+          <mxGeometry x="1830" y="200" width="220" height="1100" as="geometry" />
+        </mxCell>
+
+        <!-- 4 Data Stores (Center) -->
+        <mxCell id="ds_users" value="&lt;table style=&quot;width:100%; border-collapse:collapse;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;width:35px; border-right:2px solid #9333EA; font-weight:bold; color:#7E22CE;&quot;&gt;D1&lt;/td&gt;&lt;td style=&quot;padding-left:10px; font-weight:bold; color:#0F172A;&quot;&gt;users&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=partialRectangle;top=1;bottom=1;left=0;right=0;fillColor=#FAF5FF;strokeColor=#9333EA;strokeWidth=2;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="920" y="240" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ds_reports" value="&lt;table style=&quot;width:100%; border-collapse:collapse;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;width:35px; border-right:2px solid #9333EA; font-weight:bold; color:#7E22CE;&quot;&gt;D2&lt;/td&gt;&lt;td style=&quot;padding-left:10px; font-weight:bold; color:#0F172A;&quot;&gt;reports&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=partialRectangle;top=1;bottom=1;left=0;right=0;fillColor=#FAF5FF;strokeColor=#9333EA;strokeWidth=2;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="920" y="530" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ds_segments" value="&lt;table style=&quot;width:100%; border-collapse:collapse;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;width:35px; border-right:2px solid #9333EA; font-weight:bold; color:#7E22CE;&quot;&gt;D3&lt;/td&gt;&lt;td style=&quot;padding-left:10px; font-weight:bold; color:#0F172A;&quot;&gt;river_segments&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=partialRectangle;top=1;bottom=1;left=0;right=0;fillColor=#FAF5FF;strokeColor=#9333EA;strokeWidth=2;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="920" y="870" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ds_logs" value="&lt;table style=&quot;width:100%; border-collapse:collapse;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;width:35px; border-right:2px solid #9333EA; font-weight:bold; color:#7E22CE;&quot;&gt;D4&lt;/td&gt;&lt;td style=&quot;padding-left:10px; font-weight:bold; color:#0F172A;&quot;&gt;verification_logs&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=partialRectangle;top=1;bottom=1;left=0;right=0;fillColor=#FAF5FF;strokeColor=#9333EA;strokeWidth=2;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="920" y="1180" width="260" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 6 Processes -->
+        <!-- Process 2.0: Pelaporan -->
+        <mxCell id="p2" value="&lt;b style=&quot;font-size: 16px; color: #2563EB;&quot;&gt;2.0&lt;/b&gt;&lt;br&gt;&lt;hr style=&quot;border: 0.5px solid #2563EB;&quot;&gt;&lt;b&gt;Pengelolaan&lt;br&gt;Pelaporan Pencemaran&lt;br&gt;&amp;amp; Upload Foto&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="470" y="250" width="220" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- Process 3.0: Pelacakan -->
+        <mxCell id="p3" value="&lt;b style=&quot;font-size: 16px; color: #2563EB;&quot;&gt;3.0&lt;/b&gt;&lt;br&gt;&lt;hr style=&quot;border: 0.5px solid #2563EB;&quot;&gt;&lt;b&gt;Pelacakan&lt;br&gt;Status Tiket Laporan&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="480" y="610" width="200" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Process 5.0: Peta & Pencarian -->
+        <mxCell id="p5" value="&lt;b style=&quot;font-size: 16px; color: #2563EB;&quot;&gt;5.0&lt;/b&gt;&lt;br&gt;&lt;hr style=&quot;border: 0.5px solid #2563EB;&quot;&gt;&lt;b&gt;Visualisasi Peta Sebaran&lt;br&gt;&amp;amp; Pencarian Laporan&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="470" y="960" width="220" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- Process 1.0: Autentikasi -->
+        <mxCell id="p1" value="&lt;b style=&quot;font-size: 16px; color: #7E22CE;&quot;&gt;1.0&lt;/b&gt;&lt;br&gt;&lt;hr style=&quot;border: 0.5px solid #7E22CE;&quot;&gt;&lt;b&gt;Autentikasi Admin&lt;br&gt;(JWT &amp;amp; Bcrypt)&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FAF5FF;strokeColor=#7E22CE;strokeWidth=2.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="210" width="200" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Process 4.0: Verifikasi -->
+        <mxCell id="p4" value="&lt;b style=&quot;font-size: 16px; color: #D97706;&quot;&gt;4.0&lt;/b&gt;&lt;br&gt;&lt;hr style=&quot;border: 0.5px solid #D97706;&quot;&gt;&lt;b&gt;Verifikasi Laporan&lt;br&gt;&amp;amp; Log Audit&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#D97706;strokeWidth=2.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="565" width="220" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- Process 6.0: Ekspor -->
+        <mxCell id="p6" value="&lt;b style=&quot;font-size: 16px; color: #059669;&quot;&gt;6.0&lt;/b&gt;&lt;br&gt;&lt;hr style=&quot;border: 0.5px solid #059669;&quot;&gt;&lt;b&gt;Rekapitulasi Data&lt;br&gt;&amp;amp; Ekspor Advokasi&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#059669;strokeWidth=2.5;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="960" width="220" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- FLOWS -->
+        <!-- Warga -> 2.0 -->
+        <mxCell id="flow_w2_in" value="Data Laporan, Foto &amp;lt; 2MB, GPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#2563EB;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="310" as="sourcePoint" />
+            <mxPoint x="470" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 2.0 -> Warga -->
+        <mxCell id="flow_w2_out" value="Kode Tiket (SPP-YYYYMM-XXXX)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#059669;strokeWidth=1.8;fontSize=11;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="470" y="380" as="sourcePoint" />
+            <mxPoint x="270" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 2.0 -> D2 (INSERT) -->
+        <mxCell id="flow_2_d2" value="INSERT reports (status='menunggu')" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="690" y="360" as="sourcePoint" />
+            <mxPoint x="920" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Warga -> 3.0 -->
+        <mxCell id="flow_w3_in" value="Input Tracking Code" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#2563EB;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="690" as="sourcePoint" />
+            <mxPoint x="480" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 3.0 -> Warga -->
+        <mxCell id="flow_w3_out" value="Info Status Laporan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#059669;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="480" y="730" as="sourcePoint" />
+            <mxPoint x="270" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- D2 -> 3.0 -->
+        <mxCell id="flow_d2_3" value="Baca status &amp;amp; catatan laporan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="920" y="560" as="sourcePoint" />
+            <mxPoint x="680" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Warga -> 5.0 -->
+        <mxCell id="flow_w5_in" value="Permintaan Peta &amp;amp; Filter" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#2563EB;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="1030" as="sourcePoint" />
+            <mxPoint x="470" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 5.0 -> Warga -->
+        <mxCell id="flow_w5_out" value="Peta Marker Valid &amp;amp; Pop-up Detail" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#059669;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="470" y="1100" as="sourcePoint" />
+            <mxPoint x="270" y="1100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- D2 -> 5.0 -->
+        <mxCell id="flow_d2_5" value="Kueri reports (status='valid')" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="920" y="570" as="sourcePoint" />
+            <mxPoint x="670" y="1020" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Admin -> 1.0 -->
+        <mxCell id="flow_a1_in" value="Email &amp;amp; Password Admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D97706;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1830" y="280" as="sourcePoint" />
+            <mxPoint x="1610" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 1.0 -> Admin -->
+        <mxCell id="flow_a1_out" value="Token Akses JWT &amp;amp; Profil" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1610" y="330" as="sourcePoint" />
+            <mxPoint x="1830" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 1.0 <-> D1 -->
+        <mxCell id="flow_1_d1" value="Kueri data users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1410" y="270" as="sourcePoint" />
+            <mxPoint x="1180" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Admin -> 4.0 -->
+        <mxCell id="flow_a4_in" value="Keputusan Verifikasi &amp;amp; Catatan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D97706;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1830" y="650" as="sourcePoint" />
+            <mxPoint x="1620" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 4.0 -> Admin -->
+        <mxCell id="flow_a4_out" value="Daftar Laporan 'menunggu' &amp;amp; Foto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1620" y="710" as="sourcePoint" />
+            <mxPoint x="1830" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- D2 <-> 4.0 -->
+        <mxCell id="flow_d2_4" value="UPDATE status &amp;amp; Kueri reports" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1180" y="560" as="sourcePoint" />
+            <mxPoint x="1400" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 4.0 -> D4 (INSERT) -->
+        <mxCell id="flow_4_d4" value="INSERT verification_logs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1430" y="780" as="sourcePoint" />
+            <mxPoint x="1180" y="1200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Admin -> 6.0 -->
+        <mxCell id="flow_a6_in" value="Filter Periode &amp;amp; Ekspor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D97706;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1830" y="1030" as="sourcePoint" />
+            <mxPoint x="1620" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 6.0 -> Admin -->
+        <mxCell id="flow_a6_out" value="Unduh PDF Eksekutif &amp;amp; Excel Data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#059669;strokeWidth=1.8;fontSize=11;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1620" y="1100" as="sourcePoint" />
+            <mxPoint x="1830" y="1100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- D2 -> 6.0 -->
+        <mxCell id="flow_d2_6" value="Kueri data valid untuk rekap" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#7E22CE;strokeWidth=1.8;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1180" y="580" as="sourcePoint" />
+            <mxPoint x="1420" y="1020" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
