@@ -59,6 +59,34 @@ export function AdminProvider({ children }) {
     setAdminUser(null);
   };
 
+  const addReport = (newReportData) => {
+    const trackingCode = `SPP-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(Math.floor(1000 + Math.random() * 9000))}`;
+    const newReport = {
+      id: `rep-${Date.now()}`,
+      tracking_code: trackingCode,
+      title: newReportData.title || 'Laporan Baru Warga',
+      description: newReportData.description || '',
+      category: newReportData.category || 'Minyak & B3',
+      estimated_severity: newReportData.estimated_severity || 'sedang',
+      latitude: newReportData.latitude || -2.9904,
+      longitude: newReportData.longitude || 104.7565,
+      address_landmark: newReportData.address_landmark || 'Dermaga 7 Ulu, Seberang Ulu I',
+      district: newReportData.district || 'Seberang Ulu I',
+      status: 'menunggu',
+      created_at: new Date().toISOString(),
+      reporter_name: newReportData.is_anonymous ? 'Anonim (Warga Palembang)' : (newReportData.reporter_name || 'Warga Palembang'),
+      reporter_contact: newReportData.is_anonymous ? 'Disembunyikan' : (newReportData.reporter_contact || '+62 812-xxxx-xxxx'),
+      reporter_source: 'Via Portal Pelaporan Warga',
+      photo_url: newReportData.photo_url || 'https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=800&q=80',
+      upvotes: 0,
+      ika_score: 58.4,
+      flow_velocity: '0.42 m/s'
+    };
+
+    setReports(prev => [newReport, ...prev]);
+    return newReport;
+  };
+
   const verifyReport = (id, newStatus, severity, notes, rejectionReason = '') => {
     setReports(prevReports =>
       prevReports.map(rep => {
@@ -112,6 +140,7 @@ export function AdminProvider({ children }) {
         selectedReportId,
         setSelectedReportId,
         selectedReport,
+        addReport,
         verifyReport,
         searchQuery,
         setSearchQuery,

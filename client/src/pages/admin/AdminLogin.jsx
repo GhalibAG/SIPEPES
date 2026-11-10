@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, Droplets } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 
-export default function AdminLogin() {
+export default function AdminLogin({ onSwitchToWarga }) {
   const { login } = useAdmin();
   const [username, setUsername] = useState('19890412-GG-042');
   const [password, setPassword] = useState('admin123');
@@ -66,6 +66,15 @@ export default function AdminLogin() {
 
         {/* Kolom Kanan: Card Login */}
         <div className="w-full max-w-[450px]">
+          {onSwitchToWarga && (
+            <button
+              onClick={onSwitchToWarga}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white text-slate-700 text-xs font-semibold shadow-xs mb-3 transition border border-slate-200/80 cursor-pointer"
+            >
+              <span>&larr; Kembali ke Beranda Warga</span>
+            </button>
+          )}
+
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 sm:p-10">
             {errorMsg && (
               <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
