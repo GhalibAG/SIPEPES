@@ -15,7 +15,21 @@ const AdminContext = createContext();
 export function AdminProvider({ children }) {
   const [reports, setReports] = useState(() => {
     const saved = localStorage.getItem('sipepes_admin_reports_v2');
-    return saved ? JSON.parse(saved) : initialReports;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Otomatis bersihkan referensi lama 'Mobile App' menjadi 'Via Portal Pelaporan Warga'
+        return parsed.map((r) => ({
+          ...r,
+          reporter_source: r.reporter_source?.toLowerCase().includes('mobile')
+            ? 'Via Portal Pelaporan Warga'
+            : (r.reporter_source || 'Via Portal Pelaporan Warga')
+        }));
+      } catch (e) {
+        return initialReports;
+      }
+    }
+    return initialReports;
   });
 
   const [adminUser, setAdminUser] = useState(() => {

@@ -74,7 +74,7 @@ export const initialReports = [
     estimated_severity: "sedang",
     reporter_name: "Ahmad Fikri (Masyarakat)",
     reporter_phone: "+62 813-6621-XXXX",
-    reporter_source: "Via SIPEPES Web Portal",
+    reporter_source: "Via Portal Pelaporan Warga",
     photo_url: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=1200&q=80",
     status: "menunggu",
     is_urgent: true,
@@ -250,7 +250,7 @@ export const initialReports = [
     estimated_severity: "ringan",
     reporter_name: "Anonim",
     reporter_phone: null,
-    reporter_source: "Via SIPEPES Web",
+    reporter_source: "Via Portal Pelaporan Warga",
     photo_url: "https://images.unsplash.com/photo-1528323273322-d81458248d40?auto=format&fit=crop&w=1200&q=80",
     status: "ditolak",
     is_urgent: false,
@@ -517,9 +517,9 @@ export const wasteComposition = [
 
 // Data Pos Sempadan Kritis di Dashboard
 export const criticalPoints = [
-  { name: "Dermaga 7 Ulu", zone: "Seberang Ulu • Peringatan", percent: 87, status: "Kritis", color: "bg-red-50 text-red-600 border-red-200" },
-  { name: "Pilar Jembatan Ampera", zone: "Arus Utama • Waspada", percent: 62, status: "Sedang", color: "bg-amber-50 text-amber-600 border-amber-200" },
-  { name: "Plaza Benteng Kuto Besak", zone: "Bantaran Wisata • Terkendali", percent: 24, status: "Aman", color: "bg-emerald-50 text-emerald-600 border-emerald-200" },
-  { name: "Dermaga 16 Ilir", zone: "Bongkar Muat • Peringatan", percent: 79, status: "Kritis", color: "bg-red-50 text-red-600 border-red-200" },
-  { name: "Sempadan Hulu Gandus", zone: "Kawasan Konservasi • Stabil", percent: 18, status: "Aman", color: "bg-emerald-50 text-emerald-600 border-emerald-200" }
+  { name: "Dermaga 7 Ulu", zone: "Seberang Ulu • Peringatan", percent: 87, status: "Kritis", color: "bg-rose-600 text-white" },
+  { name: "Pilar Jembatan Ampera", zone: "Arus Utama • Waspada", percent: 62, status: "Sedang", color: "bg-amber-500 text-white" },
+  { name: "Plaza Benteng Kuto Besak", zone: "Bantaran Wisata • Terkendali", percent: 24, status: "Aman", color: "bg-emerald-600 text-white" },
+  { name: "Dermaga 16 Ilir", zone: "Bongkar Muat • Peringatan", percent: 79, status: "Kritis", color: "bg-rose-600 text-white" },
+  { name: "Sempadan Hulu Gandus", zone: "Kawasan Konservasi • Stabil", percent: 18, status: "Aman", color: "bg-emerald-600 text-white" }
 ];

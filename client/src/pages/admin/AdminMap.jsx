@@ -72,107 +72,109 @@ export default function AdminMap({ onNavigate }) {
 
   return (
     <div className="space-y-4 min-w-0">
-      {/* Top Header Geoportal DAS Musi Sesuai Desain Figma */}
+      {/* Top Header Geoportal DAS Musi */}
       <div className="space-y-3">
-        {/* Baris 1: Icon & Judul Geoportal (Teks memecah 2 baris ke bawah sesuai desain) */}
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl bg-sky-100 text-[#0088cc] flex items-center justify-center shrink-0 border border-sky-200 shadow-sm mt-0.5">
-            <Compass className="w-5 h-5 text-[#0088cc]" />
+          <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-2xs mt-0.5">
+            <Compass className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 Geoportal DAS Musi
               </h1>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200">
-                104 Insiden
+              <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                104 Insiden Terdata
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-1 leading-snug">
-              Pemantauan Kualitas Air &amp; Sempadan<br />
-              Sungai 2026
+              Pemantauan Kualitas Air &amp; Sempadan Sungai Musi 2026
             </p>
           </div>
         </div>
 
-        {/* Baris 2: Filter Pills Bar dengan Scroll Horizontal Mulus di Layar Ponsel */}
+        {/* Filter Pills Bar: Clean White with Solid Indicator Dots */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs whitespace-nowrap">
           <button
             onClick={() => setLayerReports(!layerReports)}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition shadow-sm shrink-0 ${
-              layerReports ? 'bg-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-600'
+            className={`px-3 py-1.5 rounded-xl font-semibold flex items-center gap-1.5 transition shadow-2xs shrink-0 ${
+              layerReports ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >
-            <span className="w-2 h-2 rounded-sm bg-sky-400"></span>
+            <span className="w-2 h-2 rounded-full bg-sky-400"></span>
             <span>Laporan</span>
           </button>
 
           <button
             onClick={() => setLayerDAS(!layerDAS)}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition shadow-sm shrink-0 ${
-              layerDAS ? 'bg-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-600'
+            className={`px-3 py-1.5 rounded-xl font-semibold flex items-center gap-1.5 transition shadow-2xs shrink-0 ${
+              layerDAS ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >
-            <span className="w-2 h-2 rounded-sm bg-emerald-400"></span>
-            <span>DAS</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>DAS Musi</span>
           </button>
 
           <button
             onClick={() => setLayerFactory(!layerFactory)}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition shadow-sm shrink-0 ${
-              layerFactory ? 'bg-slate-800 text-white' : 'bg-white border border-slate-200 text-slate-600'
+            className={`px-3 py-1.5 rounded-xl font-semibold flex items-center gap-1.5 transition shadow-2xs shrink-0 ${
+              layerFactory ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >
-            <span className="w-2 h-2 rounded-sm bg-amber-400"></span>
+            <span className="w-2 h-2 rounded-full bg-amber-400"></span>
             <span>Limbah Pabrik</span>
           </button>
 
           <span className="text-slate-300 shrink-0">|</span>
 
+          {/* Severity Filters: High-Contrast Pills (Zero Pastel Slop) */}
           <button
             onClick={() => setFilterType(filterType === 'berat' ? 'all' : 'berat')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold border transition shadow-sm shrink-0 ${
+            className={`px-3 py-1.5 rounded-xl font-semibold border transition shadow-2xs shrink-0 flex items-center gap-1.5 ${
               filterType === 'berat'
-                ? 'bg-rose-500 text-white border-rose-600'
-                : 'bg-rose-50 text-rose-700 border-rose-200'
+                ? 'bg-rose-600 text-white border-rose-600'
+                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >
-            Berat (24)
+            <span className={`w-2 h-2 rounded-full ${filterType === 'berat' ? 'bg-white' : 'bg-rose-600'}`}></span>
+            <span>Berat (24)</span>
           </button>
 
           <button
             onClick={() => setFilterType(filterType === 'sedang' ? 'all' : 'sedang')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold border transition shadow-sm shrink-0 ${
+            className={`px-3 py-1.5 rounded-xl font-semibold border transition shadow-2xs shrink-0 flex items-center gap-1.5 ${
               filterType === 'sedang'
-                ? 'bg-amber-500 text-white border-amber-600'
-                : 'bg-amber-50 text-amber-700 border-amber-200'
+                ? 'bg-amber-500 text-white border-amber-500'
+                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >
-            Sedang (52)
+            <span className={`w-2 h-2 rounded-full ${filterType === 'sedang' ? 'bg-white' : 'bg-amber-500'}`}></span>
+            <span>Sedang (52)</span>
           </button>
 
           <button
             onClick={() => setFilterType(filterType === 'ringan' ? 'all' : 'ringan')}
-            className={`px-2.5 py-1.5 rounded-lg font-bold border transition shadow-sm shrink-0 ${
+            className={`px-3 py-1.5 rounded-xl font-semibold border transition shadow-2xs shrink-0 flex items-center gap-1.5 ${
               filterType === 'ringan'
-                ? 'bg-emerald-600 text-white border-emerald-700'
-                : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
             }`}
           >
-            Ringan (28)
+            <span className={`w-2 h-2 rounded-full ${filterType === 'ringan' ? 'bg-white' : 'bg-emerald-600'}`}></span>
+            <span>Ringan (28)</span>
           </button>
 
           <button
             onClick={() => window.open('https://maps.google.com/?q=-2.9912,104.7635', '_blank')}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold shadow-sm shrink-0"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold shadow-2xs shrink-0"
           >
-            <Navigation className="w-3.5 h-3.5 text-[#0088cc]" />
+            <Navigation className="w-3.5 h-3.5 text-slate-600" />
             <span>Ampera (0 KM)</span>
           </button>
 
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm shrink-0"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs shrink-0 font-semibold"
             title="Cetak Peta"
           >
             <Printer className="w-3.5 h-3.5" />
@@ -181,7 +183,7 @@ export default function AdminMap({ onNavigate }) {
 
           <button
             onClick={() => alert('Mode Fullscreen Peta Aktif')}
-            className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm shrink-0"
+            className="p-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs shrink-0"
             title="Fullscreen"
           >
             <Maximize2 className="w-3.5 h-3.5" />
@@ -189,8 +191,8 @@ export default function AdminMap({ onNavigate }) {
         </div>
       </div>
 
-      {/* Map Container Interaktif Responsif */}
-      <div className="relative w-full h-[480px] sm:h-[580px] lg:h-[640px] rounded-2xl overflow-hidden border border-slate-200 shadow-md">
+      {/* Map Container */}
+      <div className="relative w-full h-[480px] sm:h-[580px] lg:h-[640px] rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
         <MapContainer
           center={centerMusi}
           zoom={14}
@@ -206,13 +208,13 @@ export default function AdminMap({ onNavigate }) {
           <Circle
             center={[-2.99418, 104.76122]}
             radius={100}
-            pathOptions={{ color: '#0284c7', fillColor: '#38bdf8', fillOpacity: 0.15 }}
+            pathOptions={{ color: '#0f172a', fillColor: '#0f172a', fillOpacity: 0.12 }}
           />
 
           {/* Pins Laporan */}
           {reports.map((rep) => {
             let color = '#10b981';
-            if (rep.estimated_severity === 'berat') color = '#ef4444';
+            if (rep.estimated_severity === 'berat') color = '#e11d48';
             if (rep.estimated_severity === 'sedang') color = '#f59e0b';
 
             return (
@@ -235,26 +237,24 @@ export default function AdminMap({ onNavigate }) {
           })}
         </MapContainer>
 
-        {/* Floating Card: Klaster DAS Terpadat (Collapsible agar tidak menumpuk di mobile) */}
+        {/* Floating Card: Klaster DAS Terpadat */}
         <div className="absolute top-3 left-3 z-20 pointer-events-auto transition">
           {!isClusterOpen ? (
             <button
               onClick={() => setIsClusterOpen(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md text-xs font-bold text-slate-800 hover:bg-white transition"
             >
-              <span className="text-[#0088cc]">📶</span>
-              <span>Klaster (3)</span>
+              <span>📶 Klaster Terpadat (3)</span>
               <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </button>
           ) : (
             <div className="w-64 sm:w-72 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 p-3 sm:p-4 shadow-xl space-y-2.5 animate-fade-in">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[#0088cc]">📶</span>
                   <h3 className="font-bold text-slate-900 text-xs truncate">Klaster Terpadat</h3>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-sky-50 text-[#0088cc]">
+                  <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
                     Realtime
                   </span>
                   <button
@@ -268,44 +268,44 @@ export default function AdminMap({ onNavigate }) {
               </div>
 
               <div className="space-y-1.5 text-xs">
-                <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
                   <div className="min-w-0 flex-1 pr-1">
                     <p className="font-bold text-slate-800 text-[11px] truncate">Seberang Ulu I</p>
                     <p className="text-[9px] text-slate-400 truncate">Ceceran solar &amp; oli</p>
                   </div>
-                  <span className="font-mono font-bold text-xs px-2 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200 shrink-0">
+                  <span className="font-mono font-bold text-xs px-2 py-0.5 rounded-full bg-rose-600 text-white shrink-0">
                     34
                   </span>
                 </div>
 
-                <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
                   <div className="min-w-0 flex-1 pr-1">
                     <p className="font-bold text-slate-800 text-[11px] truncate">Tangga Buntung</p>
                     <p className="text-[9px] text-slate-400 truncate">Limbah plastik &amp; endapan</p>
                   </div>
-                  <span className="font-mono font-bold text-xs px-2 py-0.5 rounded bg-amber-50 text-amber-600 border border-amber-200 shrink-0">
+                  <span className="font-mono font-bold text-xs px-2 py-0.5 rounded-full bg-amber-500 text-white shrink-0">
                     28
                   </span>
                 </div>
 
-                <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
                   <div className="min-w-0 flex-1 pr-1">
                     <p className="font-bold text-slate-800 text-[11px] truncate">Kertapati &amp; Ogan</p>
                     <p className="text-[9px] text-slate-400 truncate">Limbah batubara</p>
                   </div>
-                  <span className="font-mono font-bold text-xs px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200 shrink-0">
+                  <span className="font-mono font-bold text-xs px-2 py-0.5 rounded-full bg-slate-900 text-white shrink-0">
                     18
                   </span>
                 </div>
               </div>
 
-              {/* Mutu Air Box */}
-              <div className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-xs flex items-center justify-between">
+              {/* Mutu Air Box: Crisp White Card with Solid Left Accent */}
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 border-l-4 border-l-rose-600 shadow-2xs text-xs flex items-center justify-between">
                 <div>
-                  <span className="text-[8px] font-bold text-rose-700 uppercase tracking-wider block">MUTU AIR (IKA)</span>
-                  <p className="font-black text-rose-700 text-xs">48.2 (Cemar Sedang)</p>
+                  <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">MUTU AIR (IKA)</span>
+                  <p className="font-bold text-slate-900 text-xs">48.2 (Cemar Sedang)</p>
                 </div>
-                <span className="text-rose-500 font-bold text-sm">📉</span>
+                <span className="text-rose-600 font-bold text-sm">📉</span>
               </div>
 
               {/* Baris Patroli */}
@@ -316,7 +316,7 @@ export default function AdminMap({ onNavigate }) {
                 </div>
                 <button
                   onClick={() => alert('Menghubungi Posko DLH Unit 02: (0711) 352-101')}
-                  className="px-2 py-0.5 rounded bg-sky-50 text-[#0088cc] hover:bg-sky-100 font-bold text-[9px] transition shrink-0"
+                  className="px-2.5 py-1 rounded-lg bg-slate-900 text-white hover:bg-slate-800 font-bold text-[9px] transition shrink-0"
                 >
                   Hubungi
                 </button>
@@ -325,7 +325,7 @@ export default function AdminMap({ onNavigate }) {
           )}
         </div>
 
-        {/* Floating Card: Pop-up Detail Tiket Terpilih (Bottom Sheet di Mobile, Center di Desktop) */}
+        {/* Floating Card: Pop-up Detail Tiket Terpilih */}
         {selectedPin && (
           <div className="absolute bottom-3 inset-x-3 sm:inset-x-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-30 sm:w-80 max-w-[calc(100vw-1.5rem)] bg-white rounded-2xl border border-slate-200 shadow-2xl overflow-hidden pointer-events-auto animate-fade-in">
             <div className="relative">
@@ -369,7 +369,7 @@ export default function AdminMap({ onNavigate }) {
               <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
                 <button
                   onClick={() => handleDetail(selectedPin.id)}
-                  className="flex-1 py-1.5 px-3 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-[11px] font-bold flex items-center justify-center gap-1 transition shadow-sm"
+                  className="flex-1 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold flex items-center justify-center gap-1 transition shadow-2xs"
                 >
                   <span>Detail Berkas</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -378,7 +378,7 @@ export default function AdminMap({ onNavigate }) {
                 <button
                   onClick={handleCopyCoord}
                   title="Salin Koordinat"
-                  className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition"
+                  className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition"
                 >
                   {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                 </button>
@@ -387,7 +387,7 @@ export default function AdminMap({ onNavigate }) {
           </div>
         )}
 
-        {/* Bottom Right: Koordinat & Legenda Spasial (Collapsible di Mobile) */}
+        {/* Bottom Right: Koordinat & Legenda Spasial */}
         <div className="absolute bottom-3 right-3 z-20 space-y-2 pointer-events-auto">
           {/* Koordinat & Elevasi */}
           <div className="hidden sm:block bg-white/95 backdrop-blur-sm px-3 py-1 rounded-xl border border-slate-200 shadow-md text-[10px] font-mono text-slate-600 text-right">
@@ -406,7 +406,7 @@ export default function AdminMap({ onNavigate }) {
               </button>
             </div>
           ) : (
-            <div className="bg-white/95 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-xl w-44 sm:w-52 space-y-1.5 sm:space-y-2 text-xs animate-fade-in">
+            <div className="bg-white/95 backdrop-blur-md p-3 rounded-2xl border border-slate-200 shadow-xl w-48 sm:w-52 space-y-2 text-xs animate-fade-in">
               <div className="flex items-center justify-between border-b border-slate-100 pb-1 text-[10px]">
                 <span className="font-bold text-slate-800">Legenda Spasial</span>
                 <div className="flex items-center gap-1">
@@ -421,10 +421,10 @@ export default function AdminMap({ onNavigate }) {
                 </div>
               </div>
 
-              <div className="space-y-1 text-[10px] sm:text-[11px]">
+              <div className="space-y-1.5 text-[10px] sm:text-[11px]">
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1.5 text-slate-700">
-                    <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                    <span className="w-2 h-2 rounded-full bg-rose-600 shrink-0"></span>
                     <span className="truncate">Tercemar Berat</span>
                   </span>
                   <strong className="font-mono text-slate-900">24</strong>
@@ -440,19 +440,19 @@ export default function AdminMap({ onNavigate }) {
 
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1.5 text-slate-700">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
                     <span className="truncate">Tercemar Ringan</span>
                   </span>
                   <strong className="font-mono text-slate-900">28</strong>
                 </div>
 
-                <div className="pt-1 border-t border-slate-100 space-y-1 text-[9px] sm:text-[10px] text-slate-500">
+                <div className="pt-1.5 border-t border-slate-100 space-y-1 text-[9px] sm:text-[10px] text-slate-500">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3.5 h-0.5 bg-emerald-600 rounded shrink-0"></div>
+                    <div className="w-3.5 h-0.5 bg-slate-900 rounded shrink-0"></div>
                     <span className="truncate">Buffer Sempadan (100m)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-3.5 h-0.5 bg-sky-300 rounded shrink-0"></div>
+                    <div className="w-3.5 h-0.5 bg-sky-400 rounded shrink-0"></div>
                     <span className="truncate">Alur Palung Musi</span>
                   </div>
                 </div>

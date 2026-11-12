@@ -30,17 +30,16 @@ export default function AdminLogin({ onSwitchToWarga }) {
   };
 
   return (
-    <div className="min-h-screen w-full relative flex items-center justify-between overflow-hidden bg-[#eef2f6]">
-      {/* Background Geometris Miring Sesuai Desain Figma */}
+    <div className="min-h-screen w-full relative flex items-center justify-between overflow-hidden bg-slate-50">
+      {/* Background Geometris */}
       <div 
-        className="absolute top-0 right-0 h-full w-[42%] bg-[#0088cc] hidden lg:block"
+        className="absolute top-0 right-0 h-full w-[42%] bg-slate-900 hidden lg:block"
         style={{
           clipPath: 'polygon(28% 0%, 100% 0%, 100% 100%, 0% 100%)'
         }}
       />
-      {/* Garis Aksen Biru Muda Tipis di Belakang Sisi Miring */}
       <div 
-        className="absolute top-0 right-[39%] h-full w-[5%] bg-[#38bdf8]/40 hidden lg:block"
+        className="absolute top-0 right-[39%] h-full w-[5%] bg-slate-800 hidden lg:block"
         style={{
           clipPath: 'polygon(28% 0%, 100% 0%, 100% 100%, 0% 100%)'
         }}
@@ -50,20 +49,20 @@ export default function AdminLogin({ onSwitchToWarga }) {
         {/* Kolom Kiri: Brand & Tagline */}
         <div className="max-w-xl text-left w-full lg:w-auto">
           <div className="flex items-center gap-3 mb-2 sm:mb-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#bae6fd] flex items-center justify-center text-[#0284c7] shadow-sm shrink-0">
-              <Droplets className="w-6 h-6 sm:w-7 sm:h-7 fill-[#0284c7]/20" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white shadow-2xs shrink-0">
+              <Droplets className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <div className="flex items-baseline gap-2 flex-wrap">
-              <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1e293b] tracking-tight">
+              <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
                 SIPEPES
               </span>
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-[#38bdf8]">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-500">
                 Enterprise
               </span>
             </div>
           </div>
           <p className="text-slate-600 text-sm sm:text-lg lg:text-xl font-normal mt-1 sm:mt-2 tracking-normal">
-            Your Unified Musi River Monitoring Platform.
+            Unified Musi River Monitoring Platform.
           </p>
         </div>
 
@@ -72,15 +71,15 @@ export default function AdminLogin({ onSwitchToWarga }) {
           {onSwitchToWarga && (
             <button
               onClick={onSwitchToWarga}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white text-slate-700 text-xs font-semibold shadow-xs mb-3 transition border border-slate-200/80 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs mb-3 transition border border-slate-200 cursor-pointer"
             >
               <span>&larr; Kembali ke Beranda Warga</span>
             </button>
           )}
 
-          <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 sm:p-10">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-10">
             {errorMsg && (
-              <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600 font-medium">
+              <div className="mb-5 p-3.5 rounded-xl bg-white border border-slate-200 border-l-4 border-l-rose-600 text-xs text-rose-600 font-semibold shadow-2xs">
                 {errorMsg}
               </div>
             )}
@@ -88,7 +87,7 @@ export default function AdminLogin({ onSwitchToWarga }) {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Username / NIP */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-2">
+                <label className="block text-xs font-semibold text-slate-600 mb-2">
                   Username / NIP
                 </label>
                 <input
@@ -97,13 +96,13 @@ export default function AdminLogin({ onSwitchToWarga }) {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Masukkan NIP atau ID Petugas"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0088cc]/30 focus:border-[#0088cc] transition placeholder:text-slate-300"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-slate-900 transition placeholder:text-slate-400 bg-slate-50/50"
                 />
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-2">
+                <label className="block text-xs font-semibold text-slate-600 mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -113,7 +112,7 @@ export default function AdminLogin({ onSwitchToWarga }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0088cc]/30 focus:border-[#0088cc] transition pr-11 bg-slate-50/50"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-slate-900 transition pr-11 bg-slate-50/50"
                   />
                   <button
                     type="button"
@@ -127,7 +126,7 @@ export default function AdminLogin({ onSwitchToWarga }) {
 
               {/* Account Name / Unit Kerja */}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-2">
+                <label className="block text-xs font-semibold text-slate-600 mb-2">
                   Account Name / Unit Kerja
                 </label>
                 <input
@@ -135,7 +134,7 @@ export default function AdminLogin({ onSwitchToWarga }) {
                   value={accountName}
                   onChange={(e) => setAccountName(e.target.value)}
                   placeholder="Contoh: DLH Palembang × GG River Care"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0088cc]/30 focus:border-[#0088cc] transition placeholder:text-slate-300"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-1 focus:ring-slate-900 transition placeholder:text-slate-400 bg-slate-50/50"
                 />
               </div>
 
@@ -146,15 +145,15 @@ export default function AdminLogin({ onSwitchToWarga }) {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#0088cc] focus:ring-[#0088cc] border-slate-300"
+                    className="w-4 h-4 rounded text-slate-900 focus:ring-slate-900 border-slate-300"
                   />
                   <span>Remember me</span>
                 </label>
                 <button
                   type="button"
-                  className="text-[#0088cc] hover:underline font-medium"
+                  className="text-slate-900 hover:underline font-semibold"
                 >
-                  Forgot your info?
+                  Forgot info?
                 </button>
               </div>
 
@@ -162,7 +161,7 @@ export default function AdminLogin({ onSwitchToWarga }) {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 px-4 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white font-semibold text-sm shadow-md shadow-[#0088cc]/20 transition disabled:opacity-70 mt-2"
+                className="w-full py-3.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-2xs transition disabled:opacity-70 mt-2"
               >
                 {isLoading ? 'Memverifikasi Kredensial...' : 'Sign In'}
               </button>
@@ -180,7 +179,7 @@ export default function AdminLogin({ onSwitchToWarga }) {
                 <button
                   type="button"
                   onClick={() => handleSubmit({ preventDefault: () => {} })}
-                  className="text-xs font-medium text-[#0088cc] hover:underline"
+                  className="text-xs font-medium text-slate-600 hover:text-slate-900 hover:underline"
                 >
                   Log in with email (SAML SSO)
                 </button>
@@ -191,7 +190,7 @@ export default function AdminLogin({ onSwitchToWarga }) {
       </div>
 
       {/* Version di pojok kanan bawah */}
-      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 text-[10px] sm:text-[11px] font-mono tracking-widest text-slate-400 sm:text-white/80 select-none z-20">
+      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 text-[10px] sm:text-[11px] font-mono tracking-widest text-slate-400 select-none z-20">
         VERSION 2.4.0
       </div>
     </div>
