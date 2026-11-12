@@ -133,21 +133,19 @@ Sebagai acuan resmi tim pengembang, seluruh spesifikasi detail telah didokumenta
    # Buka .env dan lengkapi SUPABASE_URL, SUPABASE_ANON_KEY, dan DATABASE_URL
    ```
 
-3. **Jalankan Backend Server:**
+3. **Instalasi Seluruh Dependensi Sekaligus:**
    ```bash
-   cd server
-   npm install
-   npm run dev
-   # Server aktif di http://localhost:5000/api/v1
+   npm run install:all
    ```
 
-4. **Jalankan Frontend Client (Terminal Baru):**
+4. **Jalankan Frontend & Backend Sekaligus (Satu Perintah):**
    ```bash
-   cd client
-   npm install
    npm run dev
-   # Client aktif di http://localhost:5173
    ```
+   * ⚙️ **Backend Express:** Aktif di `http://localhost:5000/api/v1`
+   * 💻 **Frontend Vite:** Aktif di `http://localhost:5173`
+
+*(Opsional: Jika ingin menjalankan secara terpisah, gunakan `npm run dev:server` atau `npm run dev:client`)*
 
 ---
 
