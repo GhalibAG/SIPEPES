@@ -7,33 +7,33 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Palet Resmi SIPEPES
-        river: {
-          50: '#F0F9FF',
-          100: '#E0F2FE',
-          200: '#BAE6FD',
-          500: '#0EA5E9',
-          600: '#0284C7', // Primary Brand
-          700: '#0369A1',
-          800: '#075985',
-        },
-        eco: {
-          50: '#F0FDF4',
-          100: '#DCFCE7',
-          500: '#22C55E',
-          600: '#16A34A', // Secondary Green (Green Generation)
-          700: '#15803D',
-        },
-        pollution: {
-          light: '#059669',    // Ringan (Emerald)
-          moderate: '#D97706', // Sedang (Amber)
-          severe: '#DC2626',   // Berat (Red)
+        musi: { 100: '#E3EEFF', 600: '#1D6FF2', 700: '#1558D6', 800: '#1447B0' },
+        koral: { 100: '#FFE3E3', 500: '#FF6B57' },
+        ceria: { 100: '#FFF1C9', 400: '#FFC93C', 800: '#8A5300' },
+        toska: { 100: '#D5F7F1', 400: '#19D3BD', 800: '#0B6B5E' },
+        ungu: { 100: '#EEE9FF', 600: '#6B4BF0', 800: '#5A3FD6' },
+        ink: { DEFAULT: '#12213F', soft: '#4A5878', muted: '#5B6885' },
+        krem: '#FFF9EF',
+        garis: '#ECE6D9',
+        abu: { 100: '#ECEFF5' },
+        tingkat: {
+          berat: '#D93A40', 'berat-bg': '#FFE3E3', 'berat-tx': '#B4232A',
+          sedang: '#FFA63D', 'sedang-bg': '#FFF1C9', 'sedang-tx': '#8A5300',
+          ringan: '#22B573', 'ringan-bg': '#D5F7F1', 'ringan-tx': '#0B6B5E'
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Montserrat', 'system-ui', 'sans-serif']
+      },
+      boxShadow: {
+        lembut: '0 8px 24px -8px rgba(18, 33, 63, 0.12)',
+        angkat: '0 16px 40px -12px rgba(29, 111, 242, 0.28)'
+      },
+      transitionTimingFunction: {
+        halus: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        pantul: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
       }
-    },
+    }
   },
   plugins: [],
 }

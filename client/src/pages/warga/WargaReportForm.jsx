@@ -1,560 +1,962 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Camera,
+  Image as ImageIcon,
   MapPin,
   CheckCircle2,
-  Lock,
-  Send,
   ArrowRight,
-  AlertTriangle,
-  RotateCcw,
-  Sparkles,
-  Info,
-  Shield,
-  Trash2,
+  ArrowLeft,
+  AlertCircle,
   Copy,
   Check,
-  Phone,
-  MessageSquare,
-  ShieldCheck,
-  FileCheck
+  Share2,
+  Trash2,
+  ExternalLink,
+  Navigation,
+  Info
 } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import { useAdmin } from '../../context/AdminContext';
+import { compressImage } from '../../lib/compressImage';
+import Stepper from '../../components/Stepper';
+import Button from '../../components/Button';
+import Card from '../../components/Card';
+import ChipGroup from '../../components/ChipGroup';
+import Badge from '../../components/Badge';
+import Toast from '../../components/Toast';
 
-export default function WargaReportForm({ onNavigate }) {
-  const { sempadanList, addReport } = useAdmin();
+// Fix ikon Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
-  // Form State
-  const [photoPreview, setPhotoPreview] = useState(null);
-  const [selectedPoint, setSelectedPoint] = useState(
-    sempadanList[0]?.nama || 'Dermaga 7 Ulu, Seberang Ulu I'
-  );
-  const [coords, setCoords] = useState({ lat: -2.9904, lon: 104.7565 });
-  const [gpsLocked, setGpsLocked] = useState(false);
-  const [category, setCategory] = useState('Minyak & B3');
-  const [severity, setSeverity] = useState('sedang'); // 'berat' | 'sedang' | 'ringan'
-  const [description, setDescription] = useState('');
-  const [isAnonymous, setIsAnonymous] = useState(true);
-  const [reporterName, setReporterName] = useState('');
-  const [reporterPhone, setReporterPhone] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successReport, setSuccessReport] = useState(null);
-  const [copied, setCopied] = useState(false);
-
-  // Kategori Pilihan Cepat
-  const categories = [
-    { id: 'Minyak & B3', label: 'Limbah Minyak / B3', icon: '🛢️', desc: 'Tumpahan oli, minyak kapal, atau bahan kimia' },
-    { id: 'Sampah Domestik', label: 'Sampah Plastik / Domestik', icon: '🗑️', desc: 'Timbulan sampah plastik, botol, atau kasur' },
-    { id: 'Eceng Gondok / Gulma', label: 'Gulma / Eceng Gondok', icon: '🌿', desc: 'Aliran sungai tersumbat tanaman liar tebal' },
-  ];
-
-  // Tingkat Keparahan (High Contrast - Bebas Warna Nanggung)
-  const severityOptions = [
-    { id: 'berat', label: 'Parah / Kritis', dotColor: 'bg-rose-500', desc: 'Air menghitam, aroma menyengat, atau tumpahan meluas' },
-    { id: 'sedang', label: 'Sedang', dotColor: 'bg-amber-500', desc: 'Sampah mengapung cukup banyak, air keruh' },
-    { id: 'ringan', label: 'Ringan', dotColor: 'bg-emerald-500', desc: 'Sampah serakan baru atau pencemaran lokal kecil' },
-  ];
-
-  // Handle Photo Upload / Capture
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+// Custom Drop Pin
+const createDropPinIcon = (severity = 'sedang', isSelected = true) => {
+  const colorMap = {
+    berat: '#D93A40',
+    sedang: '#FFA63D',
+    ringan: '#22B573'
   };
+  const color = colorMap[severity] || colorMap.sedang;
+  const size = isSelected ? 42 : 36;
 
-  // Handle GPS Auto-detect
-  const handleGetLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setCoords({
-            lat: parseFloat(pos.coords.latitude.toFixed(5)),
-            lon: parseFloat(pos.coords.longitude.toFixed(5))
-          });
-          setGpsLocked(true);
-        },
-        () => {
-          // Fallback realistis koordinat Palembang Musi
-          setCoords({
-            lat: parseFloat((-2.9912 + (Math.random() - 0.5) * 0.006).toFixed(5)),
-            lon: parseFloat((104.7635 + (Math.random() - 0.5) * 0.006).toFixed(5))
-          });
-          setGpsLocked(true);
+  return L.divIcon({
+    className: 'custom-drop-pin',
+    html: `
+      <div style="width:${size}px; height:${size}px; transform:translate(-50%, -100%); filter:drop-shadow(0 4px 6px rgba(18,33,63,0.3));">
+        <svg viewBox="0 0 36 36" width="${size}" height="${size}" fill="none">
+          <path d="M18 2C18 2 6 15.5 6 23C6 29.6 11.4 35 18 35C24.6 35 30 29.6 30 23C30 15.5 18 2 18 2Z" fill="${color}" stroke="#FFFFFF" stroke-width="3"/>
+          <circle cx="18" cy="22" r="4.5" fill="#FFFFFF"/>
+        </svg>
+      </div>
+    `,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size]
+  });
+};
+
+// Komponen Pin yang Bisa Digeser di Peta
+function DraggablePin({ position, onPositionChange, severity }) {
+  const markerRef = useRef(null);
+  const eventHandlers = useMemo(
+    () => ({
+      dragend() {
+        const marker = markerRef.current;
+        if (marker != null) {
+          const latLng = marker.getLatLng();
+          onPositionChange(parseFloat(latLng.lat.toFixed(5)), parseFloat(latLng.lng.toFixed(5)));
         }
-      );
+      },
+    }),
+    [onPositionChange]
+  );
+
+  return (
+    <Marker
+      draggable={true}
+      eventHandlers={eventHandlers}
+      position={position}
+      ref={markerRef}
+      icon={createDropPinIcon(severity, true)}
+    />
+  );
+}
+
+// Controller Peta untuk Mengikuti Perubahan Koordinat
+function MapUpdater({ center }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center) {
+      map.setView(center, 15);
+    }
+  }, [center, map]);
+  return null;
+}
+
+export default function WargaReportForm() {
+  const { addReport } = useAdmin();
+  const navigate = useNavigate();
+  const { kode: urlKode } = useParams();
+
+  // State Step Form (1 - 4)
+  const [currentStep, setCurrentStep] = useState(1);
+
+  // State Langkah 1: Foto
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [photoSizes, setPhotoSizes] = useState(null); // { original, compressed }
+  const [isCompressing, setIsCompressing] = useState(false);
+
+  // State Langkah 2: Lokasi
+  const [coords, setCoords] = useState({ lat: -2.9904, lng: 104.7565 });
+  const [district, setDistrict] = useState('Seberang Ulu I');
+  const [landmark, setLandmark] = useState('');
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
+  const [gpsError, setGpsError] = useState(null);
+
+  // State Langkah 3: Detail Dugaan & Kondisi Lokasi
+  const [title, setTitle] = useState('');
+  const [pollutionType, setPollutionType] = useState('minyak_oli');
+  const [severity, setSeverity] = useState('sedang');
+  const [description, setDescription] = useState('');
+  // Kondisi Lokasi (Opsional)
+  const [areaEstimate, setAreaEstimate] = useState('10 - 50 m²');
+  const [nearSettlement, setNearSettlement] = useState('Ya');
+  const [waterDepth, setWaterDepth] = useState('Sedang');
+
+  // State Submit & Sukses
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [createdTicket, setCreatedTicket] = useState(null);
+  const [copied, setCopied] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const cameraInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
+
+  // Daftar Kecamatan Palembang
+  const districts = [
+    'Seberang Ulu I',
+    'Seberang Ulu II',
+    'Ilir Timur I',
+    'Ilir Timur II',
+    'Ilir Timur III',
+    'Ilir Barat I',
+    'Ilir Barat II',
+    'Gandus',
+    'Kertapati',
+    'Plaju',
+    'Kalidoni',
+    'Bukit Kecil'
+  ];
+
+  // Pilihan Kategori Limbah
+  const pollutionOptions = [
+    { value: 'minyak_oli', label: 'Limbah Minyak / B3', desc: 'Tumpahan oli, minyak kapal, atau bahan kimia' },
+    { value: 'sampah_domestik', label: 'Sampah Plastik / Domestik', desc: 'Timbulan plastik, botol, atau kasur di sempadan' },
+    { value: 'limbah_industri', label: 'Limbah Industri', desc: 'Busa tebal atau buangan pabrik berwarna pekat' },
+    { value: 'lainnya', label: 'Lainnya / Gulma', desc: 'Eceng gondok tebal atau material lain' }
+  ];
+
+  // Pilihan Tingkat Dugaan
+  const severityOptions = [
+    { value: 'berat', label: 'Berat', desc: 'Air menghitam pekat / berbau menyengat / tumpahan masif' },
+    { value: 'sedang', label: 'Sedang', desc: 'Sampah mengapung cukup banyak / air keruh' },
+    { value: 'ringan', label: 'Ringan', desc: 'Serakan sampah baru / pencemaran lokal kecil' }
+  ];
+
+  // Handler Kompresi Foto
+  const handlePhotoSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setErrors(prev => ({ ...prev, photo: null }));
+    setIsCompressing(true);
+
+    try {
+      const result = await compressImage(file);
+      setPhotoFile(result.file);
+      setPhotoPreview(result.previewUrl);
+      setPhotoSizes({
+        original: (result.originalSize / (1024 * 1024)).toFixed(2),
+        compressed: (result.compressedSize / (1024 * 1024)).toFixed(2)
+      });
+      setToastMessage('Foto berhasil dikompresi di bawah 2 MB');
+    } catch (err) {
+      setErrors(prev => ({ ...prev, photo: err.message || 'Gagal memproses foto.' }));
+    } finally {
+      setIsCompressing(false);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!photoPreview) {
-      alert('Mohon sertakan foto bukti pencemaran terlebih dahulu.');
+  // Handler Geolocation Warga
+  const handleDetectLocation = () => {
+    if (!navigator.geolocation) {
+      setGpsError('Browser kamu tidak mendukung deteksi lokasi otomatis.');
       return;
     }
 
+    setIsGettingLocation(true);
+    setGpsError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = parseFloat(pos.coords.latitude.toFixed(5));
+        const lng = parseFloat(pos.coords.longitude.toFixed(5));
+        setCoords({ lat, lng });
+        setIsGettingLocation(false);
+        setToastMessage('Lokasi GPS kamu berhasil dideteksi');
+      },
+      (err) => {
+        setIsGettingLocation(false);
+        setGpsError('Izin akses lokasi ditolak atau sinyal GPS lemah. Silakan geser pin pada peta secara manual.');
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    );
+  };
+
+  // Validasi Langkah Sebelum Lanjut
+  const validateStep = (step) => {
+    const newErrors = {};
+
+    if (step === 1) {
+      if (!photoPreview) {
+        newErrors.photo = 'Mohon sertakan satu foto bukti pencemaran.';
+      }
+    } else if (step === 2) {
+      if (!district) {
+        newErrors.district = 'Pilih kecamatan tempat kejadian.';
+      }
+    } else if (step === 3) {
+      if (!title.trim()) {
+        newErrors.title = 'Tuliskan judul laporan singkat.';
+      } else if (title.length > 80) {
+        newErrors.title = 'Judul maksimal 80 karakter.';
+      }
+
+      if (!description.trim()) {
+        newErrors.description = 'Jelaskan kondisi pencemaran yang kamu lihat.';
+      } else if (description.length > 500) {
+        newErrors.description = 'Deskripsi maksimal 500 karakter.';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep(prev => Math.min(prev + 1, 4));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleBack = () => {
+    setCurrentStep(prev => Math.max(prev - 1, 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Submit Laporan
+  const handleSubmitReport = (e) => {
+    e.preventDefault();
+    if (!validateStep(1) || !validateStep(2) || !validateStep(3)) return;
+
     setIsSubmitting(true);
+
+    // Format Cerdas: Gabungkan kondisi lokasi ke deskripsi sesuai Gap 2
+    const conditionHeader = `[Kondisi Lokasi: Luas ${areaEstimate} | Dekat Permukiman: ${nearSettlement} | Kedalaman Air: ${waterDepth}]`;
+    const fullDescription = `${conditionHeader}\n\n${description}`;
 
     setTimeout(() => {
       const created = addReport({
-        title: `Laporan ${category} di ${selectedPoint}`,
-        description: description || `Ditemukan pencemaran ${category.toLowerCase()} dengan tingkat dugaan ${severity} di sekitar ${selectedPoint}.`,
-        category: category,
+        title,
+        description: fullDescription,
+        category: pollutionOptions.find(p => p.value === pollutionType)?.label || 'Limbah Minyak / B3',
+        pollution_type: pollutionType,
         estimated_severity: severity,
         latitude: coords.lat,
-        longitude: coords.lon,
-        address_landmark: selectedPoint,
-        district: selectedPoint.includes('Ulu') ? 'Seberang Ulu I' : 'Ilir Timur I',
-        is_anonymous: isAnonymous,
-        reporter_name: isAnonymous ? 'Warga Palembang' : reporterName,
-        reporter_contact: isAnonymous ? 'Disembunyikan' : reporterPhone,
-        photo_url: photoPreview
+        longitude: coords.lng,
+        district,
+        address_landmark: landmark || `Sempadan Sungai Musi, ${district}`,
+        photo_url: photoPreview,
+        // Warga melapor tanpa akun (FR-2)
+        is_anonymous: true,
+        reporter_name: 'Warga Peduli Musi'
       });
 
       setIsSubmitting(false);
-      setSuccessReport(created);
-    }, 600);
+      setCreatedTicket(created);
+    }, 800);
   };
 
-  const handleCopyTicket = (code) => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(code);
+  const handleCopyCode = () => {
+    if (createdTicket?.tracking_code && navigator.clipboard) {
+      navigator.clipboard.writeText(createdTicket.tracking_code);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
   };
 
-  return (
-    <div className="space-y-6">
+  // ========================================================
+  // VIEW: LAPORAN TERKIRIM (W6 / W8)
+  // ========================================================
+  if (createdTicket || urlKode) {
+    const code = createdTicket?.tracking_code || urlKode;
+    const shareText = `Halo! Saya baru saja melaporkan titik pencemaran Sungai Musi melalui SIPEPES GG River Care dengan kode tiket ${code}. Cek statusnya di sini: ${window.location.origin}/lacak/${code}`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
-      {/* 1. Modal Sukses Saat Laporan Terkirim */}
-      {successReport && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 text-center space-y-4 animate-scale-in">
-            <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
-            </div>
-
-            <div>
-              <h3 className="text-xl font-black text-slate-900">
-                Laporan Berhasil Dikirim!
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Terima kasih atas kontribusi Anda menjaga Sungai Musi. Laporan langsung masuk antrean verifikasi petugas.
-              </p>
-            </div>
-
-            {/* Nomor Tiket */}
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                NOMOR TIKET LAPORAN ANDA
-              </span>
-              <div className="flex items-center justify-center gap-2 mt-1">
-                <span className="font-mono font-black text-lg text-[#0077b3]">
-                  #{successReport.tracking_code}
-                </span>
-                <button
-                  onClick={() => handleCopyTicket(successReport.tracking_code)}
-                  className="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition cursor-pointer"
-                  title="Salin Nomor Tiket"
-                >
-                  {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-2 pt-2">
-              <button
-                onClick={() => {
-                  setSuccessReport(null);
-                  if (onNavigate) onNavigate('track');
-                }}
-                className="flex-1 py-3 px-4 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
-              >
-                <span>Lacak Status Laporan</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <button
-                onClick={() => {
-                  setSuccessReport(null);
-                  setPhotoPreview(null);
-                  setDescription('');
-                }}
-                className="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 2. Header Form (Lega & Proporsional) */}
-      <div className="space-y-1">
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-          Lapor Pencemaran Sungai Musi
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-500">
-          Kirimkan foto bukti dan lokasi pencemaran di Sungai Musi. Formulir dirancang ringkas untuk kemudahan warga di lapangan.
-        </p>
-      </div>
-
-      {/* 3. Main Grid Layout (Lebar & Seimbang) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
-        {/* Kolom Kiri: Formulir Lapor Utama (8 Kolom) */}
-        <form onSubmit={handleSubmit} className="lg:col-span-8 space-y-5">
-
-          {/* Bagian 1: Foto Bukti */}
-          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <span>1. Foto Bukti Pencemaran</span>
-                <span className="text-rose-500 font-normal">*Wajib</span>
-              </label>
-            </div>
-
-            {photoPreview ? (
-              <div className="relative rounded-xl overflow-hidden border border-slate-200 max-h-72 sm:max-h-80">
-                <img
-                  src={photoPreview}
-                  alt="Pratinjau Bukti"
-                  className="w-full h-56 sm:h-64 object-cover"
-                />
-                <div className="absolute top-2.5 right-2.5 flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setPhotoPreview(null)}
-                    className="p-2 rounded-xl bg-black/70 hover:bg-black/90 text-white backdrop-blur-xs transition cursor-pointer"
-                    title="Hapus Foto"
-                  >
-                    <Trash2 className="w-4 h-4 text-rose-300" />
-                  </button>
-                </div>
-                <div className="absolute bottom-2 left-2 right-2 px-3 py-1.5 rounded-lg bg-black/70 backdrop-blur-xs text-white text-[11px] flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Foto Siap Dikirim
-                  </span>
-                  <span className="text-slate-300">Klik tempat sampah jika ingin mengganti</span>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Tombol Ambil Kamera Langsung */}
-                <label className="py-7 px-4 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-slate-400 transition flex flex-col items-center justify-center gap-2 cursor-pointer text-center group">
-                  <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-                    <Camera className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <span className="text-xs sm:text-sm font-bold text-slate-900 block">
-                      Ambil Foto Kamera
-                    </span>
-                    <span className="text-[11px] text-slate-500">
-                      Buka kamera ponsel langsung
-                    </span>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    capture="environment"
-                    onChange={handlePhotoChange}
-                    className="hidden"
-                  />
-                </label>
-
-                {/* Tombol Pilih dari Galeri */}
-                <label className="py-7 px-4 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-slate-400 transition flex flex-col items-center justify-center gap-2 cursor-pointer text-center group">
-                  <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
-                    <Camera className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <span className="text-xs sm:text-sm font-bold text-slate-900 block">
-                      Pilih dari Galeri Foto
-                    </span>
-                    <span className="text-[11px] text-slate-500">
-                      Format JPG, PNG, atau WebP
-                    </span>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-            )}
+    return (
+      <div className="max-w-xl mx-auto py-6 sm:py-10 space-y-6">
+        <Card className="text-center space-y-6 p-6 sm:p-10 border-toska-100">
+          {/* Ikon Centang Toska Beranimasi */}
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-toska-400 text-ink flex items-center justify-center mx-auto shadow-[0_0_0_12px_#D5F7F1] animate-bounce-short">
+            <Check className="w-10 h-10 sm:w-12 sm:h-12 stroke-[3]" />
           </div>
 
-          {/* Bagian 2: Lokasi Kejadian & GPS */}
-          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-3.5">
-            <label className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <span>2. Lokasi Sempadan / Bantaran Sungai</span>
-              <span className="text-rose-500 font-normal">*Wajib</span>
-            </label>
+          <div className="space-y-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-toska-100 text-toska-800 text-xs font-bold">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Laporan Berhasil Terkirim</span>
+            </span>
 
-            {/* Tombol Kunci GPS Cepat (Clean Neutral Surface) */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="flex items-center gap-2.5">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${gpsLocked ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white'}`}>
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-slate-900 block">
-                    {gpsLocked ? 'Lokasi GPS Berhasil Terkunci' : 'Deteksi GPS Otomatis'}
-                  </span>
-                  <span className="text-[11px] font-mono text-slate-500">
-                    Koordinat: {coords.lat}, {coords.lon}
-                  </span>
-                </div>
-              </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight">
+              Terima kasih sudah peduli pada Sungai Musi!
+            </h1>
 
-              <button
-                type="button"
-                onClick={handleGetLocation}
-                className="py-2 px-3.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-2xs transition self-start sm:self-center cursor-pointer"
-              >
-                {gpsLocked ? 'Perbarui Titik GPS' : 'Kunci Titik GPS Saya'}
-              </button>
-            </div>
-
-            {/* Dropdown 18 Sempadan Musi */}
-            <div className="space-y-1">
-              <span className="text-[11px] font-semibold text-slate-500 block">
-                Pilih Titik Pos / Sempadan Sungai Musi Terdekat:
-              </span>
-              <select
-                value={selectedPoint}
-                onChange={(e) => setSelectedPoint(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900"
-              >
-                {sempadanList.map((p) => (
-                  <option key={p.kode} value={`${p.nama}, ${p.wilayah}`}>
-                    {p.nama} — ({p.wilayah})
-                  </option>
-                ))}
-              </select>
-            </div>
+            <p className="text-xs sm:text-sm text-ink-soft leading-relaxed max-w-md mx-auto">
+              Laporanmu telah masuk ke antrean dan akan segera diverifikasi oleh tim relawan Green Generation Palembang (Program GG River Care).
+            </p>
           </div>
 
-          {/* Bagian 3: Kategori & Tingkat Dugaan Keparahan */}
-          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-            <label className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <span>3. Jenis &amp; Perkiraan Dampak</span>
-              <span className="text-rose-500 font-normal">*Wajib</span>
-            </label>
+          {/* Kartu Kode Tiket Besar */}
+          <div className="bg-ceria-100 border border-ceria-400/40 rounded-3xl p-6 sm:p-7 space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-ceria-800">
+              Kode Tiket Pelacakanmu
+            </span>
 
-            {/* Kategori Pilihan Cepat (Crisp White Card with Sharp Ring) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {categories.map((c) => {
-                const isSelected = category === c.id;
-                return (
-                  <button
-                    type="button"
-                    key={c.id}
-                    onClick={() => setCategory(c.id)}
-                    className={`p-3.5 rounded-xl border text-left transition flex flex-col justify-between cursor-pointer ${isSelected
-                      ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
-                      : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 text-slate-700'
-                      }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl">{c.icon}</span>
-                      <span className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}>{c.label}</span>
-                    </div>
-                    <span className={`text-[10px] mt-1.5 leading-snug ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
-                      {c.desc}
-                    </span>
-                  </button>
-                );
-              })}
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-ink tracking-widest tabular-nums select-all font-mono">
+              {code}
             </div>
 
-            {/* Tingkat Keparahan (Severity Chips - Solid High Contrast) */}
-            <div className="space-y-1.5 pt-1">
-              <span className="text-[11px] font-semibold text-slate-500 block">
-                Tingkat Keparahan Pengamatan:
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                {severityOptions.map((s) => {
-                  const isSelected = severity === s.id;
-                  return (
-                    <button
-                      type="button"
-                      key={s.id}
-                      onClick={() => setSeverity(s.id)}
-                      className={`p-3.5 rounded-xl border text-left transition cursor-pointer ${isSelected
-                        ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
-                        : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 text-slate-700'
-                        }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2.5 h-2.5 rounded-full ${s.dotColor}`}></span>
-                        <span className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}>
-                          {s.label}
-                        </span>
-                      </div>
-                      <span className={`text-[10px] leading-snug block mt-1.5 ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
-                        {s.desc}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Bagian 4: Keterangan Tambahan & Privasi Pelapor */}
-          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-            <label className="text-sm font-bold text-slate-900 flex items-center justify-between">
-              <span>4. Keterangan Tambahan &amp; Privasi</span>
-              <span className="text-slate-400 font-normal text-xs">Opsional</span>
-            </label>
-
-            {/* Textarea */}
-            <textarea
-              rows={3}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Tambahkan rincian jika ada (misal: warna air menghitam, perkiraan sumber, patokan jembatan)..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900"
-            />
-
-            {/* Toggle Privasi Anonim */}
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3">
-              <input
-                type="checkbox"
-                id="anonymous-toggle"
-                checked={isAnonymous}
-                onChange={(e) => setIsAnonymous(e.target.checked)}
-                className="mt-0.5 w-4 h-4 rounded text-slate-900 focus:ring-slate-900 cursor-pointer"
-              />
-              <label htmlFor="anonymous-toggle" className="cursor-pointer select-none">
-                <span className="text-xs font-bold text-slate-900 block flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5 text-slate-700" />
-                  Lapor Sebagai Anonim (Data Terlindungi)
-                </span>
-                <span className="text-[11px] text-slate-500 leading-relaxed block mt-0.5">
-                  Nama dan nomor kontak Anda tidak akan ditampilkan kepada publik maupun pihak lain.
-                </span>
-              </label>
-            </div>
-
-            {!isAnonymous && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 animate-fade-in">
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-slate-600 block">Nama Pelapor:</label>
-                  <input
-                    type="text"
-                    value={reporterName}
-                    onChange={(e) => setReporterName(e.target.value)}
-                    placeholder="Nama lengkap Anda"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-slate-600 block">Nomor WhatsApp:</label>
-                  <input
-                    type="text"
-                    value={reporterPhone}
-                    onChange={(e) => setReporterPhone(e.target.value)}
-                    placeholder="0812-xxxx-xxxx"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Tombol Kirim Laporan Utama */}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-3.5 px-6 rounded-2xl bg-[#0088cc] hover:bg-[#0077b3] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-sky-500/20 transition active:scale-98 cursor-pointer disabled:opacity-70"
-          >
-            {isSubmitting ? (
-              <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                <span>Mengirim Laporan...</span>
-              </span>
-            ) : (
-              <span className="flex items-center gap-2">
-                <Send className="w-4 h-4" />
-                <span>Kirim Laporan Pencemaran Sekarang</span>
-              </span>
-            )}
-          </button>
-        </form>
-
-        {/* Kolom Kanan: Panduan Ringkas & Jaminan Pelapor (4 Kolom - Clean, Crisp, Zero Pastel Slop) */}
-        <div className="lg:col-span-4 space-y-4">
-
-          {/* Card 1: Jaminan Kerahasiaan & Kecepatan Respon */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3.5">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-xs sm:text-sm">
-                  Jaminan Keamanan Pelapor
-                </h3>
-                <p className="text-[11px] text-slate-500">
-                  Data Anda Dilindungi Undang-Undang
-                </p>
-              </div>
-            </div>
-
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Setiap laporan warga diverifikasi oleh relawan Green Generation Palembang sebelum diteruskan ke Dinas Lingkungan Hidup. Identitas Anda dijamin aman 100%.
+            <p className="text-xs text-ceria-800/90 font-medium">
+              Simpan kode ini untuk memantau status tindak lanjut laporanmu kapan saja.
             </p>
 
-            <div className="pt-2 border-t border-slate-100 space-y-2 text-xs">
-              <div className="flex items-center gap-2 text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Respon verifikasi maksimal 1x24 jam</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Terhubung ke 18 Pos Sempadan Musi</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Disediakan tiket pelacakan transparan</span>
-              </div>
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+              <button
+                type="button"
+                onClick={handleCopyCode}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-ink text-xs font-bold border border-garis hover:bg-slate-50 shadow-xs cursor-pointer"
+              >
+                {copied ? <Check className="w-4 h-4 text-toska-800" /> : <Copy className="w-4 h-4 text-ink-muted" />}
+                <span>{copied ? 'Tersalin!' : 'Salin Kode'}</span>
+              </button>
+
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-ink text-xs font-bold border border-garis hover:bg-slate-50 shadow-xs"
+              >
+                <Share2 className="w-4 h-4 text-emerald-600" />
+                <span>Bagikan ke WhatsApp</span>
+              </a>
             </div>
           </div>
 
-          {/* Card 2: Panduan Foto Valid */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <Camera className="w-4 h-4 text-[#0088cc]" />
-              <span>Tips Foto yang Cepat Divalidasi</span>
-            </h4>
+          {/* Tombol Navigasi Lanjutan */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link to={`/lacak/${code}`} className="w-full sm:w-auto">
+              <Button variant="utama" size="md" className="w-full">
+                <span>Lacak Status Laporan Ini</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
 
-            <ul className="space-y-2 text-xs text-slate-600">
-              <li className="flex items-start gap-2">
-                <span className="text-[#0088cc] font-bold">&bull;</span>
-                <span>Pastikan permukaan air sungai dan jenis limbah terlihat dengan terang.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-[#0088cc] font-bold">&bull;</span>
-                <span>Sertakan patokan tepi seperti dermaga atau jembatan untuk mempermudah petugas.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-[#0088cc] font-bold">&bull;</span>
-                <span>Hindari foto kabur saat malam hari tanpa bantuan cahaya.</span>
-              </li>
-            </ul>
+            <Link to="/" className="w-full sm:w-auto">
+              <Button variant="garis" size="md" className="w-full">
+                <span>Kembali ke Beranda</span>
+              </Button>
+            </Link>
           </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // ========================================================
+  // VIEW: FORMULIR 4 LANGKAH
+  // ========================================================
+  return (
+    <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
+      )}
+
+      {/* Header Formulir & Stepper */}
+      <div className="space-y-4 text-center sm:text-left">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight">
+              Laporkan Pencemaran Sungai Musi
+            </h1>
+            <p className="text-xs sm:text-sm text-ink-soft mt-1">
+              Setiap laporan warga diverifikasi mandiri oleh tim relawan GG River Care.
+            </p>
+          </div>
+
+          <Link to="/" className="text-xs font-bold text-musi-600 hover:text-musi-800 transition inline-flex items-center gap-1 self-center sm:self-auto">
+            <span>Batal &amp; Kembali</span>
+          </Link>
         </div>
+
+        {/* Stepper Indikator Kemajuan */}
+        <Stepper currentStep={currentStep} totalSteps={4} />
+      </div>
+
+      {/* Form Container Grid (Form di Kiri, Kolom Tips di Kanan pada Desktop) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        {/* Kolom Kiri: Kartu Form Aktif (lg:col-span-8) */}
+        <div className="lg:col-span-8">
+          <Card className="space-y-6">
+
+            {/* ====================================================
+                LANGKAH 1: FOTO BUKTI
+               ==================================================== */}
+            {currentStep === 1 && (
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-ink">
+                    1. Unggah Foto Bukti Pencemaran
+                  </h2>
+                  <p className="text-xs text-ink-soft mt-1">
+                    Foto yang jelas membantu relawan memvalidasi insiden secara cepat.
+                  </p>
+                </div>
+
+                {/* Input Tersembunyi untuk Kamera & Galeri */}
+                <input
+                  type="file"
+                  ref={cameraInputRef}
+                  accept="image/jpeg,image/png,image/webp"
+                  capture="environment"
+                  onChange={handlePhotoSelect}
+                  className="hidden"
+                />
+                <input
+                  type="file"
+                  ref={galleryInputRef}
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handlePhotoSelect}
+                  className="hidden"
+                />
+
+                {/* Preview Foto atau Tombol Upload */}
+                {photoPreview ? (
+                  <div className="space-y-3">
+                    <div className="relative rounded-2xl overflow-hidden border border-garis bg-slate-100 max-h-80 flex items-center justify-center">
+                      <img
+                        src={photoPreview}
+                        alt="Bukti Pencemaran"
+                        className="w-full h-full object-cover max-h-80"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPhotoFile(null);
+                          setPhotoPreview(null);
+                          setPhotoSizes(null);
+                        }}
+                        className="absolute top-3 right-3 p-2 rounded-full bg-ink/75 hover:bg-ink text-white transition cursor-pointer shadow-md"
+                        title="Hapus foto"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    {photoSizes && (
+                      <div className="p-3 bg-musi-100 rounded-2xl flex items-center justify-between text-xs text-musi-800 font-semibold">
+                        <span>Ukuran terkompresi: <strong>{photoSizes.compressed} MB</strong></span>
+                        <span className="text-toska-800 font-bold">&check; Di bawah 2 MB</span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {/* Area Drag-and-Drop Desktop */}
+                    <div
+                      onClick={() => galleryInputRef.current?.click()}
+                      className="border-2 border-dashed border-garis hover:border-musi-600 bg-krem/50 hover:bg-musi-100/30 rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-150 ease-halus space-y-3"
+                    >
+                      <div className="w-16 h-16 rounded-full bg-white shadow-lembut text-musi-600 flex items-center justify-center mx-auto">
+                        <Camera className="w-7 h-7 stroke-[2.2]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-ink">
+                          Klik untuk memilih foto dari perangkat
+                        </p>
+                        <p className="text-xs text-ink-muted mt-1">
+                          Format JPG, PNG, atau WebP (otomatis dikompresi di bawah 2 MB)
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Tombol Kamera Cepat Khusus Smartphone */}
+                    <div className="grid grid-cols-2 gap-3 sm:hidden">
+                      <button
+                        type="button"
+                        onClick={() => cameraInputRef.current?.click()}
+                        className="h-12 rounded-2xl bg-musi-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs"
+                      >
+                        <Camera className="w-4 h-4" />
+                        <span>Buka Kamera</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => galleryInputRef.current?.click()}
+                        className="h-12 rounded-2xl bg-white border border-garis text-ink text-xs font-bold flex items-center justify-center gap-2 shadow-xs"
+                      >
+                        <ImageIcon className="w-4 h-4" />
+                        <span>Dari Galeri</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {isCompressing && (
+                  <p className="text-xs font-semibold text-musi-600 animate-pulse">
+                    Sedang memproses dan mengompresi foto...
+                  </p>
+                )}
+
+                {errors.photo && (
+                  <p className="text-xs font-bold text-tingkat-berat-tx flex items-center gap-1.5">
+                    <AlertCircle className="w-4 h-4" />
+                    <span>{errors.photo}</span>
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* ====================================================
+                LANGKAH 2: LOKASI SEMPADAN
+               ==================================================== */}
+            {currentStep === 2 && (
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-ink">
+                    2. Tandai Lokasi Sempadan Sungai
+                  </h2>
+                  <p className="text-xs text-ink-soft mt-1">
+                    Gunakan tombol deteksi GPS atau geser pin langsung ke titik kejadian di peta.
+                  </p>
+                </div>
+
+                {/* Tombol Deteksi Lokasi Otomatis */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-slate-50 rounded-2xl border border-garis">
+                  <div className="text-xs text-ink-soft">
+                    <span className="font-bold text-ink block">Posisi Koordinat:</span>
+                    <span className="font-mono font-semibold">{coords.lat}, {coords.lng}</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleDetectLocation}
+                    disabled={isGettingLocation}
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-musi-600 hover:bg-musi-700 text-white text-xs font-bold transition shadow-xs disabled:opacity-50 cursor-pointer"
+                  >
+                    <Navigation className={`w-3.5 h-3.5 ${isGettingLocation ? 'animate-spin' : ''}`} />
+                    <span>{isGettingLocation ? 'Mencari Sinyal GPS...' : 'Gunakan Lokasi Saya'}</span>
+                  </button>
+                </div>
+
+                {gpsError && (
+                  <p className="text-xs text-tingkat-berat-tx bg-tingkat-berat-bg p-3 rounded-xl font-semibold">
+                    {gpsError}
+                  </p>
+                )}
+
+                {/* Peta Mini dengan Draggable Pin */}
+                <div className="h-64 sm:h-72 w-full rounded-2xl overflow-hidden border border-garis relative">
+                  <MapContainer
+                    center={[coords.lat, coords.lng]}
+                    zoom={15}
+                    scrollWheelZoom={false}
+                    className="w-full h-full"
+                  >
+                    <TileLayer
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <MapUpdater center={[coords.lat, coords.lng]} />
+                    <DraggablePin
+                      position={[coords.lat, coords.lng]}
+                      severity={severity}
+                      onPositionChange={(lat, lng) => setCoords({ lat, lng })}
+                    />
+                  </MapContainer>
+                  <div className="absolute bottom-2 left-2 z-20 bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-lg text-xs font-bold text-ink shadow-xs">
+                    Tips: Tekan dan geser pin untuk memindahkan titik
+                  </div>
+                </div>
+
+                {/* Isian Kecamatan (Wajib) */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-ink uppercase tracking-wider">
+                    Kecamatan <span className="text-tingkat-berat-tx">*</span>
+                  </label>
+                  <select
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    className="w-full h-12 px-4 bg-white border border-garis rounded-2xl text-sm font-semibold text-ink focus:outline-none focus:border-musi-600 focus:ring-4 focus:ring-musi-100 transition"
+                  >
+                    {districts.map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                  {errors.district && (
+                    <p className="text-xs text-tingkat-berat-tx font-bold">{errors.district}</p>
+                  )}
+                </div>
+
+                {/* Isian Patokan Lokasi (Opsional) */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-ink uppercase tracking-wider">
+                    Patokan Terdekat <span className="text-ink-muted font-normal">(Opsional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={landmark}
+                    onChange={(e) => setLandmark(e.target.value)}
+                    placeholder="Contoh: Bawah Jembatan Ampera, dekat Dermaga 7 Ulu"
+                    className="w-full h-12 px-4 bg-white border border-garis rounded-2xl text-sm font-medium text-ink focus:outline-none focus:border-musi-600 focus:ring-4 focus:ring-musi-100 transition"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* ====================================================
+                LANGKAH 3: DETAIL DUGAAN & KONDISI
+               ==================================================== */}
+            {currentStep === 3 && (
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-ink">
+                    3. Detail Dugaan Pencemaran
+                  </h2>
+                  <p className="text-xs text-ink-soft mt-1">
+                    Beri gambaran visual pencemaran yang kamu amati di lapangan.
+                  </p>
+                </div>
+
+                {/* Judul Laporan */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-ink uppercase tracking-wider">
+                      Judul Laporan <span className="text-tingkat-berat-tx">*</span>
+                    </label>
+                    <span className="text-xs font-semibold text-ink-muted">
+                      {title.length}/80
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    value={title}
+                    maxLength={80}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Contoh: Tumpahan Oli Kapal di Dermaga Pasar 16"
+                    className="w-full h-12 px-4 bg-white border border-garis rounded-2xl text-sm font-bold text-ink focus:outline-none focus:border-musi-600 focus:ring-4 focus:ring-musi-100 transition"
+                  />
+                  {errors.title && (
+                    <p className="text-xs text-tingkat-berat-tx font-bold">{errors.title}</p>
+                  )}
+                </div>
+
+                {/* Jenis Limbah (ChipGroup) */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-ink uppercase tracking-wider">
+                    Jenis Limbah yang Terlihat <span className="text-tingkat-berat-tx">*</span>
+                  </label>
+                  <ChipGroup
+                    options={pollutionOptions}
+                    value={pollutionType}
+                    onChange={setPollutionType}
+                  />
+                </div>
+
+                {/* Tingkat Dugaan (ChipGroup) */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-ink uppercase tracking-wider">
+                    Tingkat Dugaan Pencemaran <span className="text-tingkat-berat-tx">*</span>
+                  </label>
+                  <ChipGroup
+                    options={severityOptions}
+                    value={severity}
+                    onChange={setSeverity}
+                  />
+                </div>
+
+                {/* Deskripsi (Textarea dengan penghitung) */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-ink uppercase tracking-wider">
+                      Deskripsi Kejadian <span className="text-tingkat-berat-tx">*</span>
+                    </label>
+                    <span className="text-xs font-semibold text-ink-muted">
+                      {description.length}/500
+                    </span>
+                  </div>
+                  <textarea
+                    rows={4}
+                    maxLength={500}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Ceritakan apa yang kamu lihat, seperti warna air, bau yang tercium, atau dampak ke warga sekitar..."
+                    className="w-full p-4 bg-white border border-garis rounded-2xl text-sm font-medium text-ink focus:outline-none focus:border-musi-600 focus:ring-4 focus:ring-musi-100 transition resize-none"
+                  />
+                  {errors.description && (
+                    <p className="text-xs text-tingkat-berat-tx font-bold">{errors.description}</p>
+                  )}
+                </div>
+
+                {/* Bagian Kondisi Lokasi (Opsional - Rekomendasi Wawancara GGP) */}
+                <div className="pt-3 border-t border-garis space-y-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-ink uppercase tracking-wider">
+                      Kondisi Lokasi Sempadan
+                    </span>
+                    <span className="text-xs text-ink-muted font-semibold">
+                      (Opsional)
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 bg-krem/60 p-4 rounded-2xl border border-garis">
+                    {/* Perkiraan Luas */}
+                    <div>
+                      <span className="block text-xs font-semibold text-ink-muted mb-1.5">
+                        Perkiraan Luas Sebaran:
+                      </span>
+                      <ChipGroup
+                        options={['< 10 m²', '10 - 50 m²', '> 50 m²']}
+                        value={areaEstimate}
+                        onChange={setAreaEstimate}
+                      />
+                    </div>
+
+                    {/* Dekat Permukiman */}
+                    <div>
+                      <span className="block text-xs font-semibold text-ink-muted mb-1.5">
+                        Dekat Permukiman Warga:
+                      </span>
+                      <ChipGroup
+                        options={['Ya', 'Tidak']}
+                        value={nearSettlement}
+                        onChange={setNearSettlement}
+                      />
+                    </div>
+
+                    {/* Kedalaman Air */}
+                    <div>
+                      <span className="block text-xs font-semibold text-ink-muted mb-1.5">
+                        Kedalaman Air di Titik Ini:
+                      </span>
+                      <ChipGroup
+                        options={['Dangkal', 'Sedang', 'Dalam', 'Tidak Tahu']}
+                        value={waterDepth}
+                        onChange={setWaterDepth}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ====================================================
+                LANGKAH 4: TINJAU & KIRIM
+               ==================================================== */}
+            {currentStep === 4 && (
+              <div className="space-y-5">
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-ink">
+                    4. Tinjau Ringkasan Laporan
+                  </h2>
+                  <p className="text-xs text-ink-soft mt-1">
+                    Periksa kembali data sebelum dikirimkan ke tim relawan GG River Care.
+                  </p>
+                </div>
+
+                {/* Pratinjau Foto & Informasi Utama */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-2xl bg-slate-50 border border-garis">
+                  <div className="sm:col-span-1 rounded-xl overflow-hidden bg-slate-200 h-36">
+                    <img
+                      src={photoPreview}
+                      alt="Pratinjau Bukti"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2 space-y-2 text-xs">
+                    <div className="flex items-center justify-between">
+                      <Badge type="tingkat" value={severity} size="md" />
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(1)}
+                        className="text-musi-600 font-bold hover:underline"
+                      >
+                        Ubah Foto
+                      </button>
+                    </div>
+
+                    <h3 className="text-sm sm:text-base font-bold text-ink leading-snug">
+                      {title}
+                    </h3>
+
+                    <p className="text-ink-soft line-clamp-2">
+                      {description}
+                    </p>
+
+                    <div className="pt-1 flex items-center justify-between text-ink-muted font-medium border-t border-garis/60">
+                      <span>{district} &bull; {landmark || 'Sempadan Sungai'}</span>
+                      <button
+                        type="button"
+                        onClick={() => setCurrentStep(2)}
+                        className="text-musi-600 font-bold hover:underline"
+                      >
+                        Ubah Lokasi
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ringkasan Kondisi Lokasi */}
+                <div className="p-4 rounded-2xl bg-white border border-garis text-xs space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-ink uppercase tracking-wider">
+                      Rangkuman Parameter Observasi
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(3)}
+                      className="text-musi-600 font-bold hover:underline"
+                    >
+                      Ubah Detail
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-ink-soft">
+                    <div className="p-2.5 rounded-xl bg-slate-50">
+                      <span className="text-xs uppercase font-bold text-ink-muted block">Jenis</span>
+                      <span className="font-bold text-ink capitalize">{pollutionType.replace('_', ' ')}</span>
+                    </div>
+                    <div className="p-2.5 rounded-xl bg-slate-50">
+                      <span className="text-xs uppercase font-bold text-ink-muted block">Luas</span>
+                      <span className="font-bold text-ink">{areaEstimate}</span>
+                    </div>
+                    <div className="p-2.5 rounded-xl bg-slate-50">
+                      <span className="text-xs uppercase font-bold text-ink-muted block">Permukiman</span>
+                      <span className="font-bold text-ink">{nearSettlement}</span>
+                    </div>
+                    <div className="p-2.5 rounded-xl bg-slate-50">
+                      <span className="text-xs uppercase font-bold text-ink-muted block">Kedalaman</span>
+                      <span className="font-bold text-ink">{waterDepth}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-musi-100 text-musi-800 text-xs flex items-start gap-2.5">
+                  <Info className="w-4 h-4 shrink-0 mt-0.5" />
+                  <p className="leading-relaxed">
+                    Laporanmu dikirimkan secara mandiri ke komunitas Green Generation Palembang (GG River Care). Identitas pribadimu aman karena pelaporan ini tidak memerlukan registrasi.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Tombol Aksi Bawah */}
+            <div className="pt-4 border-t border-garis flex items-center justify-between gap-3">
+              {currentStep > 1 ? (
+                <Button
+                  type="button"
+                  variant="garis"
+                  size="md"
+                  onClick={handleBack}
+                  disabled={isSubmitting}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Kembali</span>
+                </Button>
+              ) : (
+                <div />
+              )}
+
+              {currentStep < 4 ? (
+                <Button
+                  type="button"
+                  variant="utama"
+                  size="md"
+                  onClick={handleNext}
+                >
+                  <span>Lanjut</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="ajakan"
+                  size="lg"
+                  onClick={handleSubmitReport}
+                  disabled={isSubmitting}
+                >
+                  <span>{isSubmitting ? 'Mengirim Laporan...' : 'Kirim Laporan Sekarang'}</span>
+                  <CheckCircle2 className="w-5 h-5 stroke-[2.5]" />
+                </Button>
+              )}
+            </div>
+
+          </Card>
+        </div>
+
+        {/* Kolom Kanan: Panduan Cepat di Desktop (lg:col-span-4) */}
+        <div className="hidden lg:block lg:col-span-4 space-y-4">
+          <Card className="p-5 space-y-3 bg-white">
+            <span className="text-xs font-bold uppercase tracking-wider text-ink-muted block">
+              Tips Mengambil Bukti Valid
+            </span>
+
+            <div className="space-y-2.5 text-xs text-ink-soft">
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-toska-400 mt-1.5 shrink-0" />
+                <p>Ambil foto di siang hari atau saat cahaya cukup agar warna air terlihat jelas.</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-toska-400 mt-1.5 shrink-0" />
+                <p>Sertakan patokan tepian sempadan seperti tiang dermaga, getek, atau dinding penahan.</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-toska-400 mt-1.5 shrink-0" />
+                <p>Pastikan kamu berada di posisi yang aman dari arus sungai saat memotret.</p>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-5 space-y-2.5 bg-ceria-100 border-ceria-400/30 text-xs">
+            <span className="text-xs font-bold uppercase tracking-wider text-ceria-800 block">
+              Apa Setelah Laporan Dikirim?
+            </span>
+            <p className="text-ceria-800/90 leading-relaxed font-medium">
+              Kamu akan menerima <strong>Kode Tiket Unik</strong>. Tim relawan GG River Care akan memvalidasi foto dan lokasimu sebelum titik pencemaran diterbitkan ke peta publik.
+            </p>
+          </Card>
+        </div>
+
       </div>
     </div>
   );

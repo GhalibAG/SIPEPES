@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIPEPES · Referensi Desain Web Responsif v2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   TOKEN (sama dengan Bagian 9 plan.md)
+   ===================================================================== */
+:root{
+  --musi-600:#1D6FF2;--musi-700:#1558D6;--musi-800:#1447B0;--musi-100:#E3EEFF;
+  --koral-500:#FF6B57;--koral-100:#FFE3E3;
+  --ceria-400:#FFC93C;--ceria-100:#FFF1C9;--ceria-800:#8A5300;
+  --toska-400:#19D3BD;--toska-100:#D5F7F1;--toska-800:#0B6B5E;
+  --ungu-600:#6B4BF0;--ungu-100:#EEE9FF;--ungu-800:#5A3FD6;
+  --ink:#12213F;--ink-soft:#4A5878;--ink-muted:#5B6885;
+  --krem:#FFF9EF;--garis:#ECE6D9;--abu-100:#ECEFF5;
+  --berat:#D93A40;--berat-bg:#FFE3E3;--berat-tx:#B4232A;
+  --sedang:#FFA63D;--sedang-bg:#FFF1C9;--sedang-tx:#8A5300;
+  --ringan:#22B573;--ringan-bg:#D5F7F1;--ringan-tx:#0B6B5E;
+  --sh-lembut:0 8px 24px -8px rgba(18,33,63,.12);
+  --sh-angkat:0 16px 40px -12px rgba(29,111,242,.28);
+  --ease-halus:cubic-bezier(.22,1,.36,1);
+  --ease-pantul:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Montserrat,system-ui,sans-serif;color:var(--ink);background:#F4F0E8;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.6}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{cursor:pointer}
+.ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ic.s16{width:16px;height:16px}.ic.s18{width:18px;height:18px}.ic.s24{width:24px;height:24px}.ic.s28{width:28px;height:28px}
+.num{font-variant-numeric:tabular-nums;letter-spacing:.02em}
+
+/* =====================================================================
+   KERANGKA DOKUMEN REFERENSI (bukan bagian UI aplikasi)
+   ===================================================================== */
+.doc-top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--garis)}
+.doc-top .in{max-width:1560px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.doc-top nav{display:flex;gap:4px;flex-wrap:wrap}
+.doc-top nav a{font-size:14px;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:8px 14px;border-radius:999px;transition:background .2s var(--ease-halus),color .2s}
+.doc-top nav a:hover{background:var(--musi-100);color:var(--musi-800)}
+.doc-top label{margin-left:auto;font-size:13px;font-weight:600;color:var(--ink-soft);display:flex;gap:8px;align-items:center}
+.wrap{max-width:1560px;margin:0 auto;padding:40px 32px 120px}
+.doc-hero{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center;margin-bottom:24px}
+.doc-hero h1{font-size:44px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.doc-hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--musi-600),var(--toska-400));-webkit-background-clip:text;background-clip:text;color:transparent}
+.doc-hero p{color:var(--ink-soft);margin-top:14px;max-width:680px}
+.doc-note{background:#fff;border-radius:24px;padding:24px;box-shadow:var(--sh-lembut)}
+.doc-note h3{font-size:15px;font-weight:700;margin-bottom:10px}
+.doc-note ul{padding-left:18px;color:var(--ink-soft);font-size:14px;line-height:1.7}
+.sec{margin-top:72px}
+.sec>h2{font-size:30px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sec>h2 .tag{font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--ink);color:#fff;letter-spacing:0}
+.sec>p.lead{color:var(--ink-soft);margin:8px 0 28px;max-width:900px}
+.sub{font-size:19px;font-weight:700;margin:48px 0 16px;display:flex;align-items:center;gap:10px}
+.sub small{font-size:13px;font-weight:600;color:var(--ink-muted)}
+.panel{background:#fff;border-radius:24px;padding:28px;box-shadow:var(--sh-lembut)}
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.sw{border-radius:20px;overflow:hidden;background:#fff;box-shadow:var(--sh-lembut)}
+.sw .c{height:96px;display:flex;align-items:flex-end;padding:12px;font-weight:700;font-size:14px}
+.sw .m{padding:12px 14px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.sw .m b{display:block;color:var(--ink);font-size:14px}
+.sw .m code{font-family:inherit;font-weight:600;color:var(--ink)}
+.bp{display:flex;gap:12px;flex-wrap:wrap}
+.bp div{flex:1;min-width:200px;background:#fff;border-radius:20px;padding:16px 18px;box-shadow:var(--sh-lembut);font-size:14px;color:var(--ink-soft)}
+.bp b{display:block;font-size:16px;color:var(--ink)}
+
+/* storyboard: pasangan frame */
+.pair{margin-bottom:64px}
+.pair-frames{display:flex;gap:24px;align-items:flex-start;overflow-x:auto;padding:6px 6px 8px}
+.row{display:flex;gap:28px;overflow-x:auto;padding:6px 6px 8px;align-items:flex-start}
+.row .pair{margin-bottom:24px;flex:none}
+.fr{flex:none}
+.frl{font-size:12px;font-weight:700;color:var(--ink-muted);margin-bottom:8px;display:flex;gap:6px;align-items:center}
+.cap{margin-top:14px;max-width:1440px}
+.row .cap{max-width:395px}
+.cap .h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cap .code{font-size:12px;font-weight:800;background:var(--ink);color:#fff;border-radius:8px;padding:3px 8px}
+.cap .t{font-weight:700;font-size:16px}
+.cap .r{font-size:12px;font-weight:600;color:var(--musi-800);background:var(--musi-100);border-radius:999px;padding:2px 10px}
+.cap ul{margin-top:8px;padding-left:18px;font-size:13px;color:var(--ink-soft);line-height:1.6}
+
+/* frame browser desktop */
+.bw{border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -30px rgba(18,33,63,.45);border:1px solid #DDD6C8}
+.bw .bar{height:40px;background:#E8E4DC;display:flex;align-items:center;gap:8px;padding:0 14px}
+.bw .bar i{width:12px;height:12px;border-radius:50%;background:#D2CBBD;display:block}
+.bw .url{margin-left:14px;background:#fff;border-radius:999px;padding:4px 16px;font-size:12px;font-weight:600;color:var(--ink-muted);min-width:320px;display:flex;gap:6px;align-items:center}
+.vp{overflow:hidden;position:relative;transition:width .35s var(--ease-halus)}
+/* frame browser HP */
+.mw{width:395px;padding:10px;border-radius:40px;background:#0F1A33;box-shadow:0 30px 60px -30px rgba(18,33,63,.55)}
+.mw .mbar{background:#F3F1EC;border-radius:30px 30px 0 0;padding:14px 14px 10px;display:flex;gap:8px;align-items:center}
+.mw .mbar .url{flex:1;background:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--ink-muted);display:flex;gap:6px;align-items:center;min-width:0;white-space:nowrap;overflow:hidden}
+.mw .vp{border-radius:0 0 30px 30px}
+
+/* pratinjau interaktif */
+.pv-tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.pv-tools select{height:44px;border-radius:999px;border:1.5px solid var(--garis);background:#fff;padding:0 16px;font-weight:600;font-size:14px}
+.seg-btn{display:flex;background:#fff;border-radius:999px;padding:4px;box-shadow:var(--sh-lembut)}
+.seg-btn button{height:38px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:700;color:var(--ink-soft);transition:background .2s,color .2s}
+.seg-btn button.on{background:var(--ink);color:#fff}
+.pv-stage{overflow-x:auto;padding:6px}
+.pv-stage .bw{width:max-content}
+
+/* =====================================================================
+   KOMPONEN APLIKASI
+   ===================================================================== */
+.h-display{font-size:30px;line-height:36px;font-weight:800;letter-spacing:-.02em}
+.h1{font-size:28px;line-height:34px;font-weight:700;letter-spacing:-.02em}
+.h2{font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.01em}
+.h3{font-size:18px;line-height:24px;font-weight:600}
+.p{font-size:16px;line-height:26px;color:var(--ink-soft)}
+.ps{font-size:14px;line-height:22px;font-weight:500;color:var(--ink-soft)}
+.cp{font-size:12px;line-height:18px;font-weight:600;color:var(--ink-muted)}
+.muted{color:var(--ink-muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 22px;border-radius:999px;font-size:15px;line-height:20px;font-weight:600;white-space:nowrap;text-decoration:none;transition:transform .15s var(--ease-halus),box-shadow .15s var(--ease-halus),background-color .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--sh-angkat)}
+.btn:active{transform:scale(.97)}
+.btn.lg{height:52px;padding:0 26px;font-size:16px}
+.btn.sm{height:40px;padding:0 16px;font-size:14px}
+.btn.full{width:100%}
+.b-utama{background:var(--musi-600);color:#fff}.b-utama:hover{background:var(--musi-700)}
+.b-ajakan{background:var(--koral-500);color:var(--ink);font-weight:700;box-shadow:0 10px 24px -10px rgba(255,107,87,.7)}
+.b-ajakan:hover{box-shadow:0 16px 32px -12px rgba(255,107,87,.8)}
+.b-lembut{background:var(--musi-100);color:var(--musi-800)}
+.b-garis{background:#fff;color:var(--ink);border:1.5px solid var(--garis)}
+.b-valid{background:var(--toska-400);color:var(--ink);font-weight:700}
+.b-valid:hover{box-shadow:0 16px 32px -12px rgba(25,211,189,.6)}
+.b-tolak{background:#fff;color:var(--berat-tx);border:1.5px solid var(--berat-tx)}
+.b-ungu{background:var(--ungu-600);color:#fff}
+.btn[disabled],.btn.dis{opacity:.45;pointer-events:none;box-shadow:none}
+.ibtn{width:44px;height:44px;border-radius:999px;display:inline-grid;place-items:center;background:#fff;color:var(--ink);box-shadow:var(--sh-lembut);transition:transform .15s var(--ease-halus);flex:none}
+.ibtn:active{transform:scale(.94)}
+.link{color:var(--musi-600);font-weight:600;font-size:14px;text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--garis);background:#fff;font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;transition:background .2s var(--ease-halus),color .2s,border-color .2s,transform .15s var(--ease-halus)}
+.chip:active{transform:scale(.97)}
+.chip.on{background:var(--musi-600);border-color:var(--musi-600);color:#fff}
+.chip.sm{min-height:36px;padding:0 12px;font-size:13px}
+.chip .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.chip.on .dot{box-shadow:0 0 0 2px #fff}
+.badge{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;transition:background-color .2s,color .2s}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.badge.lg{height:34px;padding:0 14px;font-size:14px}
+.t-berat{background:var(--berat-bg);color:var(--berat-tx)}
+.t-sedang{background:var(--sedang-bg);color:var(--sedang-tx)}
+.t-ringan{background:var(--ringan-bg);color:var(--ringan-tx)}
+.s-menunggu{background:var(--ceria-100);color:var(--ceria-800)}
+.s-valid{background:var(--musi-100);color:var(--musi-800)}
+.s-ditolak{background:var(--abu-100);color:var(--ink-soft)}
+.tag-n{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;background:var(--musi-100);color:var(--musi-800)}
+.card{background:#fff;border-radius:24px;box-shadow:var(--sh-lembut);padding:20px}
+.card.hov{transition:transform .2s var(--ease-halus),box-shadow .2s var(--ease-halus)}
+.card.hov:hover{transform:translateY(-2px);box-shadow:var(--sh-angkat)}
+.field{display:flex;flex-direction:column;gap:8px}
+.field>label,.flabel{font-size:14px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.flabel .opt,.field>label .opt{font-size:12px;font-weight:600;color:var(--ink-muted)}
+.input{height:52px;border-radius:16px;border:1.5px solid var(--garis);background:#fff;padding:0 16px;font-size:16px;display:flex;align-items:center;gap:10px;width:100%;color:var(--ink);transition:border-color .2s,box-shadow .2s;white-space:nowrap;overflow:hidden}
+.input.ph{color:var(--ink-muted)}
+.input.focus{border-color:var(--musi-600);box-shadow:0 0 0 4px var(--musi-100)}
+.input.err{border-color:var(--berat);box-shadow:0 0 0 4px var(--berat-bg)}
+.input .end{margin-left:auto;color:var(--ink-muted);display:flex}
+.textarea{min-height:112px;border-radius:16px;border:1.5px solid var(--garis);background:#fff;padding:14px 16px;font-size:16px;line-height:24px;color:var(--ink)}
+.help{font-size:13px;font-weight:500;color:var(--ink-muted);display:flex;justify-content:space-between;gap:8px}
+.help.err{color:var(--berat-tx);font-weight:600}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper .seg{flex:1;height:8px;border-radius:999px;background:var(--garis);overflow:hidden;position:relative}
+.stepper .seg i{position:absolute;inset:0;background:var(--ceria-400);border-radius:999px;transform-origin:left;transform:scaleX(0);transition:transform .3s var(--ease-halus)}
+.stepper .seg.done i{transform:scaleX(1)}
+.steplabel{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;font-weight:700;color:var(--ink-muted)}
+.steplabel .on{color:var(--ink)}
+.stat{border-radius:24px;padding:18px 20px}
+.stat .l{font-size:13px;font-weight:700}
+.stat .v{font-size:34px;line-height:40px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-top:4px}
+.stat .d{font-size:12px;font-weight:600;color:var(--ink-soft)}
+.st-musi{background:var(--musi-100)}.st-musi .l{color:var(--musi-800)}
+.st-ceria{background:var(--ceria-100)}.st-ceria .l{color:var(--ceria-800)}
+.st-toska{background:var(--toska-100)}.st-toska .l{color:var(--toska-800)}
+.st-abu{background:var(--abu-100)}.st-abu .l{color:var(--ink-soft)}
+.st-putih{background:#fff;box-shadow:var(--sh-lembut)}.st-putih .l{color:var(--ink-soft)}
+.rcard{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:20px;padding:12px;box-shadow:var(--sh-lembut);transition:transform .2s var(--ease-halus),box-shadow .2s var(--ease-halus)}
+.rcard:hover{transform:translateY(-2px);box-shadow:var(--sh-angkat)}
+.rcard.sel{outline:2px solid var(--musi-600)}
+.rcard .th{width:76px;height:76px;border-radius:16px;flex:none}
+.rcard .tt{font-size:15px;line-height:21px;font-weight:700;color:var(--ink)}
+.rcard .mt{font-size:13px;line-height:19px;font-weight:500;color:var(--ink-muted);margin:4px 0 8px;display:flex;gap:4px;align-items:center}
+.tl{list-style:none;position:relative}
+.tl li{position:relative;padding:0 0 22px 40px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:13px;top:28px;bottom:2px;width:3px;border-radius:3px;background:var(--garis)}
+.tl li:last-child::before{display:none}
+.tl li.done::before{background:var(--toska-400)}
+.tl .dt{position:absolute;left:0;top:0;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:var(--garis);color:#fff}
+.tl li.done .dt{background:var(--toska-400);color:var(--ink)}
+.tl li.wait .dt{background:var(--ceria-400);color:var(--ink)}
+.tl li.wait .dt::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:3px solid var(--ceria-400);animation:pulse 1.6s var(--ease-halus) infinite}
+.tl li.no .dt{background:var(--ink-soft)}
+.tl b{display:block;font-size:15px;font-weight:700}
+.tl span{font-size:13px;color:var(--ink-muted);font-weight:500}
+.sk{border-radius:12px;background:linear-gradient(90deg,#EFEAE0 0%,#F8F4EC 40%,#EFEAE0 80%);background-size:200% 100%;animation:shimmer 1.4s linear infinite}
+.toast{display:flex;gap:12px;align-items:center;background:var(--ink);color:#fff;border-radius:18px;padding:14px 18px;font-size:14px;font-weight:600;box-shadow:0 20px 40px -16px rgba(18,33,63,.5)}
+.toast .ok{width:28px;height:28px;border-radius:50%;background:var(--toska-400);color:var(--ink);display:grid;place-items:center;flex:none}
+.foto{position:relative;overflow:hidden;background:#6E8F84}
+.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+.foto.oli{background:radial-gradient(42% 30% at 42% 60%,#22222c 0,#353844 45%,transparent 75%),radial-gradient(30% 22% at 62% 48%,rgba(140,95,210,.45),transparent 70%),radial-gradient(26% 18% at 30% 45%,rgba(40,190,200,.35),transparent 70%),linear-gradient(170deg,#9AB9B2 0%,#62897F 45%,#3D5A52 100%)}
+.foto.sampah{background:radial-gradient(circle at 28% 62%,#F4F4F4 0 6%,transparent 7%),radial-gradient(circle at 46% 54%,#FFCF5A 0 4%,transparent 5%),radial-gradient(circle at 63% 66%,#E9563F 0 5%,transparent 6%),radial-gradient(circle at 39% 74%,#4FA3FF 0 4%,transparent 5%),radial-gradient(circle at 72% 52%,#FFFFFF 0 4%,transparent 5%),radial-gradient(circle at 55% 78%,#8BD17C 0 4%,transparent 5%),linear-gradient(170deg,#AFC198 0%,#7E915F 45%,#58673D 100%)}
+.foto.busa{background:radial-gradient(48% 30% at 48% 62%,rgba(255,255,255,.95),rgba(255,255,255,.45) 55%,transparent 75%),radial-gradient(22% 14% at 70% 45%,rgba(255,255,255,.8),transparent 70%),linear-gradient(170deg,#A4C9CE,#6C979D 50%,#4B6F74)}
+.foto.gulma{background:radial-gradient(circle at 30% 62%,#3F8A3A 0 13%,transparent 14%),radial-gradient(circle at 58% 55%,#56A04B 0 15%,transparent 16%),radial-gradient(circle at 78% 70%,#3A7D34 0 11%,transparent 12%),radial-gradient(circle at 45% 80%,#4C9443 0 9%,transparent 10%),linear-gradient(170deg,#A2C2B9,#6F978C 50%,#4E7067)}
+.foto.gelap{background:linear-gradient(170deg,#3a404c,#1d2129)}
+.map{position:relative;overflow:hidden;background:#EEF2E6}
+.map svg.base{position:absolute;inset:0;width:100%;height:100%}
+.mpin{position:absolute;transform:translate(-50%,-100%);display:block;filter:drop-shadow(0 4px 3px rgba(18,33,63,.28));z-index:1}
+.mpin svg{display:block;width:100%;height:100%;transform-origin:center bottom}
+.mpulse{position:absolute;width:64px;height:64px;border-radius:50%;background:rgba(29,111,242,.16);transform:translate(-50%,-50%);box-shadow:0 0 0 14px rgba(29,111,242,.08)}
+.mlabel{position:absolute;font-size:12px;font-weight:700;color:#3F78B8;transform:rotate(-6deg);white-space:nowrap}
+.map .ctrl{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;background:#fff;border-radius:16px;box-shadow:var(--sh-lembut);overflow:hidden;z-index:2}
+.map .ctrl b{width:40px;height:40px;display:grid;place-items:center;font-size:20px;font-weight:600;color:var(--ink)}
+.map .ctrl b+b{border-top:1px solid var(--garis)}
+.legend{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.95);border-radius:14px;padding:8px 12px;display:flex;gap:12px;font-size:12px;font-weight:700;box-shadow:var(--sh-lembut);z-index:2}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%;display:block}
+.popup{position:absolute;width:232px;background:#fff;border-radius:20px;box-shadow:0 20px 40px -14px rgba(18,33,63,.4);overflow:hidden;z-index:3}
+.popup .ph{height:96px}
+.popup .bd{padding:12px 14px 14px}
+.popup .bd b{font-size:14px;line-height:19px;display:block}
+.popup .bd .cp{margin:4px 0 8px}
+.map-chip{position:absolute;left:12px;top:12px;background:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;box-shadow:var(--sh-lembut);display:flex;gap:6px;align-items:center;z-index:2;white-space:nowrap}
+.live{width:8px;height:8px;border-radius:50%;background:var(--toska-400);animation:livep 2s infinite;flex:none}
+.check-c{width:96px;height:96px;border-radius:50%;background:var(--toska-400);display:grid;place-items:center;box-shadow:0 0 0 12px var(--toska-100);position:relative}
+.check-c svg{width:48px;height:48px;stroke:var(--ink);stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.check-c path{stroke-dasharray:30;stroke-dashoffset:0}
+.confetti i{position:absolute;width:9px;height:14px;border-radius:3px;display:block}
+.blob{position:absolute;border-radius:50%;filter:blur(2px)}
+.ggp{display:inline-grid;place-items:center;background:#fff;border-radius:14px;padding:3px;flex:none;box-shadow:0 0 0 1px var(--garis)}
+.ggp img{display:block;width:100%;height:100%;object-fit:contain;border-radius:10px}
+.with{display:flex;align-items:center;gap:10px;padding-left:16px;margin-left:4px;border-left:1px solid var(--garis)}
+.with small{font-size:12px;font-weight:600;color:var(--ink-muted);line-height:1.2}
+.hpill .ggp{box-shadow:none}
+.av{width:40px;height:40px;border-radius:50%;background:var(--ungu-600);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}
+.toggle{width:46px;height:28px;border-radius:999px;background:var(--toska-400);position:relative;flex:none}
+.toggle::after{content:"";position:absolute;right:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.toggle.off{background:#CBD2DF}.toggle.off::after{right:auto;left:3px}
+.overlay{position:absolute;inset:0;background:rgba(18,33,63,.45);display:grid;place-items:center;z-index:20}
+.modal{width:520px;max-width:calc(100% - 32px);background:#fff;border-radius:28px;padding:28px;box-shadow:0 30px 60px -20px rgba(18,33,63,.5)}
+
+/* =====================================================================
+   HALAMAN WEB RESPONSIF (container query = lebar jendela browser)
+   < 768 px : HP     768–1023 px : tablet     >= 1024 px : desktop
+   ===================================================================== */
+.page{container:pg / inline-size;background:var(--krem);color:var(--ink);min-height:640px;position:relative}
+.cw{max-width:1120px;margin:0 auto;padding:0 32px}
+.mb,.mbb{display:none!important}
+.tb{display:none}
+.stack{display:flex;flex-direction:column;gap:16px}
+
+/* header situs warga */
+.wh{position:sticky;top:0;z-index:10;background:rgba(255,249,239,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--garis)}
+.wh .cw{display:flex;align-items:center;gap:28px;height:72px}
+.logo{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--ink)}
+.logo .mk{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,var(--musi-600),var(--toska-400));display:grid;place-items:center;color:#fff;box-shadow:0 8px 16px -8px rgba(29,111,242,.6);flex:none}
+.logo .wm{font-weight:800;font-size:18px;letter-spacing:-.02em;line-height:1}
+.logo .wm small{display:block;font-size:12px;font-weight:600;color:var(--ink-muted);letter-spacing:0;margin-top:3px}
+.wnav{display:flex;gap:4px}
+.wnav a{height:40px;padding:0 16px;border-radius:999px;display:flex;align-items:center;font-size:15px;font-weight:600;color:var(--ink-soft);text-decoration:none;transition:background .2s var(--ease-halus),color .2s}
+.wnav a:hover{background:#fff;color:var(--ink)}
+.wnav a.on{background:var(--musi-600);color:#fff}
+/* footer situs */
+.wf{margin-top:64px;background:#fff;border-top:1px solid var(--garis)}
+.wf .cw{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding-top:28px;padding-bottom:28px;flex-wrap:wrap}
+.wf .fl{display:flex;gap:20px;flex-wrap:wrap}
+.wf .fl a{font-size:14px;font-weight:600;color:var(--ink-soft);text-decoration:none}
+.wf p{font-size:13px;color:var(--ink-muted);max-width:420px;margin-top:10px}
+
+/* beranda */
+.hero-band{margin-top:28px;border-radius:32px;padding:48px;display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:center;color:#fff;position:relative;overflow:hidden;background:linear-gradient(120deg,var(--musi-600) 0%,var(--musi-600) 55%,#2A9BE6 82%,var(--toska-400) 118%)}
+.hero-band h1{font-size:44px;line-height:50px;font-weight:800;letter-spacing:-.02em;position:relative}
+.hero-band p{font-size:17px;line-height:27px;font-weight:500;margin:14px 0 24px;max-width:460px;position:relative}
+.hpill{display:inline-flex;align-items:center;gap:8px;background:rgba(18,33,63,.28);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;margin-bottom:16px;position:relative}
+.hcta{display:flex;gap:12px;flex-wrap:wrap;position:relative}
+.hghost{border:1.5px solid rgba(255,255,255,.9);color:#fff}
+.hsteps{display:flex;flex-direction:column;gap:12px;position:relative}
+.hstep{background:#fff;color:var(--ink);border-radius:20px;padding:14px 18px;display:flex;gap:14px;align-items:center;box-shadow:0 16px 30px -18px rgba(18,33,63,.6);font-weight:700;font-size:15px}
+.hstep .n{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-weight:800;flex:none}
+.hstep small{display:block;font-size:12px;font-weight:600;color:var(--ink-muted)}
+.hero-band .wave{position:absolute;right:-30px;bottom:-30px;width:300px;opacity:.9}
+.map-sec{display:grid;grid-template-columns:360px minmax(0,1fr);grid-template-areas:"hd hd" "fz mz" "lz mz";grid-template-rows:auto auto 1fr;gap:16px 24px;margin-top:48px}
+.ms-head{grid-area:hd;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.fz{grid-area:fz}.mz{grid-area:mz;min-height:620px;padding:0;overflow:hidden}.lz{grid-area:lz}
+.mz .map{height:100%;min-height:inherit}
+
+/* form lapor */
+.lp-head{padding-top:28px;max-width:760px}
+.lp-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;margin-top:24px;align-items:start}
+.cardp{padding:28px}
+.fnav{display:flex;justify-content:space-between;gap:12px;margin-top:28px;padding-top:20px;border-top:1px solid var(--garis)}
+.drop{border:2px dashed #CFC6B3;border-radius:24px;padding:40px 24px;text-align:center;background:var(--krem);transition:border-color .2s,background .2s}
+.drop:hover{border-color:var(--musi-600);background:var(--musi-100)}
+.pick{width:100%;border-radius:22px;padding:20px;display:flex;gap:14px;align-items:center;text-align:left}
+.loc-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:24px;margin-top:16px}
+.det-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-top:16px;align-items:start}
+.kbox{background:var(--krem);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.tj-grid{display:grid;grid-template-columns:300px 1fr;gap:24px;margin-top:16px}
+.tj-sec{border-top:1px solid var(--garis);padding-top:12px}
+.tj-sec:first-child{border-top:0;padding-top:0}
+.narrow{max-width:600px;margin:0 auto}
+.lform{display:flex;gap:10px}
+.st-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px;align-items:start}
+.pd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+.pd-step{border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.pd-step .ic-b{width:48px;height:48px;border-radius:16px;display:grid;place-items:center}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* menu HP */
+.mmenu{position:absolute;left:0;right:0;top:60px;bottom:0;background:rgba(18,33,63,.45);z-index:9}
+.mmenu .pn{background:#fff;border-radius:0 0 28px 28px;padding:12px 16px 20px;box-shadow:0 20px 40px -20px rgba(18,33,63,.5)}
+.mmenu .pn a{display:flex;align-items:center;gap:14px;height:56px;padding:0 14px;border-radius:16px;font-size:16px;font-weight:700;color:var(--ink);text-decoration:none}
+.mmenu .pn a.on{background:var(--musi-100);color:var(--musi-800)}
+
+/* admin */
+.ash{display:flex;min-height:760px;background:var(--abu-100)}
+.side{width:256px;flex:none;background:#fff;display:flex;flex-direction:column;padding:22px 16px;gap:4px}
+.side .logo{padding:0 8px 22px}
+.side .mi{display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;border-radius:16px;font-size:15px;font-weight:600;color:var(--ink-soft);transition:background .2s var(--ease-halus),color .2s}
+.side .mi:hover{background:var(--krem)}
+.side .mi.on{background:var(--ungu-100);color:var(--ungu-800)}
+.side .mi .n{margin-left:auto;background:var(--ungu-600);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:1px 9px}
+.side .who{margin-top:auto;display:flex;gap:12px;align-items:center;padding:14px;border-radius:18px;background:var(--abu-100)}
+.acol{flex:1;min-width:0;display:flex;flex-direction:column}
+.atop{display:none;align-items:center;gap:12px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--garis);position:sticky;top:0;z-index:5}
+.atop .tt{flex:1;font-weight:700;font-size:17px}
+.amain{flex:1;padding:28px 32px;display:flex;flex-direction:column;gap:20px;min-width:0;container:am / inline-size}
+.ahead{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ahead .grow{flex:1;min-width:0}
+.stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tabs{display:flex;gap:6px;background:#fff;border-radius:999px;padding:5px;box-shadow:var(--sh-lembut);width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs b{height:40px;padding:0 18px;border-radius:999px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ink-soft);white-space:nowrap}
+.tabs b.on{background:var(--ink);color:#fff}
+.tabs b i{font-style:normal;font-size:12px;font-weight:700;background:var(--abu-100);color:var(--ink-soft);border-radius:999px;padding:0 8px}
+.tabs b.on i{background:var(--ceria-400);color:var(--ink)}
+.fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.fbar .input{height:44px;border-radius:999px;width:auto;font-size:14px;font-weight:500}
+.tscroll{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-size:13px;font-weight:700;color:var(--ink-muted);padding:12px 14px;border-bottom:1px solid var(--garis);white-space:nowrap}
+.tbl td{padding:12px 14px;font-size:14px;font-weight:500;border-bottom:1px solid var(--garis);vertical-align:middle}
+.tbl td.nw{white-space:nowrap}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr{transition:background .2s}
+.tbl tbody tr:hover{background:var(--krem)}
+.tbl .thumb{width:52px;height:52px;border-radius:14px}
+.tbl .tt{font-weight:700;color:var(--ink);font-size:14px}
+.sort{display:inline-flex;gap:4px;align-items:center}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:14px}
+.kv dt{color:var(--ink-muted);font-weight:600}
+.kv dd{font-weight:600}
+.det2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:start}
+@container am (max-width:760px){.det2{display:flex;flex-direction:column;align-items:stretch;gap:16px}.det2>.dcol{display:contents}.o1{order:1}.o2{order:2}.o3{order:3}.o4{order:4}.o5{order:5}.o6{order:6}.ahead .h1.num{display:none}}
+.dcol{display:flex;flex-direction:column;gap:16px}
+.k3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.k3>div{background:var(--krem);border-radius:18px;padding:14px}
+.lokc{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:center}
+.apeta{position:relative;flex:1;display:flex;flex-direction:column}
+.apeta .map{border-radius:24px;min-height:540px;box-shadow:var(--sh-lembut)}
+.apeta .sel{position:absolute;right:68px;top:16px;width:300px;padding:0;overflow:hidden;z-index:4}
+.rk3{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:16px}
+.bars .br{display:grid;grid-template-columns:128px 1fr 32px;gap:12px;align-items:center;font-size:13px;font-weight:600;margin-bottom:10px}
+.bars .br .tr{height:14px;border-radius:999px;background:var(--abu-100);overflow:hidden}
+.bars .br .tr i{display:block;height:100%;border-radius:999px;background:var(--musi-600)}
+.mlist{display:flex;flex-direction:column;gap:10px}
+.login{display:grid;grid-template-columns:1fr 1fr;min-height:720px;background:#fff}
+.login .lp{background:var(--ungu-600);position:relative;overflow:hidden;padding:56px;color:#fff;display:flex;flex-direction:column}
+.login .lf{display:grid;place-items:center;padding:32px}
+.drawer{position:absolute;left:0;top:0;bottom:0;width:290px;z-index:21;box-shadow:20px 0 40px -20px rgba(18,33,63,.4)}
+
+/* ---------- tablet ---------- */
+@container pg (max-width:1023px){
+  .map-sec{grid-template-columns:minmax(0,1fr);grid-template-areas:"hd" "fz" "mz" "lz"}
+  .mz{min-height:400px}
+  .lp-grid{grid-template-columns:minmax(0,1fr)}
+  .ash>.side:not(.drawer){display:none}
+  .atop{display:flex}
+  .amain{padding:22px 20px}
+  .rk3{grid-template-columns:1fr 1fr}
+  .rk3>.rk-ex{grid-column:1 / -1}
+  .login{grid-template-columns:1fr}
+  .login .lp{display:none}
+  .pd-grid{grid-template-columns:repeat(2,1fr)}
+  .apeta .sel{position:static;width:auto;margin-top:12px}
+  .lgv{display:none!important}
+  .tb{display:inline}
+  .wh .logo .wm small{display:none}
+  .wh .cw{gap:18px}
+}
+/* ---------- HP ---------- */
+@container pg (max-width:767px){
+  .cw{padding:0 16px}
+  .dk{display:none!important}
+  .mb{display:flex!important}
+  .mbb{display:block!important}
+  .wh .cw{height:60px;gap:10px}
+  .wh .logo .wm small{display:none}
+  .hero-band{grid-template-columns:1fr;padding:24px 20px;border-radius:24px;margin-top:16px}
+  .hero-band h1{font-size:30px;line-height:36px}
+  .hero-band p{font-size:15px;line-height:23px;margin:10px 0 18px}
+  .hcta .btn{width:100%}
+  .hero-band .wave{width:200px}
+  .map-sec{margin-top:28px;gap:12px}
+  .mz{min-height:300px}
+  .wf{margin-top:40px}
+  .wf .cw{flex-direction:column}
+  .lp-head{padding-top:18px}
+  .cardp{padding:20px}
+  .loc-grid,.det-grid,.tj-grid,.st-grid,.two{grid-template-columns:minmax(0,1fr)}
+  .fnav{position:sticky;bottom:0;background:#fff;margin:24px -20px -20px;padding:12px 16px 16px;border-radius:0 0 24px 24px;box-shadow:0 -10px 24px -18px rgba(18,33,63,.35)}
+  .fnav .btn.grow{flex:1}
+  .lform{flex-direction:column}
+  .lform .btn{width:100%}
+  .pd-grid{grid-template-columns:1fr}
+  .stats4{grid-template-columns:1fr 1fr}
+  .stat{padding:14px 16px}.stat .v{font-size:28px;line-height:34px}
+  .amain{padding:18px 16px;gap:16px}
+  .h1{font-size:24px;line-height:30px}
+  .k3{grid-template-columns:1fr}
+  .lokc{grid-template-columns:1fr}
+  .rk3{grid-template-columns:1fr}
+  .apeta .map{min-height:340px}
+  .login .lf{place-items:start center;padding:28px 20px}
+  .overlay.sheet-m{place-items:end stretch}
+  .overlay.sheet-m .modal{width:100%;max-width:100%;border-radius:28px 28px 0 0;padding:22px 20px}
+  .tbl.dk-t{display:none}
+}
+
+/* =====================================================================
+   GERAK (Bagian 9.4)
+   ===================================================================== */
+@keyframes shimmer{to{background-position:-200% 0}}
+@keyframes pulse{0%{transform:scale(.8);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+@keyframes livep{0%{box-shadow:0 0 0 0 rgba(25,211,189,.6)}70%{box-shadow:0 0 0 8px rgba(25,211,189,0)}100%{box-shadow:0 0 0 0 rgba(25,211,189,0)}}
+@keyframes stepFwd{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes stepBack{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@keyframes slideRight{from{transform:translateX(-100%)}to{transform:none}}
+@keyframes toastIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+@keyframes drop{from{opacity:0;transform:translateY(-36px)}to{opacity:1;transform:none}}
+@keyframes draw{from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+@keyframes bloom{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes conf{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.a-fwd{animation:stepFwd .25s var(--ease-halus) both}
+.a-back{animation:stepBack .25s var(--ease-halus) both}
+.a-page{animation:pageIn .2s var(--ease-halus) both}
+.a-pop{animation:pop .2s var(--ease-halus) both}
+.a-fade{animation:fadeIn .2s var(--ease-halus) both}
+.a-down{animation:slideDown .25s var(--ease-halus) both}
+.a-drawer{animation:slideRight .3s var(--ease-halus) both}
+.a-toast{animation:toastIn .25s var(--ease-halus) both}
+.a-drop{animation:drop .4s var(--ease-pantul) both}
+.a-stag>*{animation:pageIn .25s var(--ease-halus) both}
+.a-stag>*:nth-child(2){animation-delay:40ms}.a-stag>*:nth-child(3){animation-delay:80ms}.a-stag>*:nth-child(4){animation-delay:120ms}.a-stag>*:nth-child(5){animation-delay:160ms}.a-stag>*:nth-child(6){animation-delay:200ms}.a-stag>*:nth-child(7){animation-delay:240ms}.a-stag>*:nth-child(8){animation-delay:280ms}
+.a-check{animation:bloom .35s var(--ease-pantul) both}
+.a-check path{animation:draw .45s .15s var(--ease-halus) both}
+.a-conf i{animation:conf .6s var(--ease-halus) both}
+@media (prefers-reduced-motion: reduce){
+  .a-fwd,.a-back,.a-page,.a-pop,.a-down,.a-drawer,.a-toast,.a-drop,.a-stag>*,.a-check{animation-name:fadeOnly!important;animation-duration:.12s!important;animation-delay:0s!important}
+  .a-check path{animation:none!important}
+  .confetti,.a-conf{display:none!important}
+  .btn:hover,.card.hov:hover,.rcard:hover{transform:none}
+  .tl li.wait .dt::after,.live,.sk{animation:none!important}
+  .vp{transition:none}
+}
+body.rm .a-fwd,body.rm .a-back,body.rm .a-page,body.rm .a-pop,body.rm .a-down,body.rm .a-drawer,body.rm .a-toast,body.rm .a-drop,body.rm .a-stag>*,body.rm .a-check{animation-name:fadeOnly!important;animation-duration:.12s!important;animation-delay:0s!important}
+body.rm .a-check path{animation:none!important}
+body.rm .confetti,body.rm .a-conf{display:none!important}
+body.rm .btn:hover,body.rm .card.hov:hover,body.rm .rcard:hover{transform:none}
+body.rm .tl li.wait .dt::after,body.rm .live,body.rm .sk{animation:none!important}
+body.rm .vp{transition:none}
+.stage{position:relative;height:300px;border-radius:24px;background:var(--krem);overflow:hidden;display:grid;place-items:center;border:1px dashed var(--garis)}
+.demo .lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.demo .lbl b{font-size:15px}
+.demo .lbl span{font-size:12px;font-weight:700;color:var(--ink-muted);text-align:right}
+.demo .act{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<div class="doc-top"><div class="in">
+  <div class="logo"><div class="mk"><i data-i="droplet"></i></div><div class="wm">SIPEPES<small>Referensi Desain Web v2.0</small></div></div>
+  <nav><a href="#token">Token</a><a href="#komponen">Komponen</a><a href="#gerak">Gerak</a><a href="#pratinjau">Pratinjau responsif</a><a href="#warga">Halaman warga</a><a href="#admin">Halaman admin</a></nav>
+  <label><input type="checkbox" id="rmToggle"> Simulasikan reduced motion</label>
+</div></div>
+
+<div class="wrap">
+<header class="doc-hero">
+  <div>
+    <h1>SIPEPES adalah <em>website responsif</em>, bukan aplikasi HP.</h1>
+    <p>Referensi visual pendamping <b>plan.md</b>. Setiap halaman dirender dari markup yang sama di jendela browser laptop (1024 px) dan browser HP (375 px), memakai <i>container query</i> sehingga perilaku responsifnya nyata, bukan gambar terpisah. Palet fun, gerak smooth, font Montserrat.</p>
+  </div>
+  <div class="doc-note">
+    <h3>Cara memakai file ini</h3>
+    <ul>
+      <li>Buka langsung di browser, tidak perlu build. Coba bagian <b>Pratinjau responsif</b> untuk melihat satu halaman di 375, 768, 1024, dan 1280 px.</li>
+      <li>Ikuti file ini untuk tata letak, warna, dan teks. Untuk aturan dan angka, <b>plan.md</b> yang berlaku bila berbeda.</li>
+      <li>Peta adalah ilustrasi SVG (implementasi: Leaflet + OSM). Foto placeholder. Data fiktif.</li>
+      <li>Kode halaman (W1, A3, dan seterusnya) dipakai di PR dan diskusi.</li>
+    </ul>
+  </div>
+</header>
+<div class="bp">
+  <div><b>HP · di bawah 768 px</b>Satu kolom. Header ringkas: logo, tombol "Lapor", dan menu hamburger. Tabel jadi kartu.</div>
+  <div><b>Tablet · 768–1023 px</b>Satu kolom lebar. Peta di atas daftar. Sidebar admin jadi laci dari tombol menu.</div>
+  <div><b>Desktop · 1024 px ke atas</b>Navigasi lengkap di header, dua kolom, sidebar admin tetap. Konten maksimal 1120 px di tengah.</div>
+  <div><b>Bukan pola aplikasi</b>Tanpa tab bar bawah, tanpa status bar palsu, tanpa layar splash. Semua halaman punya URL, header, dan footer.</div>
+</div>
+
+<!-- =================================================================== TOKEN -->
+<section class="sec" id="token">
+  <h2>Token <span class="tag">plan 9.1–9.3</span></h2>
+  <p class="lead">Lima warna merek dengan satu warna dominan per halaman. Warna tingkat dugaan punya arti tetap. Teks di atas Koral, Kuning, dan Toska selalu memakai Tinta (navy), bukan putih.</p>
+  <div class="grid g5">
+    <div class="sw"><div class="c" style="background:var(--musi-600);color:#fff">Aa Biru Musi</div><div class="m"><b>musi-600</b><code>#1D6FF2</code> · utama, teks putih</div></div>
+    <div class="sw"><div class="c" style="background:var(--koral-500);color:var(--ink)">Aa Koral</div><div class="m"><b>koral-500</b><code>#FF6B57</code> · ajakan lapor, teks ink</div></div>
+    <div class="sw"><div class="c" style="background:var(--ceria-400);color:var(--ink)">Aa Kuning Ceria</div><div class="m"><b>ceria-400</b><code>#FFC93C</code> · aksen, stepper</div></div>
+    <div class="sw"><div class="c" style="background:var(--toska-400);color:var(--ink)">Aa Toska</div><div class="m"><b>toska-400</b><code>#19D3BD</code> · berhasil, Tandai Valid</div></div>
+    <div class="sw"><div class="c" style="background:var(--ungu-600);color:#fff">Aa Ungu</div><div class="m"><b>ungu-600</b><code>#6B4BF0</code> · aksen halaman admin</div></div>
+  </div>
+  <div class="grid g5" style="margin-top:16px">
+    <div class="sw"><div class="c" style="background:var(--musi-100);color:var(--musi-800)">musi-100 / 800</div><div class="m"><code>#E3EEFF</code> / <code>#1447B0</code></div></div>
+    <div class="sw"><div class="c" style="background:var(--koral-100);color:var(--ink)">koral-100</div><div class="m"><code>#FFE3E3</code> · sorotan, alasan tolak</div></div>
+    <div class="sw"><div class="c" style="background:var(--ceria-100);color:var(--ceria-800)">ceria-100 / 800</div><div class="m"><code>#FFF1C9</code> / <code>#8A5300</code></div></div>
+    <div class="sw"><div class="c" style="background:var(--toska-100);color:var(--toska-800)">toska-100 / 800</div><div class="m"><code>#D5F7F1</code> / <code>#0B6B5E</code></div></div>
+    <div class="sw"><div class="c" style="background:var(--ungu-100);color:var(--ungu-800)">ungu-100 / 800</div><div class="m"><code>#EEE9FF</code> / <code>#5A3FD6</code></div></div>
+  </div>
+  <div class="grid g5" style="margin-top:16px">
+    <div class="sw"><div class="c" style="background:var(--ink);color:#fff">ink</div><div class="m"><code>#12213F</code> · judul, teks utama</div></div>
+    <div class="sw"><div class="c" style="background:var(--ink-soft);color:#fff">ink-soft</div><div class="m"><code>#4A5878</code> · teks isi</div></div>
+    <div class="sw"><div class="c" style="background:var(--krem);color:var(--ink);border-bottom:1px solid var(--garis)">krem</div><div class="m"><code>#FFF9EF</code> · latar situs warga</div></div>
+    <div class="sw"><div class="c" style="background:var(--abu-100);color:var(--ink)">abu-100</div><div class="m"><code>#ECEFF5</code> · latar halaman admin</div></div>
+    <div class="sw"><div class="c" style="background:#fff;color:var(--ink);border-bottom:3px solid var(--garis)">garis</div><div class="m"><code>#ECE6D9</code> · tepi dan pemisah</div></div>
+  </div>
+  <div class="grid g2" style="margin-top:20px">
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">Tingkat dugaan (marker dan lencana)</div>
+      <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap">
+        <div style="display:flex;gap:10px;align-items:center"><span data-pin="#D93A40"></span><span class="badge t-berat">Berat</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span data-pin="#FFA63D"></span><span class="badge t-sedang">Sedang</span></div>
+        <div style="display:flex;gap:10px;align-items:center"><span data-pin="#22B573"></span><span class="badge t-ringan">Ringan</span></div>
+      </div></div>
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">Status laporan</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><span class="badge lg s-menunggu">Menunggu Verifikasi</span><span class="badge lg s-valid">Valid</span><span class="badge lg s-ditolak">Ditolak</span></div></div>
+  </div>
+  <div class="sub">Logo mitra: Green Generation <small>logo resmi dari komunitas, tidak diubah</small></div>
+  <div class="grid g3">
+    <div class="panel" style="display:flex;gap:20px;align-items:center"><span data-ggp="120"></span><div class="ps"><b style="color:var(--ink);display:block">Logo asli</b>Selalu di atas wadah putih bersudut 14 px. Jangan diwarnai ulang, diregangkan, dipotong, atau diberi efek.</div></div>
+    <div class="panel"><b style="display:block;margin-bottom:10px">Tempat dan ukuran</b>
+      <ul class="ps" style="padding-left:18px;color:var(--ink)"><li>Header situs (≥ 768 px): 40 px, setelah logo SIPEPES, dipisah garis tipis</li><li>Hero beranda: 30 px di dalam pil</li><li>Footer: 64 px + "Dikelola bersama Green Generation Palembang"</li><li>Masuk admin: 64 px di panel ungu; 40 px di HP</li><li>Sidebar admin: 36 px di atas kartu pengguna</li></ul></div>
+    <div class="panel" style="background:var(--ceria-100);box-shadow:none"><b style="display:block;margin-bottom:10px">Catatan aset</b><p class="ps" style="color:var(--ink)">File yang ada berukuran 150 × 150 px berlatar putih, cukup sampai tampilan 64 px. Minta ke GGP versi PNG transparan minimal 512 px atau SVG untuk tampilan lebih tajam. Simpan di <code>client/src/assets/logo-ggp.png</code>.</p>
+      <div style="display:flex;gap:12px;align-items:center;margin-top:12px"><span data-ggp="36"></span><span data-ggp="48"></span><span data-ggp="64"></span></div></div>
+  </div>
+
+  <div class="sub">Tipografi: Montserrat <small>ukuran judul turun satu tingkat di HP</small></div>
+  <div class="panel">
+    <div style="display:grid;grid-template-columns:170px 1fr;gap:18px 24px;align-items:baseline">
+      <span class="cp">Display 44/50 · 800<br>HP 30/36</span><span style="font-size:44px;line-height:50px;font-weight:800;letter-spacing:-.02em">Sungai kotor? Laporkan saja.</span>
+      <span class="cp">H1 28/34 · 700<br>HP 24/30</span><span class="h1">Lacak laporan</span>
+      <span class="cp">H2 22/28 · 700</span><span class="h2">Peta sebaran laporan valid</span>
+      <span class="cp">H3 18/24 · 600</span><span class="h3">Tumpahan oli di Dermaga 7 Ulu</span>
+      <span class="cp">Isi 16/26 · 400</span><span class="p" style="max-width:640px">Kirim foto dan lokasi pencemaran Sungai Musi. Laporanmu diperiksa admin GG River Care sebelum tampil di peta.</span>
+      <span class="cp">Isi kecil 14/22 · 500</span><span class="ps">Seberang Ulu I · 12 Nov 2026, 21.05</span>
+      <span class="cp">Keterangan 12/18 · 600</span><span class="cp">Diperbarui 2 menit lalu</span>
+      <span class="cp">Tombol 15/20 · 600</span><span><button class="btn b-utama">Cek status</button></span>
+      <span class="cp">Kode tiket</span><span class="num" style="font-size:26px;font-weight:800">SPP-202611-0014</span>
+    </div>
+  </div>
+  <div class="sub">Bentuk dan bayangan</div>
+  <div class="grid g4">
+    <div class="panel" style="text-align:center"><button class="btn b-utama">rounded-full</button><div class="cp" style="margin-top:12px">Tombol dan chip berbentuk pil</div></div>
+    <div class="panel" style="text-align:center"><div class="input ph">rounded-2xl (16 px)</div><div class="cp" style="margin-top:12px">Input 52 px, teks 16 px</div></div>
+    <div class="panel" style="text-align:center">rounded-3xl (24 px)<div class="cp" style="margin-top:12px">Kartu, padding 20 px HP / 28 px desktop</div></div>
+    <div class="panel" style="text-align:center;box-shadow:var(--sh-angkat)">shadow-angkat<div class="cp" style="margin-top:12px">Hover tombol utama dan elemen melayang</div></div>
+  </div>
+</section>
+
+<!-- =================================================================== KOMPONEN -->
+<section class="sec" id="komponen">
+  <h2>Komponen <span class="tag">plan 9.5</span></h2>
+  <p class="lead">Komponen bersama di <code>client/src/components/</code>. Arahkan kursor dan klik untuk melihat hover dan tekan.</p>
+  <div class="grid g2">
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">Button</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <button class="btn b-utama">Utama</button><button class="btn lg b-ajakan"><i data-i="plus"></i>Laporkan Pencemaran</button><button class="btn b-lembut">Lembut</button><button class="btn b-garis">Garis</button><button class="btn b-valid"><i data-i="check"></i>Tandai Valid</button><button class="btn b-tolak"><i data-i="x"></i>Tolak</button><button class="btn b-utama" disabled>Nonaktif</button><button class="ibtn" aria-label="Buka menu"><i data-i="menu"></i></button>
+      </div></div>
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">ChipGroup</div>
+      <div class="chips" data-toggle="one"><button class="chip"><span class="dot" style="background:var(--ringan)"></span>Ringan</button><button class="chip"><span class="dot" style="background:var(--sedang)"></span>Sedang</button><button class="chip on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--berat)"></span>Berat</button></div>
+      <div class="chips" data-toggle="one" style="margin-top:12px"><button class="chip on"><i data-i="check" class="s16"></i>Minyak/Oli</button><button class="chip">Sampah plastik</button><button class="chip">Limbah cair/busa</button></div>
+      <div class="cp" style="margin-top:10px">Klik chip untuk mencoba transisi pilih.</div></div>
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">Input: normal, fokus, salah</div>
+      <div class="grid" style="gap:14px">
+        <div class="field"><label>Judul singkat <span class="opt">0/80</span></label><div class="input ph">Contoh: Oli mengapung di dermaga</div></div>
+        <div class="field"><label>Patokan <span class="opt">Opsional</span></label><div class="input focus">Dekat Dermaga 7 Ulu|</div></div>
+        <div class="field"><label>Kode tiket</label><div class="input err num">SPP-2026</div><div class="help err"><span>Format kode: SPP-YYYYMM-XXXX</span></div></div>
+      </div></div>
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">Stepper, Toast, Timeline</div>
+      <div class="stepper"><div class="seg done"><i></i></div><div class="seg done"><i></i></div><div class="seg"><i></i></div><div class="seg"><i></i></div></div>
+      <div class="steplabel"><span>Foto</span><span class="on">Lokasi</span><span>Detail</span><span>Tinjau</span></div>
+      <div class="toast" style="margin:22px 0"><span class="ok"><i data-i="check" class="s16"></i></span>Laporan SPP-202611-0014 ditandai valid</div>
+      <ul class="tl"><li class="done"><span class="dt"><i data-i="check" class="s16"></i></span><b>Laporan diterima</b><span>12 Nov 2026, 21.05</span></li><li class="wait"><span class="dt"><i data-i="clock" class="s16"></i></span><b>Diperiksa admin</b><span>Menunggu giliran</span></li></ul></div>
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">StatCard</div>
+      <div class="grid g2" style="gap:12px"><div class="stat st-musi"><div class="l">Laporan masuk</div><div class="v num">24</div></div><div class="stat st-ceria"><div class="l">Menunggu</div><div class="v num">3</div></div><div class="stat st-toska"><div class="l">Valid</div><div class="v num">18</div></div><div class="stat st-abu"><div class="l">Ditolak</div><div class="v num">3</div></div></div>
+      <div class="cp" style="margin-top:10px">Di halaman admin (latar abu-100), kartu Ditolak memakai putih + bayangan.</div></div>
+    <div class="panel"><div class="flabel" style="margin-bottom:14px">ReportCard, Skeleton, EmptyState</div>
+      <div class="rcard"><div class="th foto oli"></div><div><div class="tt">Tumpahan oli mengapung di Dermaga 7 Ulu</div><div class="mt"><i data-i="map-pin" class="s16"></i>Seberang Ulu I · 12 Nov</div><span class="badge t-berat">Berat</span></div></div>
+      <div class="rcard" style="margin-top:12px"><div class="th sk"></div><div style="flex:1"><div class="sk" style="height:14px;width:90%"></div><div class="sk" style="height:12px;width:60%;margin:10px 0"></div><div class="sk" style="height:22px;width:70px;border-radius:999px"></div></div></div>
+      <div style="display:flex;gap:14px;align-items:center;margin-top:16px;padding:14px;border-radius:20px;background:var(--krem)"><span data-empty="70"></span><div><b style="font-size:15px">Belum ada laporan valid</b><div class="ps">Coba ubah filter atau periksa lagi nanti.</div></div></div></div>
+  </div>
+</section>
+
+<!-- =================================================================== GERAK -->
+<section class="sec" id="gerak">
+  <h2>Gerak <span class="tag">plan 9.4</span></h2>
+  <p class="lead">Klik tombol di tiap kotak untuk memutar ulang. <code>ease-halus</code> = cubic-bezier(.22,1,.36,1), <code>ease-pantul</code> = cubic-bezier(.34,1.56,.64,1).</p>
+  <div class="grid g3">
+    <div class="demo panel"><div class="lbl"><b>Pindah langkah form</b><span>250 ms · geser 16 px</span></div>
+      <div class="stage"><div id="stepBox" class="card" style="width:260px;text-align:center"><div class="cp">Langkah <span id="stepN">2</span> dari 4</div><div class="h3" id="stepT" style="margin-top:6px">Lokasi kejadian</div></div></div>
+      <div class="act"><button class="btn sm b-garis" data-demo="back"><i data-i="arrow-left" class="s16"></i>Kembali</button><button class="btn sm b-utama" data-demo="fwd">Lanjut<i data-i="arrow-right" class="s16"></i></button></div></div>
+    <div class="demo panel"><div class="lbl"><b>Toast</b><span>250 ms · hilang setelah 4 detik</span></div>
+      <div class="stage" id="toastStage" style="place-items:start center;padding-top:18px"></div>
+      <div class="act"><button class="btn sm b-utama" data-demo="toast">Tampilkan toast</button></div></div>
+    <div class="demo panel"><div class="lbl"><b>Dialog dan menu HP</b><span>200 ms / 250 ms turun</span></div>
+      <div class="stage" id="dlgStage"></div>
+      <div class="act"><button class="btn sm b-utama" data-demo="dialog">Dialog</button><button class="btn sm b-lembut" data-demo="menu">Menu hamburger</button></div></div>
+    <div class="demo panel"><div class="lbl"><b>Marker baru di peta</b><span>400 ms · jatuh dan memantul</span></div>
+      <div class="stage map" id="dropStage" data-map="demo" style="border:0"></div>
+      <div class="act"><button class="btn sm b-utama" data-demo="drop">Laporan baru divalidasi</button></div></div>
+    <div class="demo panel"><div class="lbl"><b>Laporan terkirim</b><span>600 ms · centang + konfeti</span></div>
+      <div class="stage" id="confStage"></div>
+      <div class="act"><button class="btn sm b-utama" data-demo="conf">Putar ulang</button></div></div>
+    <div class="demo panel"><div class="lbl"><b>Daftar muncul berurutan</b><span>250 ms · jeda 40 ms</span></div>
+      <div class="stage" style="place-items:start stretch;padding:16px"><div id="stagList" class="grid" style="gap:10px"></div></div>
+      <div class="act"><button class="btn sm b-utama" data-demo="stag">Muat daftar</button><button class="btn sm b-garis" data-demo="skel">Tampilkan skeleton</button></div></div>
+  </div>
+</section>
+
+<!-- =================================================================== PRATINJAU -->
+<section class="sec" id="pratinjau">
+  <h2>Pratinjau responsif <span class="tag">plan 11</span></h2>
+  <p class="lead">Pilih halaman dan lebar jendela. Lebar berubah halus dan tata letak menyesuaikan sendiri, persis seperti saat jendela browser diperkecil.</p>
+  <div class="pv-tools">
+    <select id="pvPage" aria-label="Pilih halaman"></select>
+    <div class="seg-btn" id="pvW"><button data-w="375">HP 375</button><button data-w="768">Tablet 768</button><button data-w="1024" class="on">Laptop 1024</button><button data-w="1280">Desktop 1280</button></div>
+  </div>
+  <div class="pv-stage"><div class="bw"><div class="bar"><i></i><i></i><i></i><span class="url" id="pvUrl"></span></div><div class="vp" id="pvVp" style="width:1024px"></div></div></div>
+</section>
+
+<!-- =================================================================== WARGA -->
+<section class="sec" id="warga">
+  <h2>Halaman warga <span class="tag">plan 7–8</span></h2>
+  <p class="lead">Situs publik tanpa akun. Kiri: jendela laptop 1024 px. Kanan: browser HP 375 px. Keduanya markup yang sama. Halaman ditampilkan utuh dari header sampai footer.</p>
+
+  <div class="sub">Alur A: warga melapor</div>
+  <div class="pair" data-t="t-beranda" data-code="W1" data-title="Beranda dan peta" data-url="/">
+    <ul><li>Hero berwarna dengan dua ajakan: "Laporkan Pencemaran" (Koral) dan "Lacak laporan". Di desktop, kanan hero menjelaskan tiga langkah.</li><li>Peta hanya laporan <b>valid</b>. Desktop: filter + daftar di kiri, peta di kanan, popup di marker. HP: chip filter, peta 300 px, lalu daftar.</li><li>Di HP navigasi pindah ke menu hamburger (W12). "Masuk admin" hanya di footer.</li></ul></div>
+  <div class="pair" data-t="t-foto" data-code="W2" data-title="Lapor 1: Foto" data-url="/lapor">
+    <ul><li>Desktop: area seret-dan-lepas foto. HP: dua tombol besar "Ambil foto" (kamera) dan "Pilih dari galeri".</li><li>Desktop menampilkan kolom samping tips. Di HP tips pindah ke dalam kartu.</li><li>Di HP tombol Kembali/Lanjut menempel di bawah layar (<code>position: sticky</code>).</li></ul></div>
+  <div class="pair" data-t="t-lokasi" data-code="W3" data-title="Lapor 2: Lokasi" data-url="/lapor">
+    <ul><li>Pin tetap di tengah, peta yang digeser. "Gunakan lokasi saya" memakai geolocation lalu <code>flyTo</code>.</li><li>Izin ditolak → pesan "Izin lokasi ditolak. Geser peta ke titik kejadian." Tidak ada koordinat acak.</li></ul></div>
+  <div class="pair" data-t="t-detail" data-code="W4" data-title="Lapor 3: Detail" data-url="/lapor">
+    <ul><li>Desktop dua kolom: isian wajib di kiri, "Kondisi lokasi" (opsional, dari wawancara GGP) di kanan. HP satu kolom.</li></ul></div>
+  <div class="pair" data-t="t-tinjau" data-code="W5" data-title="Lapor 4: Tinjau" data-url="/lapor">
+    <ul><li>"Ubah" kembali ke langkah terkait dengan gerak geser mundur. Saat kirim: tombol "Mengirim…" nonaktif; gagal → toast + "Coba lagi", isian tetap.</li></ul></div>
+  <div class="pair" data-t="t-terkirim" data-code="W6" data-title="Laporan terkirim" data-url="/lapor/berhasil/SPP-202611-0014">
+    <ul><li>Centang tergambar + konfeti kecil sekali. Salin kode → toast. Bagikan memakai <code>wa.me/?text=</code> berisi kode dan tautan lacak.</li></ul></div>
+
+  <div class="sub">Alur B: warga melacak</div>
+  <div class="pair" data-t="t-lacak" data-code="W7" data-title="Lacak: masukkan kode" data-url="/lacak">
+    <ul><li>Input kosong saat dibuka. Desktop: input dan tombol sebaris. HP: bertumpuk.</li></ul></div>
+  <div class="pair" data-t="t-st-menunggu" data-code="W8" data-title="Status: menunggu" data-url="/lacak/SPP-202611-0014">
+    <ul><li>Desktop dua kolom: status + linimasa, dan ringkasan laporan. Linimasa hanya dua tahap.</li></ul></div>
+  <div class="row">
+    <div class="pair" data-t="t-st-valid" data-code="W9" data-title="Status: valid" data-url="/lacak/SPP-202611-0014" data-only="mobile"><ul><li>"Lihat di peta" membuka beranda dan terbang ke marker laporan ini.</li></ul></div>
+    <div class="pair" data-t="t-st-ditolak" data-code="W10" data-title="Status: ditolak" data-url="/lacak/SPP-202611-0009" data-only="mobile"><ul><li>Alasan dari admin tampil apa adanya. Ajakan membuat laporan baru.</li></ul></div>
+    <div class="pair" data-t="t-notfound" data-code="W11" data-title="Kode tidak ditemukan" data-url="/lacak/SPP-202611-9999" data-only="mobile"><ul><li>Tidak pernah menampilkan laporan lain sebagai pengganti.</li></ul></div>
+    <div class="pair" data-t="t-menu" data-code="W12" data-title="Menu hamburger (HP)" data-url="/" data-only="mobile"><ul><li>Panel turun dari bawah header, latar memudar. Tutup dengan × , Esc, atau ketuk latar.</li></ul></div>
+  </div>
+
+  <div class="sub">Panduan</div>
+  <div class="pair" data-t="t-panduan" data-code="W13" data-title="Panduan" data-url="/panduan">
+    <ul><li>Empat kartu langkah: 4 kolom di desktop, 2 di tablet, 1 di HP.</li></ul></div>
+</section>
+
+<!-- =================================================================== ADMIN -->
+<section class="sec" id="admin">
+  <h2>Halaman admin <span class="tag">plan 7–8</span></h2>
+  <p class="lead">Area admin tetap website yang sama di <code>/admin</code>. Desktop: sidebar tetap. Di bawah 1024 px sidebar menjadi laci (A9). Latar abu-100 dengan aksen Ungu, lebih tenang dari situs warga.</p>
+  <div class="sub">Alur C: admin memverifikasi</div>
+  <div class="pair" data-t="t-a-login" data-code="A1" data-title="Masuk admin" data-url="/admin/login"><ul><li>Hanya email dan kata sandi. Salah → "Email atau kata sandi salah." Di HP panel ungu disembunyikan.</li></ul></div>
+  <div class="pair" data-t="t-a-antrean" data-code="A2" data-title="Antrean verifikasi" data-url="/admin"><ul><li>Angka dihitung dari data. Desktop: tabel. HP: kartu, filter lewat tombol "Filter".</li><li>Tab Menunggu urut paling lama di atas. Kosong → "Tidak ada laporan yang menunggu. Semua sudah diperiksa."</li></ul></div>
+  <div class="pair" data-t="t-a-detail" data-code="A3" data-title="Detail dan verifikasi" data-url="/admin/laporan/0014"><ul><li>Dua kolom bila area konten ≥ 760 px (mis. desktop 1280). Lebih sempit (laptop 1024 dengan sidebar, tablet, HP) jadi satu kolom dengan urutan: foto, isian warga, keputusan, kondisi lokasi, lokasi, riwayat. Lihat di Pratinjau responsif.</li><li>Setelah keputusan: toast, status berubah halus, lalu buka laporan menunggu berikutnya.</li></ul></div>
+  <div class="pair" data-t="t-a-tolak" data-code="A4" data-title="Dialog tolak" data-url="/admin/laporan/0014"><ul><li>Alasan wajib minimal 10 karakter. Desktop: dialog di tengah. HP: dialog menempel di bawah layar.</li></ul></div>
+  <div class="sub">Alur D: peta, rekap, riwayat, data master</div>
+  <div class="pair" data-t="t-a-peta" data-code="A5" data-title="Peta sebaran" data-url="/admin/peta"><ul><li>Hanya laporan valid. Desktop: kartu ringkas melayang di kanan peta. HP: kartu di bawah peta.</li></ul></div>
+  <div class="pair" data-t="t-a-rekap" data-code="A6" data-title="Rekap dan ekspor" data-url="/admin/rekap"><ul><li>Tabel titik valid bisa diurutkan; di HP tabel digulir mendatar. Unduh → "Menyiapkan…", gagal → toast "Coba lagi".</li></ul></div>
+  <div class="pair" data-t="t-a-riwayat" data-code="A7" data-title="Riwayat verifikasi" data-url="/admin/riwayat"><ul><li>Kolom sesuai NFR-5. Di HP setiap baris jadi kartu.</li></ul></div>
+  <div class="pair" data-t="t-a-master" data-code="A8" data-title="Data master" data-url="/admin/data-master"><ul><li>Nonaktifkan, bukan hapus. Endpoint belum ada di backend: bangun dengan mock dulu.</li></ul></div>
+  <div class="row">
+    <div class="pair" data-t="t-a-drawer" data-code="A9" data-title="Laci menu admin (HP/tablet)" data-url="/admin" data-only="mobile"><ul><li>Sidebar yang sama, meluncur dari kiri (300 ms). Latar memudar.</li></ul></div>
+  </div>
+</section>
+</div>
+
+<!-- =====================================================================
+     TEMPLAT HALAMAN (dirender ke frame oleh skrip)
+     ===================================================================== -->
+
+<template id="t-beranda">
+  <div data-whead="beranda"></div>
+  <div class="cw">
+    <section class="hero-band a-page">
+      <span data-wave></span>
+      <div style="position:relative">
+        <span class="hpill" style="padding:4px 14px 4px 4px"><span data-ggp="30"></span>Program GG River Care · Green Generation Palembang</span>
+        <h1>Sungai kotor?<br>Laporkan saja.</h1>
+        <p>Tanpa akun. Kirim foto dan lokasi pencemaran Sungai Musi, lalu pantau statusnya dengan kode tiket.</p>
+        <div class="hcta"><a class="btn lg b-ajakan"><i data-i="plus"></i>Laporkan Pencemaran</a><a class="btn lg hghost"><i data-i="search" class="s18"></i>Lacak laporan</a></div>
+      </div>
+      <div class="hsteps dk">
+        <div class="hstep"><span class="n" style="background:var(--ceria-400)">1</span><div>Foto bukti<small>Satu foto permukaan air</small></div></div>
+        <div class="hstep" style="margin-left:28px"><span class="n" style="background:var(--toska-400)">2</span><div>Lokasi<small>Pakai GPS atau geser pin</small></div></div>
+        <div class="hstep" style="margin-left:56px"><span class="n" style="background:var(--koral-500)">3</span><div>Kirim dan simpan kode<small>Pantau statusnya kapan saja</small></div></div>
+      </div>
+    </section>
+    <section class="map-sec">
+      <div class="ms-head"><div><h2 class="h2">Peta sebaran laporan valid</h2><div class="cp" style="display:flex;gap:8px;align-items:center;margin-top:4px"><span class="live"></span>18 laporan · diperbarui otomatis</div></div></div>
+      <div class="fz">
+        <div class="card dk" style="padding:18px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span class="h3">Filter</span><a class="link" style="font-size:13px">Hapus filter</a></div>
+          <div style="display:flex;gap:8px"><div class="input" style="height:44px;font-size:14px"><i data-i="calendar" class="s16"></i>1 Nov 2026</div><div class="input" style="height:44px;font-size:14px"><i data-i="calendar" class="s16"></i>13 Nov 2026</div></div>
+          <div class="chips"><button class="chip sm on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--berat)"></span>Berat</button><button class="chip sm on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--sedang)"></span>Sedang</button><button class="chip sm"><span class="dot" style="background:var(--ringan)"></span>Ringan</button></div>
+          <div class="input" style="height:44px;font-size:14px">Semua kecamatan<span class="end"><i data-i="chev-down" class="s18"></i></span></div>
+        </div>
+        <div class="chips scroll mb"><button class="chip sm"><i data-i="sliders" class="s16"></i>Filter</button><button class="chip sm on"><i data-i="check" class="s16"></i>Berat</button><button class="chip sm on"><i data-i="check" class="s16"></i>Sedang</button><button class="chip sm">Ringan</button><button class="chip sm">Kecamatan<i data-i="chev-down" class="s16"></i></button></div>
+      </div>
+      <div class="mz card">
+        <div class="map" data-map="desk">
+          <div class="map-chip"><span class="live"></span>Diperbarui otomatis</div>
+          <div class="popup lgv" style="left:calc(48.6% - 116px);top:calc(49.2% - 272px)"><div class="ph foto oli"></div><div class="bd"><b>Tumpahan oli di Dermaga 7 Ulu</b><div class="cp">Seberang Ulu I · 12 Nov 2026</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="badge t-berat">Berat</span><a class="link" style="font-size:13px">Google Maps<i data-i="ext" class="s16"></i></a></div></div></div>
+          <div class="ctrl"><b>+</b><b>−</b></div>
+          <div class="legend"><span><i style="background:var(--berat)"></i>Berat</span><span><i style="background:var(--sedang)"></i>Sedang</span><span><i style="background:var(--ringan)"></i>Ringan</span></div>
+        </div>
+      </div>
+      <div class="lz">
+        <div class="cp" style="margin-bottom:10px">12 laporan sesuai filter</div>
+        <div class="stack a-stag" style="gap:10px">
+          <div class="rcard sel"><div class="th foto oli"></div><div><div class="tt">Tumpahan oli di Dermaga 7 Ulu</div><div class="mt">Seberang Ulu I · 12 Nov</div><span class="badge t-berat">Berat</span></div></div>
+          <div class="rcard"><div class="th foto sampah"></div><div><div class="tt">Sampah plastik menumpuk di Sungai Sekanak</div><div class="mt">Bukit Kecil · 11 Nov</div><span class="badge t-sedang">Sedang</span></div></div>
+          <div class="rcard"><div class="th foto busa"></div><div><div class="tt">Busa putih di muara Sungai Bendung</div><div class="mt">Ilir Timur I · 9 Nov</div><span class="badge t-berat">Berat</span></div></div>
+        </div>
+        <button class="btn b-garis full" style="margin-top:12px">Tampilkan lebih banyak</button>
+      </div>
+    </section>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-foto">
+  <div data-whead="lapor"></div>
+  <div class="cw">
+    <div class="lp-head" data-lphead="1"></div>
+    <div class="lp-grid">
+      <div class="card cardp a-fwd">
+        <div class="cp">LANGKAH 1 DARI 4</div>
+        <h2 class="h2" style="margin-top:2px">Foto bukti</h2>
+        <p class="ps" style="margin:6px 0 18px">Satu foto yang jelas sudah cukup. Kami kecilkan otomatis sebelum dikirim.</p>
+        <div class="drop dk" style="display:block">
+          <span style="width:64px;height:64px;border-radius:20px;background:var(--musi-600);color:#fff;display:inline-grid;place-items:center"><i data-i="image" class="s28"></i></span>
+          <b style="display:block;font-size:17px;margin-top:14px">Seret foto ke sini</b>
+          <span class="ps">atau</span>
+          <div style="margin-top:10px"><button class="btn b-lembut"><i data-i="file" class="s18"></i>Pilih file foto</button></div>
+          <div class="cp" style="margin-top:12px">JPG, PNG, atau WebP. Ukuran besar akan dikecilkan otomatis.</div>
+        </div>
+        <div class="mb" style="flex-direction:column;gap:12px">
+          <button class="pick" style="background:var(--musi-100)"><span style="width:56px;height:56px;border-radius:18px;background:var(--musi-600);color:#fff;display:grid;place-items:center;flex:none"><i data-i="camera" class="s28"></i></span><span><b style="font-size:16px;display:block">Ambil foto</b><span class="ps" style="color:var(--musi-800)">Buka kamera HP</span></span></button>
+          <button class="pick" style="border:1.5px dashed #CFC6B3"><span style="width:56px;height:56px;border-radius:18px;background:var(--krem);display:grid;place-items:center;flex:none"><i data-i="image" class="s28"></i></span><span><b style="font-size:16px;display:block">Pilih dari galeri</b><span class="ps">JPG, PNG, atau WebP</span></span></button>
+          <div style="background:var(--ceria-100);border-radius:18px;padding:12px 14px;display:flex;gap:10px"><span style="color:var(--ceria-800)"><i data-i="bulb"></i></span><span class="ps" style="color:var(--ink)">Foto permukaan air dan sertakan patokan seperti dermaga atau jembatan.</span></div>
+        </div>
+        <div class="fnav"><button class="btn b-garis">Batal</button><button class="btn b-utama grow dis">Lanjut<i data-i="arrow-right" class="s18"></i></button></div>
+      </div>
+      <aside class="stack dk" data-lpaside></aside>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-lokasi">
+  <div data-whead="lapor"></div>
+  <div class="cw">
+    <div class="lp-head" data-lphead="2"></div>
+    <div class="lp-grid">
+      <div class="card cardp a-fwd">
+        <div class="cp">LANGKAH 2 DARI 4</div>
+        <h2 class="h2" style="margin-top:2px">Di mana kejadiannya?</h2>
+        <div class="loc-grid">
+          <div>
+            <div class="map" data-map="picker" style="height:300px;border-radius:20px"><div class="map-chip" style="top:auto;bottom:10px;left:50%;transform:translateX(-50%)">Geser peta untuk pindahkan pin</div><div class="ctrl"><b>+</b><b>−</b></div></div>
+            <button class="btn b-lembut full" style="margin-top:12px"><i data-i="locate"></i>Gunakan lokasi saya</button>
+            <div class="cp num" style="text-align:center;margin-top:8px">-2,99742, 104,76813 · akurasi ± 12 m</div>
+          </div>
+          <div class="stack">
+            <div class="field"><label>Kecamatan</label><div class="input">Seberang Ulu I<span class="end"><i data-i="chev-down"></i></span></div></div>
+            <div class="field"><label>Patokan <span class="opt">Opsional</span></label><div class="input">Dekat Dermaga 7 Ulu</div><div class="help">Contoh: nama dermaga, jembatan, atau warung terdekat.</div></div>
+          </div>
+        </div>
+        <div class="fnav"><button class="btn b-garis"><i data-i="arrow-left" class="s18"></i>Kembali</button><button class="btn b-utama grow">Lanjut<i data-i="arrow-right" class="s18"></i></button></div>
+      </div>
+      <aside class="stack dk" data-lpaside></aside>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-detail">
+  <div data-whead="lapor"></div>
+  <div class="cw">
+    <div class="lp-head" data-lphead="3"></div>
+    <div class="card cardp a-fwd" style="margin-top:24px">
+      <div class="cp">LANGKAH 3 DARI 4</div>
+      <h2 class="h2" style="margin-top:2px">Ceritakan sedikit</h2>
+      <div class="det-grid">
+        <div class="stack" style="gap:18px">
+          <div class="field"><label>Judul singkat <span class="opt num">38/80</span></label><div class="input">Oli mengapung di dekat tambatan ketek</div></div>
+          <div class="field"><span class="flabel">Jenis limbah</span><div class="chips"><button class="chip on"><i data-i="check" class="s16"></i>Minyak/Oli</button><button class="chip">Sampah plastik</button><button class="chip">Limbah cair/busa</button><button class="chip">Sampah organik</button><button class="chip">Lainnya</button></div></div>
+          <div class="field"><span class="flabel">Tingkat dugaan</span><div class="chips"><button class="chip"><span class="dot" style="background:var(--ringan)"></span>Ringan</button><button class="chip"><span class="dot" style="background:var(--sedang)"></span>Sedang</button><button class="chip on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--berat)"></span>Berat</button></div><div class="help">Perkiraan dari yang terlihat, bukan hasil uji lab.</div></div>
+          <div class="field"><label>Deskripsi <span class="opt num">96/500</span></label><div class="textarea">Lapisan oli hitam mengapung, bau menyengat, ada beberapa ikan mati di dekat dinding dermaga.</div></div>
+        </div>
+        <div class="kbox">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span class="h3">Kondisi lokasi</span><span class="tag-n">Opsional</span></div>
+          <p class="ps" style="margin-top:-8px">Membantu relawan bersiap sebelum turun ke lokasi.</p>
+          <div class="field"><span class="flabel">Perkiraan luas</span><div class="chips"><button class="chip sm">&lt; 10 m²</button><button class="chip sm on"><i data-i="check" class="s16"></i>10–50 m²</button><button class="chip sm">&gt; 50 m²</button></div></div>
+          <div class="field"><span class="flabel">Dekat permukiman?</span><div class="chips"><button class="chip sm on"><i data-i="check" class="s16"></i>Ya</button><button class="chip sm">Tidak</button></div></div>
+          <div class="field"><span class="flabel">Kedalaman air</span><div class="chips"><button class="chip sm">Dangkal</button><button class="chip sm">Sedang</button><button class="chip sm">Dalam</button><button class="chip sm on"><i data-i="check" class="s16"></i>Tidak tahu</button></div></div>
+        </div>
+      </div>
+      <div class="fnav"><button class="btn b-garis"><i data-i="arrow-left" class="s18"></i>Kembali</button><button class="btn b-utama grow">Lanjut<i data-i="arrow-right" class="s18"></i></button></div>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-tinjau">
+  <div data-whead="lapor"></div>
+  <div class="cw">
+    <div class="lp-head" data-lphead="4"></div>
+    <div class="lp-grid">
+      <div class="card cardp a-fwd">
+        <div class="cp">LANGKAH 4 DARI 4</div>
+        <h2 class="h2" style="margin-top:2px">Periksa sebelum dikirim</h2>
+        <div class="tj-grid">
+          <div class="foto oli" style="height:220px;border-radius:20px"><a class="link" style="position:absolute;right:12px;top:12px;z-index:2;background:#fff;border-radius:999px;padding:6px 12px;font-size:13px"><i data-i="pencil" class="s16"></i>Ubah</a></div>
+          <div class="stack" style="gap:12px">
+            <div class="tj-sec"><div style="display:flex;justify-content:space-between"><span class="cp">Detail</span><a class="link" style="font-size:13px">Ubah</a></div><b style="font-size:16px;line-height:22px;display:block;margin:4px 0 8px">Oli mengapung di dekat tambatan ketek</b><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge t-berat">Berat</span><span class="tag-n">Minyak/Oli</span></div></div>
+            <div class="tj-sec"><div style="display:flex;justify-content:space-between"><span class="cp">Lokasi</span><a class="link" style="font-size:13px">Ubah</a></div><div class="ps" style="color:var(--ink)">Seberang Ulu I · Dekat Dermaga 7 Ulu</div></div>
+            <div class="tj-sec"><div style="display:flex;justify-content:space-between"><span class="cp">Kondisi lokasi</span><a class="link" style="font-size:13px">Ubah</a></div><div class="ps" style="color:var(--ink)">10–50 m² · dekat permukiman · kedalaman tidak tahu</div></div>
+          </div>
+        </div>
+        <p class="cp" style="margin-top:18px">Laporan diperiksa admin GG River Care sebelum tampil di peta.</p>
+        <div class="fnav"><button class="btn b-garis"><i data-i="arrow-left" class="s18"></i>Kembali</button><button class="btn b-utama grow"><i data-i="send" class="s18"></i>Kirim laporan</button></div>
+      </div>
+      <aside class="stack dk" data-lpaside></aside>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-terkirim">
+  <div data-whead="none"></div>
+  <div style="background:linear-gradient(180deg,var(--toska-100) 0%,var(--krem) 70%)">
+  <div class="cw">
+    <div class="narrow" style="text-align:center;padding-top:48px;position:relative">
+      <div class="confetti a-conf" style="position:absolute;left:50%;top:96px"><i style="background:var(--koral-500);--dx:-130px;--dy:-60px;--r:-140deg"></i><i style="background:var(--ceria-400);--dx:-80px;--dy:-100px;--r:200deg"></i><i style="background:var(--musi-600);--dx:90px;--dy:-90px;--r:160deg"></i><i style="background:var(--ungu-600);--dx:140px;--dy:-40px;--r:-220deg"></i><i style="background:var(--toska-400);--dx:-150px;--dy:10px;--r:120deg"></i><i style="background:var(--koral-500);--dx:150px;--dy:20px;--r:-90deg"></i></div>
+      <div class="check-c a-check" style="margin:0 auto"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h1 class="h1" style="margin-top:28px">Laporan terkirim!</h1>
+      <p class="ps" style="margin:6px auto 0;max-width:420px">Terima kasih sudah menjaga Sungai Musi. Simpan kode ini untuk mengecek status laporanmu.</p>
+      <div class="card" style="background:var(--ceria-100);box-shadow:none;margin-top:24px">
+        <div class="cp" style="color:var(--ceria-800)">KODE TIKET KAMU</div>
+        <div class="num" style="font-size:30px;font-weight:800;margin-top:4px">SPP-202611-0014</div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap"><button class="btn sm b-garis"><i data-i="copy" class="s16"></i>Salin kode</button><button class="btn sm b-garis"><i data-i="msg" class="s16"></i>Bagikan ke WhatsApp</button></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap"><a class="btn lg b-utama"><i data-i="search" class="s18"></i>Lacak laporan ini</a><a class="btn lg b-garis">Kembali ke beranda</a></div>
+    </div>
+  </div></div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-lacak">
+  <div data-whead="lacak"></div>
+  <div class="cw"><div class="narrow" style="padding-top:44px">
+    <span data-empty="130" data-kind="search"></span>
+    <h1 class="h1" style="text-align:center;margin-top:14px">Lacak laporan</h1>
+    <p class="ps" style="text-align:center;margin:6px 0 24px">Masukkan kode tiket yang kamu dapat setelah mengirim laporan.</p>
+    <div class="card cardp">
+      <div class="field"><label>Kode tiket</label>
+        <div class="lform"><div class="input focus ph num" style="flex:1">SPP-202611-0012</div><button class="btn lg b-utama"><i data-i="search" class="s18"></i>Cek status</button></div></div>
+      <div style="margin-top:16px;background:var(--musi-100);border-radius:18px;padding:14px 16px" class="ps"><b style="color:var(--musi-800)">Lupa kodenya?</b> <span style="color:var(--ink)">Kode ada di halaman setelah laporan terkirim, atau di pesan WhatsApp yang kamu bagikan.</span></div>
+    </div>
+  </div></div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-notfound">
+  <div data-whead="lacak"></div>
+  <div class="cw"><div class="narrow" style="padding-top:36px">
+    <h1 class="h1" style="text-align:center">Lacak laporan</h1>
+    <div class="card cardp" style="margin-top:20px">
+      <div class="field"><label>Kode tiket</label>
+        <div class="lform"><div class="input err num" style="flex:1">SPP-202611-9999</div><button class="btn lg b-utama"><i data-i="search" class="s18"></i>Cek status</button></div>
+        <div class="help err"><span>Kode tidak ditemukan. Periksa kembali kode tiketmu.</span></div></div>
+    </div>
+    <div style="text-align:center;margin-top:28px"><span data-empty="140" data-kind="lost"></span><p class="ps" style="margin-top:8px">Pastikan formatnya seperti <b class="num">SPP-202611-0012</b>.</p></div>
+  </div></div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-st-menunggu">
+  <div data-whead="lacak"></div>
+  <div class="cw" style="padding-top:28px">
+    <a class="link"><i data-i="arrow-left" class="s16"></i>Lacak kode lain</a>
+    <div class="st-grid a-page">
+      <div class="card cardp">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="num" style="font-weight:800;font-size:20px">SPP-202611-0014</span><button class="ibtn" aria-label="Salin kode" style="width:40px;height:40px"><i data-i="copy" class="s18"></i></button></div>
+        <span class="badge lg s-menunggu" style="margin-top:10px">Menunggu Verifikasi</span>
+        <ul class="tl" style="margin-top:22px"><li class="done"><span class="dt"><i data-i="check" class="s16"></i></span><b>Laporan diterima</b><span>12 Nov 2026, 21.06</span></li><li class="wait"><span class="dt"><i data-i="clock" class="s16"></i></span><b>Diperiksa admin</b><span>Status berubah setelah admin GG River Care memeriksa.</span></li></ul>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden"><div class="foto oli" style="height:200px"></div><div style="padding:18px 20px"><div class="cp">Laporanmu</div><b style="font-size:17px;display:block;margin:2px 0 6px">Oli mengapung di dekat tambatan ketek</b><div class="ps">Seberang Ulu I · Dekat Dermaga 7 Ulu</div><div style="display:flex;gap:6px;margin-top:10px"><span class="badge t-berat">Berat</span><span class="tag-n">Minyak/Oli</span></div></div></div>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-st-valid">
+  <div data-whead="lacak"></div>
+  <div class="cw" style="padding-top:22px">
+    <a class="link"><i data-i="arrow-left" class="s16"></i>Lacak kode lain</a>
+    <div class="st-grid">
+      <div class="card cardp">
+        <span class="num" style="font-weight:800;font-size:20px">SPP-202611-0014</span><br>
+        <span class="badge lg s-valid" style="margin-top:10px">Valid</span>
+        <ul class="tl" style="margin-top:22px"><li class="done"><span class="dt"><i data-i="check" class="s16"></i></span><b>Laporan diterima</b><span>12 Nov 2026, 21.06</span></li><li class="done"><span class="dt"><i data-i="check" class="s16"></i></span><b>Diperiksa admin: valid</b><span>13 Nov 2026, 14.32</span></li></ul>
+        <div style="margin-top:18px;background:var(--toska-100);border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center"><span style="color:var(--toska-800)"><i data-i="map-pin"></i></span><span class="ps" style="color:var(--ink)">Laporanmu sudah tampil di peta.</span></div>
+        <a class="btn b-utama full" style="margin-top:14px"><i data-i="map" class="s18"></i>Lihat di peta</a>
+      </div>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-st-ditolak">
+  <div data-whead="lacak"></div>
+  <div class="cw" style="padding-top:22px">
+    <a class="link"><i data-i="arrow-left" class="s16"></i>Lacak kode lain</a>
+    <div class="st-grid">
+      <div class="card cardp">
+        <span class="num" style="font-weight:800;font-size:20px">SPP-202611-0009</span><br>
+        <span class="badge lg s-ditolak" style="margin-top:10px">Ditolak</span>
+        <ul class="tl" style="margin-top:22px"><li class="done"><span class="dt"><i data-i="check" class="s16"></i></span><b>Laporan diterima</b><span>10 Nov 2026, 07.15</span></li><li class="no"><span class="dt"><i data-i="x" class="s16"></i></span><b>Diperiksa admin: ditolak</b><span>10 Nov 2026, 19.02</span></li></ul>
+        <div style="margin-top:18px;background:var(--koral-100);border-radius:18px;padding:16px"><div class="cp" style="color:var(--berat-tx)">ALASAN PENOLAKAN</div><p class="ps" style="color:var(--ink);margin-top:4px">Foto terlalu gelap sehingga permukaan sungai tidak terlihat. Silakan kirim ulang dengan foto siang hari.</p></div>
+        <a class="btn b-utama full" style="margin-top:14px"><i data-i="plus" class="s18"></i>Buat laporan baru</a>
+      </div>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<template id="t-menu">
+  <div data-whead="beranda-open"></div>
+  <div class="cw"><section class="hero-band" style="opacity:.6"><div><h1>Sungai kotor?<br>Laporkan saja.</h1></div></section></div>
+  <div class="mmenu a-fade">
+    <div class="pn a-down">
+      <a class="on"><i data-i="home"></i>Beranda</a>
+      <a><i data-i="plus"></i>Laporkan pencemaran</a>
+      <a><i data-i="search"></i>Lacak laporan</a>
+      <a><i data-i="book"></i>Panduan</a>
+      <div style="border-top:1px solid var(--garis);margin:8px 0"></div>
+      <a style="font-size:14px;color:var(--ink-soft);height:44px"><i data-i="lock" class="s18"></i>Masuk admin</a>
+    </div>
+  </div>
+</template>
+
+<template id="t-panduan">
+  <div data-whead="panduan"></div>
+  <div class="cw" style="padding-top:32px">
+    <h1 class="h1">Panduan melapor</h1>
+    <p class="ps" style="margin-top:6px">Empat langkah, sekitar dua menit. Tanpa akun.</p>
+    <div class="pd-grid a-stag">
+      <div class="pd-step" style="background:var(--musi-100)"><span class="ic-b" style="background:var(--musi-600);color:#fff"><i data-i="camera"></i></span><b>1. Foto</b><span class="ps" style="color:var(--ink)">Ambil satu foto permukaan air yang tercemar.</span></div>
+      <div class="pd-step" style="background:var(--ceria-100)"><span class="ic-b" style="background:var(--ceria-400)"><i data-i="map-pin"></i></span><b>2. Lokasi</b><span class="ps" style="color:var(--ink)">Pakai lokasimu atau geser pin di peta.</span></div>
+      <div class="pd-step" style="background:var(--toska-100)"><span class="ic-b" style="background:var(--toska-400)"><i data-i="pencil"></i></span><b>3. Detail</b><span class="ps" style="color:var(--ink)">Judul, jenis limbah, dan tingkat dugaan.</span></div>
+      <div class="pd-step" style="background:var(--koral-100)"><span class="ic-b" style="background:var(--koral-500)"><i data-i="send"></i></span><b>4. Kirim dan simpan kode</b><span class="ps" style="color:var(--ink)">Pakai kode tiket untuk mengecek status.</span></div>
+    </div>
+    <div class="two" style="margin-top:20px">
+      <div class="card cardp"><span class="h3">Tips foto</span><ul class="ps" style="padding-left:18px;margin-top:8px;color:var(--ink)"><li>Siang hari, permukaan air terlihat jelas.</li><li>Sertakan patokan: dermaga, jembatan, rumah.</li><li>Jangan memotret orang dari dekat.</li></ul></div>
+      <div class="card cardp"><span class="h3">Arti tingkat dugaan</span>
+        <div class="stack" style="gap:10px;margin-top:10px">
+          <div style="display:flex;gap:10px;align-items:flex-start"><span class="badge t-ringan">Ringan</span><span class="ps" style="color:var(--ink)">Sampah sedikit, air masih jernih.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span class="badge t-sedang">Sedang</span><span class="ps" style="color:var(--ink)">Sampah menumpuk, air keruh.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span class="badge t-berat">Berat</span><span class="ps" style="color:var(--ink)">Oli, busa, bau menyengat, ikan mati.</span></div>
+        </div>
+        <p class="cp" style="margin-top:12px">Tingkat adalah dugaan dari yang terlihat, bukan hasil uji laboratorium.</p></div>
+    </div>
+    <div class="card" style="margin-top:20px;background:var(--musi-600);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:24px 28px">
+      <div><b style="font-size:20px">Siap melapor?</b><div style="font-size:14px;margin-top:2px">Butuh sekitar dua menit.</div></div>
+      <a class="btn lg b-ajakan"><i data-i="plus"></i>Laporkan Pencemaran</a>
+    </div>
+  </div>
+  <div data-wfoot></div>
+</template>
+
+<!-- ============ ADMIN ============ -->
+<template id="t-a-login">
+  <div class="login">
+    <div class="lp">
+      <div class="blob" style="width:420px;height:420px;background:var(--musi-600);opacity:.55;right:-140px;bottom:-160px"></div>
+      <div class="blob" style="width:200px;height:200px;background:var(--toska-400);opacity:.5;right:120px;bottom:120px"></div>
+      <div class="blob" style="width:120px;height:120px;background:var(--ceria-400);opacity:.85;left:60px;bottom:90px"></div>
+      <div class="logo" style="position:relative"><div class="mk" style="background:#fff;color:var(--ungu-600)"><i data-i="droplet"></i></div><div class="wm" style="color:#fff">SIPEPES<small style="color:#fff">Admin</small></div></div>
+      <h2 style="font-size:36px;line-height:42px;font-weight:800;letter-spacing:-.02em;margin-top:90px;position:relative">Halo, Admin<br>GG River Care</h2>
+      <p style="font-size:16px;line-height:26px;margin-top:12px;max-width:380px;position:relative">Periksa laporan warga dan susun rekap untuk advokasi Sungai Musi.</p>
+      <div style="margin-top:auto;position:relative;display:flex;gap:14px;align-items:center;background:#fff;color:var(--ink);border-radius:22px;padding:12px 18px 12px 12px;width:max-content"><span data-ggp="64"></span><div><div class="cp">Dikelola bersama</div><b>Green Generation Palembang</b></div></div>
+    </div>
+    <div class="lf">
+      <div style="width:100%;max-width:400px" class="a-page">
+        <div class="logo mbb" style="margin-bottom:28px"><div style="display:flex;gap:10px;align-items:center"><div class="mk" style="background:linear-gradient(135deg,var(--ungu-600),var(--musi-600))"><i data-i="droplet"></i></div><div class="wm">SIPEPES<small>Admin GG River Care</small></div><div class="with"><span data-ggp="40"></span></div></div></div>
+        <h1 class="h1">Masuk</h1>
+        <p class="ps" style="margin:6px 0 24px">Khusus admin komunitas.</p>
+        <div class="field"><label>Email</label><div class="input"><i data-i="mail" class="s18" style="color:var(--ink-muted)"></i>admin@sipepes.or.id</div></div>
+        <div class="field" style="margin-top:14px"><label>Kata sandi</label><div class="input"><i data-i="lock" class="s18" style="color:var(--ink-muted)"></i>••••••••••<span class="end"><i data-i="eye" class="s18"></i></span></div></div>
+        <button class="btn lg full b-ungu" style="margin-top:22px">Masuk</button>
+        <a class="link" style="margin-top:18px"><i data-i="arrow-left" class="s16"></i>Kembali ke situs warga</a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="t-a-antrean">
+  <div class="ash"><aside class="side" data-side="antrean"></aside><div class="acol"><div data-atop="Antrean"></div>
+  <main class="amain">
+    <div class="ahead"><h1 class="h1 grow">Antrean verifikasi</h1><span class="cp dk">Kamis, 13 Nov 2026</span></div>
+    <div class="stats4">
+      <div class="stat st-musi"><div class="l">Laporan masuk</div><div class="v num">24</div><div class="d">November 2026</div></div>
+      <div class="stat st-ceria"><div class="l">Menunggu</div><div class="v num">3</div><div class="d">Terlama 2 hari</div></div>
+      <div class="stat st-toska"><div class="l">Valid</div><div class="v num">18</div><div class="d">Tampil di peta</div></div>
+      <div class="stat st-putih"><div class="l">Ditolak</div><div class="v num">3</div><div class="d">Dengan alasan</div></div>
+    </div>
+    <div class="tabs"><b class="on">Menunggu <i>3</i></b><b>Valid <i>18</i></b><b>Ditolak <i>3</i></b><b>Semua <i>24</i></b></div>
+    <div class="fbar dk"><div class="input" style="width:220px"><i data-i="search" class="s18"></i>Cari kode tiket</div><div class="input"><i data-i="calendar" class="s16"></i>1–13 Nov</div><div class="input">Semua tingkat<i data-i="chev-down" class="s16"></i></div><div class="input">Semua kecamatan<i data-i="chev-down" class="s16"></i></div></div>
+    <div class="fbar mb"><div class="input" style="flex:1"><i data-i="search" class="s18"></i>Cari kode</div><button class="btn sm b-garis"><i data-i="sliders" class="s16"></i>Filter</button></div>
+    <div class="card dk" style="padding:6px 8px"><div class="tscroll">
+      <table class="tbl">
+        <thead><tr><th></th><th>Kode</th><th>Laporan</th><th>Tingkat warga</th><th><span class="sort">Masuk<i data-i="chev-down" class="s16"></i></span></th><th></th></tr></thead>
+        <tbody class="a-stag">
+          <tr><td><div class="thumb foto busa"></div></td><td class="num nw" style="font-weight:700">SPP-202611-0011</td><td><div class="tt">Busa putih di muara Sungai Bendung</div><div class="cp">Ilir Timur I</div></td><td><span class="badge t-berat">Berat</span></td><td class="nw">11 Nov, 06.40<div class="cp">2 hari lalu</div></td><td><button class="btn sm b-lembut">Periksa<i data-i="chev-right" class="s16"></i></button></td></tr>
+          <tr><td><div class="thumb foto gulma"></div></td><td class="num nw" style="font-weight:700">SPP-202611-0013</td><td><div class="tt">Eceng gondok menutup aliran di Plaju</div><div class="cp">Plaju</div></td><td><span class="badge t-ringan">Ringan</span></td><td class="nw">12 Nov, 16.12<div class="cp">kemarin</div></td><td><button class="btn sm b-lembut">Periksa<i data-i="chev-right" class="s16"></i></button></td></tr>
+          <tr><td><div class="thumb foto oli"></div></td><td class="num nw" style="font-weight:700">SPP-202611-0014</td><td><div class="tt">Oli mengapung di dekat tambatan ketek</div><div class="cp">Seberang Ulu I</div></td><td><span class="badge t-berat">Berat</span></td><td class="nw">12 Nov, 21.06<div class="cp">kemarin</div></td><td><button class="btn sm b-lembut">Periksa<i data-i="chev-right" class="s16"></i></button></td></tr>
+        </tbody>
+      </table></div></div>
+    <div class="mlist mb a-stag">
+      <div class="rcard"><div class="th foto busa"></div><div style="flex:1;min-width:0"><div class="cp num">SPP-202611-0011 · 2 hari lalu</div><div class="tt" style="margin-top:2px">Busa putih di muara Sungai Bendung</div><div class="cp" style="margin-top:2px">Ilir Timur I</div><div style="display:flex;gap:6px;margin-top:8px"><span class="badge t-berat">Berat</span></div></div></div>
+      <div class="rcard"><div class="th foto gulma"></div><div style="flex:1;min-width:0"><div class="cp num">SPP-202611-0013 · kemarin</div><div class="tt" style="margin-top:2px">Eceng gondok menutup aliran di Plaju</div><div class="cp" style="margin-top:2px">Plaju</div><div style="display:flex;gap:6px;margin-top:8px"><span class="badge t-ringan">Ringan</span></div></div></div>
+      <div class="rcard"><div class="th foto oli"></div><div style="flex:1;min-width:0"><div class="cp num">SPP-202611-0014 · kemarin</div><div class="tt" style="margin-top:2px">Oli mengapung di dekat tambatan ketek</div><div class="cp" style="margin-top:2px">Seberang Ulu I</div><div style="display:flex;gap:6px;margin-top:8px"><span class="badge t-berat">Berat</span></div></div></div>
+    </div>
+  </main></div></div>
+</template>
+
+<template id="t-a-detail">
+  <div class="ash"><aside class="side" data-side="antrean"></aside><div class="acol"><div data-atop="SPP-202611-0014"></div>
+  <main class="amain">
+    <div class="ahead"><button class="ibtn dk" aria-label="Kembali"><i data-i="arrow-left"></i></button><div class="grow"><div class="cp">Antrean / Menunggu · laporan 3 dari 3</div><h1 class="h1 num">SPP-202611-0014</h1></div><span class="badge lg s-menunggu">Menunggu Verifikasi</span></div>
+    <div class="det2">
+      <div class="dcol">
+        <div class="foto oli o1" style="height:360px;border-radius:24px"><button class="btn sm b-garis" style="position:absolute;right:14px;bottom:14px;z-index:2"><i data-i="expand" class="s16"></i>Perbesar</button></div>
+        <div class="card o4"><div class="h3">Kondisi lokasi</div>
+          <div class="k3"><div><i data-i="expand" style="color:var(--musi-600)"></i><div class="cp" style="margin-top:6px">Perkiraan luas</div><b>10–50 m²</b></div><div><i data-i="home" style="color:var(--musi-600)"></i><div class="cp" style="margin-top:6px">Dekat permukiman</div><b>Ya</b></div><div><i data-i="waves" style="color:var(--musi-600)"></i><div class="cp" style="margin-top:6px">Kedalaman air</div><b class="muted">Tidak tahu</b></div></div></div>
+        <div class="card lokc o5"><div class="map" data-map="mini" style="height:150px;border-radius:18px"></div>
+          <div><div class="h3">Lokasi</div><dl class="kv" style="margin-top:8px"><dt>Kecamatan</dt><dd>Seberang Ulu I</dd><dt>Patokan</dt><dd>Dekat Dermaga 7 Ulu</dd><dt>Koordinat</dt><dd class="num">-2,99742, 104,76813</dd></dl><button class="btn sm b-lembut" style="margin-top:12px"><i data-i="ext" class="s16"></i>Buka di Google Maps</button></div></div>
+      </div>
+      <div class="dcol">
+        <div class="card o2"><div class="cp">Masuk 12 Nov 2026, 21.06 · dari situs warga</div><h2 class="h2" style="margin:6px 0 12px">Oli mengapung di dekat tambatan ketek</h2>
+          <dl class="kv"><dt>Jenis limbah</dt><dd>Minyak/Oli</dd><dt>Tingkat dugaan warga</dt><dd><span class="badge t-berat">Berat</span></dd></dl>
+          <p class="p" style="margin-top:12px;color:var(--ink)">Lapisan oli hitam mengapung, bau menyengat, ada beberapa ikan mati di dekat dinding dermaga.</p></div>
+        <div class="card o3" style="border:2px solid var(--ungu-100)"><div class="h3">Keputusan</div>
+          <div class="field" style="margin-top:12px"><span class="flabel">Tingkat dugaan final</span><div class="chips"><button class="chip"><span class="dot" style="background:var(--ringan)"></span>Ringan</button><button class="chip"><span class="dot" style="background:var(--sedang)"></span>Sedang</button><button class="chip on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--berat)"></span>Berat</button></div></div>
+          <div class="field" style="margin-top:14px"><label>Catatan admin <span class="opt">Opsional</span></label><div class="textarea" style="min-height:80px;color:var(--ink-muted)">Contoh: perlu dicek ulang saat surut.</div></div>
+          <div style="display:flex;gap:10px;margin-top:16px"><button class="btn lg b-valid" style="flex:1"><i data-i="check"></i>Tandai Valid</button><button class="btn lg b-tolak"><i data-i="x"></i>Tolak</button></div></div>
+        <div class="card o6"><div class="h3">Riwayat verifikasi</div><ul class="tl" style="margin-top:14px"><li class="done"><span class="dt"><i data-i="inbox" class="s16"></i></span><b>Laporan masuk · Menunggu</b><span>Warga (tanpa akun) · 12 Nov 2026, 21.06</span></li></ul></div>
+      </div>
+    </div>
+  </main></div></div>
+</template>
+
+<template id="t-a-tolak">
+  <div class="ash" style="position:relative"><aside class="side" data-side="antrean"></aside><div class="acol"><div data-atop="SPP-202611-0014"></div>
+  <main class="amain"><div class="sk" style="height:40px;width:60%;animation:none"></div><div class="foto oli" style="border-radius:24px;height:300px"></div><div class="card" style="height:200px"></div></main></div>
+  <div class="overlay sheet-m a-fade"><div class="modal a-pop" role="dialog" aria-modal="true">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><h2 class="h2">Tolak laporan?</h2><div class="cp num" style="margin-top:4px">SPP-202611-0014 · Oli mengapung di dekat tambatan ketek</div></div><button class="ibtn" aria-label="Tutup"><i data-i="x"></i></button></div>
+    <div class="field" style="margin-top:18px"><span class="flabel">Pilihan cepat</span><div class="chips"><button class="chip sm on"><i data-i="check" class="s16"></i>Foto tidak jelas</button><button class="chip sm">Bukan di Sungai Musi</button><button class="chip sm">Laporan ganda</button><button class="chip sm">Bukan pencemaran</button></div></div>
+    <div class="field" style="margin-top:14px"><label>Alasan penolakan <span class="opt num">96/300 · min. 10</span></label><div class="textarea input focus" style="height:auto;align-items:flex-start;padding:14px 16px;white-space:normal">Foto terlalu gelap sehingga permukaan sungai tidak terlihat. Silakan kirim ulang dengan foto siang hari.</div><div class="help">Alasan ini akan dilihat warga di halaman lacak.</div></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px"><button class="btn b-garis">Batal</button><button class="btn" style="background:var(--berat);color:#fff">Tolak laporan</button></div>
+  </div></div></div>
+</template>
+
+<template id="t-a-peta">
+  <div class="ash"><aside class="side" data-side="peta"></aside><div class="acol"><div data-atop="Peta sebaran"></div>
+  <main class="amain">
+    <div class="ahead"><h1 class="h1 grow">Peta sebaran</h1><span class="cp" style="display:flex;gap:8px;align-items:center"><span class="live"></span>18 laporan valid · diperbarui otomatis</span></div>
+    <div class="fbar dk"><div class="input"><i data-i="calendar" class="s16"></i>1–13 Nov 2026</div><div class="chips"><button class="chip sm on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--berat)"></span>Berat</button><button class="chip sm on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--sedang)"></span>Sedang</button><button class="chip sm on"><i data-i="check" class="s16"></i><span class="dot" style="background:var(--ringan)"></span>Ringan</button></div><div class="input">Semua kecamatan<i data-i="chev-down" class="s16"></i></div></div>
+    <div class="chips scroll mb"><button class="chip sm"><i data-i="sliders" class="s16"></i>Filter</button><button class="chip sm on"><i data-i="check" class="s16"></i>Berat</button><button class="chip sm on"><i data-i="check" class="s16"></i>Sedang</button><button class="chip sm on"><i data-i="check" class="s16"></i>Ringan</button></div>
+    <div class="apeta">
+      <div class="map" data-map="admin"><div class="ctrl"><b>+</b><b>−</b></div><div class="legend"><span><i style="background:var(--berat)"></i>Berat</span><span><i style="background:var(--sedang)"></i>Sedang</span><span><i style="background:var(--ringan)"></i>Ringan</span></div></div>
+      <div class="card sel a-pop"><div class="foto sampah" style="height:120px"></div><div style="padding:16px"><div class="cp num">SPP-202611-0010 · 11 Nov 2026</div><b style="font-size:16px;display:block;margin:4px 0 8px">Sampah plastik menumpuk di Sungai Sekanak</b><div style="display:flex;gap:6px"><span class="badge t-sedang">Sedang</span><span class="badge s-valid">Valid</span></div><div style="display:flex;gap:8px;margin-top:14px"><button class="btn sm b-ungu" style="flex:1">Buka detail</button><button class="btn sm b-garis"><i data-i="ext" class="s16"></i>Maps</button></div></div></div>
+    </div>
+  </main></div></div>
+</template>
+
+<template id="t-a-rekap">
+  <div class="ash"><aside class="side" data-side="rekap"></aside><div class="acol"><div data-atop="Rekap dan ekspor"></div>
+  <main class="amain">
+    <div class="ahead"><h1 class="h1 grow">Rekap dan ekspor</h1></div>
+    <div class="fbar"><div class="input"><i data-i="calendar" class="s16"></i>01/11/2026</div><span class="cp">sampai</span><div class="input"><i data-i="calendar" class="s16"></i>13/11/2026</div><div class="input dk">Semua tingkat<i data-i="chev-down" class="s16"></i></div><div class="input dk">Semua kecamatan<i data-i="chev-down" class="s16"></i></div><button class="btn sm b-garis mb"><i data-i="sliders" class="s16"></i>Filter lain</button></div>
+    <div class="stats4"><div class="stat st-musi"><div class="l">Laporan masuk</div><div class="v num">24</div></div><div class="stat st-ceria"><div class="l">Menunggu</div><div class="v num">3</div></div><div class="stat st-toska"><div class="l">Valid</div><div class="v num">18</div></div><div class="stat st-putih"><div class="l">Ditolak</div><div class="v num">3</div></div></div>
+    <div class="rk3">
+      <div class="card"><div class="h3">Laporan valid per kecamatan</div><div class="bars" style="margin-top:16px">
+        <div class="br"><span>Seberang Ulu I</span><span class="tr"><i style="width:100%"></i></span><b class="num">5</b></div>
+        <div class="br"><span>Ilir Timur I</span><span class="tr"><i style="width:80%"></i></span><b class="num">4</b></div>
+        <div class="br"><span>Bukit Kecil</span><span class="tr"><i style="width:60%"></i></span><b class="num">3</b></div>
+        <div class="br"><span>Plaju</span><span class="tr"><i style="width:40%"></i></span><b class="num">2</b></div>
+        <div class="br"><span>Gandus</span><span class="tr"><i style="width:40%"></i></span><b class="num">2</b></div>
+        <div class="br"><span>Kertapati</span><span class="tr"><i style="width:40%"></i></span><b class="num">2</b></div></div></div>
+      <div class="card"><div class="h3">Per tingkat dugaan</div>
+        <div style="display:flex;height:16px;border-radius:999px;overflow:hidden;margin:20px 0 16px"><i style="width:39%;background:var(--berat)"></i><i style="width:39%;background:var(--sedang)"></i><i style="width:22%;background:var(--ringan)"></i></div>
+        <div class="stack" style="gap:10px"><div style="display:flex;justify-content:space-between"><span class="badge t-berat">Berat</span><b class="num">7</b></div><div style="display:flex;justify-content:space-between"><span class="badge t-sedang">Sedang</span><b class="num">7</b></div><div style="display:flex;justify-content:space-between"><span class="badge t-ringan">Ringan</span><b class="num">4</b></div></div></div>
+      <div class="card rk-ex" style="background:var(--ungu-100);box-shadow:none"><div class="h3" style="color:var(--ungu-800)">Unduh rekap</div><p class="ps" style="color:var(--ink);margin:6px 0 16px">Berisi 18 laporan valid sesuai filter di atas.</p>
+        <button class="btn full b-ungu"><i data-i="file" class="s18"></i>Unduh PDF</button><button class="btn full b-garis" style="margin-top:10px"><i data-i="table" class="s18"></i>Unduh Excel</button>
+        <p class="cp" style="margin-top:12px;color:var(--ink-soft)">PDF untuk laporan eksekutif, Excel untuk data mentah.</p></div>
+    </div>
+    <div class="card" style="padding:6px 8px"><div class="tscroll">
+      <table class="tbl"><thead><tr><th><span class="sort">Tanggal<i data-i="chev-down" class="s16"></i></span></th><th>Kode</th><th>Laporan</th><th><span class="sort">Kecamatan<i data-i="sort" class="s16"></i></span></th><th><span class="sort">Tingkat<i data-i="sort" class="s16"></i></span></th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="nw">12 Nov</td><td class="num nw">SPP-202611-0012</td><td style="min-width:200px"><div class="tt">Tumpahan oli di Dermaga 7 Ulu</div><div class="cp">10–50 m² · dekat rumah</div></td><td class="nw">Seberang Ulu I</td><td><span class="badge t-berat">Berat</span></td><td><a class="link"><i data-i="ext" class="s16"></i>Maps</a></td></tr>
+        <tr><td class="nw">11 Nov</td><td class="num nw">SPP-202611-0010</td><td style="min-width:200px"><div class="tt">Sampah plastik menumpuk di Sungai Sekanak</div><div class="cp">&gt; 50 m² · dekat rumah</div></td><td class="nw">Bukit Kecil</td><td><span class="badge t-sedang">Sedang</span></td><td><a class="link"><i data-i="ext" class="s16"></i>Maps</a></td></tr>
+        <tr><td class="nw">9 Nov</td><td class="num nw">SPP-202611-0007</td><td style="min-width:200px"><div class="tt">Busa putih di muara Sungai Bendung</div><div class="cp">Tidak diisi</div></td><td class="nw">Ilir Timur I</td><td><span class="badge t-berat">Berat</span></td><td><a class="link"><i data-i="ext" class="s16"></i>Maps</a></td></tr>
+      </tbody></table></div></div>
+  </main></div></div>
+</template>
+
+<template id="t-a-riwayat">
+  <div class="ash"><aside class="side" data-side="riwayat"></aside><div class="acol"><div data-atop="Riwayat"></div>
+  <main class="amain">
+    <div class="ahead"><h1 class="h1 grow">Riwayat verifikasi</h1></div>
+    <div class="fbar"><div class="input" style="width:240px;max-width:100%"><i data-i="search" class="s18"></i>Cari kode tiket</div><div class="input"><i data-i="calendar" class="s16"></i>1–13 Nov 2026</div></div>
+    <div class="card dk" style="padding:6px 8px"><div class="tscroll" data-riwayat="table"></div></div>
+    <div class="mlist mb" data-riwayat="cards"></div>
+  </main></div></div>
+</template>
+
+<template id="t-a-master">
+  <div class="ash"><aside class="side" data-side="master"></aside><div class="acol"><div data-atop="Data master"></div>
+  <main class="amain">
+    <div class="ahead"><h1 class="h1 grow">Data master</h1></div>
+    <div class="two" style="align-items:start">
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="h3">Kecamatan</div><button class="btn sm b-lembut"><i data-i="plus" class="s16"></i>Tambah</button></div><div data-master="Seberang Ulu I,Seberang Ulu II,Ilir Barat I,Ilir Barat II,Ilir Timur I,Ilir Timur II,Bukit Kecil,Gandus|off,Kertapati,Plaju" style="margin-top:10px"></div></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="h3">Jenis limbah</div><button class="btn sm b-lembut"><i data-i="plus" class="s16"></i>Tambah</button></div><div data-master="Minyak/Oli,Sampah plastik,Limbah cair/busa,Sampah organik,Lainnya" style="margin-top:10px"></div></div>
+    </div>
+  </main></div></div>
+</template>
+
+<template id="t-a-drawer">
+  <div class="ash" style="position:relative"><div class="acol"><div data-atop="Antrean"></div>
+  <main class="amain"><div class="stats4"><div class="stat st-musi"><div class="l">Laporan masuk</div><div class="v num">24</div></div><div class="stat st-ceria"><div class="l">Menunggu</div><div class="v num">3</div></div></div><div class="card" style="height:220px"></div></main></div>
+  <div class="overlay a-fade" style="place-items:stretch"></div>
+  <aside class="side drawer a-drawer" data-side="antrean"></aside></div>
+</template>
+
+<script>
+const I={
+camera:'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+image:'<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+'map-pin':'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+locate:'<line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/>',
+check:'<path d="M20 6 9 17l-5-5"/>',
+copy:'<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+msg:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+home:'<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',
+book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+'arrow-left':'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+'arrow-right':'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+sliders:'<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
+calendar:'<rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>',
+file:'<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/>',
+table:'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/>',
+logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>',
+inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+map:'<polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/>',
+chart:'<line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>',
+history:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+db:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>',
+eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+'chev-right':'<path d="m9 18 6-6-6-6"/>',
+'chev-down':'<path d="m6 9 6 6 6-6"/>',
+sort:'<path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>',
+ext:'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+menu:'<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
+clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+droplet:'<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+bulb:'<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>',
+trash:'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+lock:'<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+mail:'<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+expand:'<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+waves:'<path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>',
+send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>'
+};
+const svgIcon=(n,cls='')=>`<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${I[n]||''}</svg>`;
+const pinPath='M12 0C5.4 0 0 5.2 0 11.6 0 20.3 12 32 12 32s12-11.7 12-20.4C24 5.2 18.6 0 12 0z';
+const C={b:'#D93A40',s:'#FFA63D',r:'#22B573',m:'#1D6FF2'};
+
+const GGP='data:image/png;base64,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';
+const ggp=(s=40,alt='Logo Green Generation Sumatera Selatan')=>`<span class="ggp" style="width:${s}px;height:${s}px"><img src="${GGP}" alt="${alt}"></span>`;
+/* --- potongan halaman yang dipakai ulang --- */
+function whead(active){
+  const L=[['beranda','Beranda'],['lacak','Lacak'],['panduan','Panduan']];
+  const nav=active==='lapor'||active==='none'?'':`<nav class="wnav dk">${L.map(([k,l])=>`<a class="${k===active?'on':''}">${l}</a>`).join('')}</nav>`;
+  const cta=active==='lapor'?`<span class="cp dk" style="margin-left:auto">Laporan tanpa akun · sekitar 2 menit</span><button class="ibtn mb" style="margin-left:auto" aria-label="Buka menu">${svgIcon('menu')}</button>`
+    :`<a class="btn b-ajakan dk" style="margin-left:auto">${svgIcon('plus')}<span class="lgv">Laporkan Pencemaran</span><span class="tb">Lapor</span></a><div class="mb" style="margin-left:auto;gap:8px;align-items:center"><a class="btn sm b-ajakan">${svgIcon('plus','s16')}Lapor</a><button class="ibtn" aria-label="Buka menu">${svgIcon(active==='beranda-open'?'x':'menu')}</button></div>`;
+  return `<header class="wh"><div class="cw"><a class="logo"><div class="mk">${svgIcon('droplet')}</div><div class="wm">SIPEPES<small>Sungai Musi · Palembang</small></div></a><div class="with dk">${ggp(40)}<small class="lgv">bersama<br>Green Generation</small></div>${nav}${cta}</div></header>`;
+}
+function wfoot(){
+  return `<footer class="wf"><div class="cw"><div><a class="logo"><div class="mk">${svgIcon('droplet')}</div><div class="wm">SIPEPES<small>Sistem Informasi Pelaporan Pencemaran Sungai</small></div></a><div style="display:flex;gap:12px;align-items:center;margin-top:16px">${ggp(64)}<div><div class="cp">Dikelola bersama</div><b style="font-size:15px">Green Generation Palembang</b><div class="cp">Program GG River Care</div></div></div><p>Tingkat pencemaran adalah dugaan visual. Data pada demo ini adalah data uji.</p></div><div class="fl"><a>Beranda</a><a>Lapor</a><a>Lacak</a><a>Panduan</a><a>Masuk admin</a></div></div></footer>`;
+}
+function lphead(n){
+  const L=['Foto','Lokasi','Detail','Tinjau'];
+  return `<a class="link">${svgIcon('arrow-left','s16')}Kembali ke beranda</a><h1 class="h1" style="margin-top:8px">Buat laporan</h1><p class="ps">Tanpa akun, sekitar dua menit.</p><div style="margin-top:18px"><div class="stepper">${L.map((_,i)=>`<div class="seg ${i<n?'done':''}"><i></i></div>`).join('')}</div><div class="steplabel">${L.map((l,i)=>`<span class="${i===n-1?'on':''}">${l}</span>`).join('')}</div></div>`;
+}
+function lpaside(){
+  return `<div class="card" style="background:var(--ceria-100);box-shadow:none"><div style="display:flex;gap:10px;align-items:center;color:var(--ceria-800)">${svgIcon('bulb')}<b style="color:var(--ink)">Tips foto</b></div><ul class="ps" style="padding-left:18px;margin-top:8px;color:var(--ink)"><li>Siang hari, permukaan air terlihat jelas.</li><li>Sertakan patokan: dermaga atau jembatan.</li></ul></div>
+  <div class="card"><b>Setelah dikirim</b><ul class="tl" style="margin-top:14px"><li class="done"><span class="dt">${svgIcon('send','s16')}</span><b style="font-size:14px">Kamu dapat kode tiket</b></li><li class="wait"><span class="dt">${svgIcon('clock','s16')}</span><b style="font-size:14px">Admin GG River Care (Green Generation) memeriksa</b></li><li><span class="dt">${svgIcon('map-pin','s16')}</span><b style="font-size:14px">Bila valid, tampil di peta</b></li></ul></div>`;
+}
+const SIDE=[['antrean','inbox','Antrean','3'],['peta','map','Peta sebaran'],['rekap','chart','Rekap dan ekspor'],['riwayat','history','Riwayat verifikasi'],['master','db','Data master']];
+function side(on){
+  return `<div class="logo"><div class="mk" style="background:linear-gradient(135deg,var(--ungu-600),var(--musi-600))">${svgIcon('droplet')}</div><div class="wm">SIPEPES<small>Admin GG River Care</small></div></div>`+
+  SIDE.map(([k,ic,l,n])=>`<a class="mi ${k===on?'on':''}">${svgIcon(ic)}${l}${n?`<span class="n">${n}</span>`:''}</a>`).join('')+
+  `<div style="margin-top:auto;display:flex;gap:10px;align-items:center;padding:10px 12px">${ggp(36)}<span class="cp" style="line-height:1.3">Bersama<br>Green Generation Palembang</span></div><div class="who" style="margin-top:8px"><span class="av">AG</span><div style="flex:1;min-width:0"><b style="font-size:14px;display:block">Admin GG</b><span class="cp" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">admin@sipepes.or.id</span></div><button class="ibtn" aria-label="Keluar" style="width:36px;height:36px;box-shadow:none;background:#fff">${svgIcon('logout','s18')}</button></div>`;
+}
+const atop=t=>`<div class="atop"><button class="ibtn" aria-label="Buka menu" style="box-shadow:none;background:var(--abu-100)">${svgIcon('menu')}</button><b class="tt num">${t}</b><span class="av" style="width:36px;height:36px;font-size:12px">AG</span></div>`;
+const RW=[['13 Nov, 14.32','SPP-202611-0012','valid','Tingkat final: Berat'],['12 Nov, 10.05','SPP-202611-0010','valid','Tingkat final diturunkan ke Sedang'],['10 Nov, 19.02','SPP-202611-0009','ditolak','Foto terlalu gelap sehingga permukaan sungai tidak terlihat.'],['9 Nov, 08.20','SPP-202611-0007','valid','—'],['8 Nov, 15.47','SPP-202611-0006','ditolak','Laporan ganda dengan SPP-202611-0005.']];
+const bs=s=>`<span class="badge s-${s}">${s==='valid'?'Valid':s==='ditolak'?'Ditolak':'Menunggu'}</span>`;
+function riwayat(kind){
+  if(kind==='table') return `<table class="tbl"><thead><tr><th>Waktu</th><th>Admin</th><th>Kode</th><th>Dari</th><th>Ke</th><th>Catatan / alasan</th></tr></thead><tbody>${RW.map(r=>`<tr><td class="nw">${r[0]}</td><td class="nw"><span style="display:flex;gap:8px;align-items:center"><span class="av" style="width:30px;height:30px;font-size:12px">AG</span>Admin GG</span></td><td class="num nw" style="font-weight:700">${r[1]}</td><td>${bs('menunggu')}</td><td>${bs(r[2])}</td><td class="ps">${r[3]}</td></tr>`).join('')}</tbody></table>`;
+  return RW.map(r=>`<div class="card" style="padding:14px 16px"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num">${r[1]}</b><span class="cp">${r[0]}</span></div><div style="display:flex;gap:6px;align-items:center;margin:8px 0">${bs('menunggu')}${svgIcon('arrow-right','s16')}${bs(r[2])}</div><div class="ps">${r[3]}</div><div class="cp" style="margin-top:4px">oleh Admin GG</div></div>`).join('');
+}
+
+/* --- peta ilustrasi --- */
+const pinG=(x,y,c,s=1)=>`<g><ellipse cx="${x}" cy="${y}" rx="${6*s}" ry="${2.4*s}" fill="rgba(18,33,63,.22)"/><g transform="translate(${x-12*s} ${y-32*s}) scale(${s})"><path d="${pinPath}" fill="${c}" stroke="#fff" stroke-width="3"/><circle cx="12" cy="11.6" r="4.4" fill="#fff"/></g></g>`;
+const pinHTML=(x,y,c,s=1,cls='')=>{const h=s>1.2?(s>1.45?52:44):36;return `<span class="mpin" style="left:${x/360*100}%;top:${y/260*100}%;width:${Math.round(h*28/36)}px;height:${h}px"><svg class="${cls}" viewBox="-2 -2 28 36"><path d="${pinPath}" fill="${c}" stroke="#fff" stroke-width="3"/><circle cx="12" cy="11.6" r="4.4" fill="#fff"/></svg></span>`};
+const PINS={
+  desk:[[110,150,'b'],[175,128,'s',1.35],[232,152,'b'],[290,120,'r'],[150,95,'s'],[60,180,'r'],[318,170,'s'],[205,198,'b']],
+  admin:[[90,152,'b'],[150,100,'s',1.35],[200,132,'b'],[255,150,'s'],[300,118,'r'],[60,186,'r'],[320,175,'s'],[230,200,'b'],[130,170,'r']],
+  mini:[[180,140,'b',1.4]],picker:[],demo:[[120,150,'s'],[250,128,'r']]
+};
+function mapSVG(key){
+  const pins=(PINS[key]||[]).map(p=>pinHTML(p[0],p[1],C[p[2]],p[3]||1)).join('');
+  const picker=key==='picker'?`<span class="mpulse" style="left:50%;top:50%"></span>${pinHTML(180,130,C.m,1.5)}`:'';
+  return `<svg class="base" viewBox="0 0 360 260" preserveAspectRatio="none" aria-hidden="true">
+  <rect width="360" height="260" fill="#EEF2E6"/>
+  <g fill="#E3EADB"><rect x="12" y="14" width="70" height="52" rx="10"/><rect x="96" y="20" width="58" height="40" rx="10"/><rect x="250" y="16" width="90" height="56" rx="12"/><rect x="20" y="200" width="88" height="46" rx="10"/><rect x="200" y="196" width="70" height="50" rx="10"/><rect x="290" y="190" width="60" height="56" rx="10"/></g>
+  <g fill="#D7EBCB"><circle cx="186" cy="40" r="18"/><circle cx="140" cy="222" r="14"/></g>
+  <g stroke="#fff" fill="none" stroke-linecap="round"><path d="M0 88 C80 84 160 76 360 70" stroke-width="6" vector-effect="non-scaling-stroke"/><path d="M0 222 C90 214 200 228 360 216" stroke-width="6" vector-effect="non-scaling-stroke"/><path d="M70 0 L92 260" stroke-width="6" vector-effect="non-scaling-stroke"/><path d="M300 0 C292 80 300 180 286 260" stroke-width="6" vector-effect="non-scaling-stroke"/></g>
+  <path d="M120 0 C126 50 140 100 148 142" stroke="#B8DCFF" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <path d="M262 260 C256 210 246 170 252 130" stroke="#B8DCFF" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <path d="M-10 156 C60 134 110 176 180 150 S300 108 370 132" stroke="#A3CFFF" stroke-width="34" fill="none" stroke-linecap="round"/>
+  <path d="M-10 156 C60 134 110 176 180 150 S300 108 370 132" stroke="#BFE0FF" stroke-width="12" fill="none" stroke-linecap="round" opacity=".7"/>
+  <g stroke="#9AA6BA" stroke-width="4" stroke-linecap="round"><line x1="196" y1="124" x2="200" y2="168"/><line x1="206" y1="122" x2="210" y2="166"/></g>
+  </svg><span class="mlabel" style="left:5%;top:44%">Sungai Musi</span>${pins}${picker}`;
+}
+
+/* --- isi semua penanda di dalam root --- */
+function enhance(root){
+  root.querySelectorAll('[data-ggp]').forEach(el=>el.outerHTML=ggp(+el.dataset.ggp||40));
+  root.querySelectorAll('[data-whead]').forEach(el=>el.outerHTML=whead(el.dataset.whead));
+  root.querySelectorAll('[data-wfoot]').forEach(el=>el.outerHTML=wfoot());
+  root.querySelectorAll('[data-lphead]').forEach(el=>el.innerHTML=lphead(+el.dataset.lphead));
+  root.querySelectorAll('[data-lpaside]').forEach(el=>el.innerHTML=lpaside());
+  root.querySelectorAll('[data-side]').forEach(el=>el.innerHTML=side(el.dataset.side));
+  root.querySelectorAll('[data-atop]').forEach(el=>el.outerHTML=atop(el.dataset.atop));
+  root.querySelectorAll('[data-riwayat]').forEach(el=>el.innerHTML=riwayat(el.dataset.riwayat));
+  root.querySelectorAll('[data-master]').forEach(el=>{
+    el.innerHTML=el.dataset.master.split(',').map(s=>{const [n,f]=s.split('|');const off=f==='off';
+      return `<div style="display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--garis)"><span style="flex:1;font-size:14px;font-weight:600;${off?'color:var(--ink-muted)':''}">${n}${off?' <span class="cp">· nonaktif</span>':''}</span><button class="ibtn" aria-label="Ubah" style="width:36px;height:36px;box-shadow:none;background:var(--abu-100)">${svgIcon('pencil','s16')}</button><span class="toggle ${off?'off':''}" role="switch" aria-checked="${!off}"></span></div>`}).join('');
+    el.removeAttribute('data-master');
+  });
+  root.querySelectorAll('i[data-i]').forEach(el=>{const t=document.createElement('span');t.innerHTML=svgIcon(el.dataset.i,el.className);const s=t.firstChild;if(el.getAttribute('style'))s.setAttribute('style',el.getAttribute('style'));el.replaceWith(s);});
+  root.querySelectorAll('[data-map]').forEach(el=>{el.insertAdjacentHTML('afterbegin',mapSVG(el.dataset.map));el.removeAttribute('data-map')});
+  root.querySelectorAll('[data-pin]').forEach(el=>{el.innerHTML=`<svg width="30" height="38" viewBox="-2 -2 28 38">${pinG(12,32,el.dataset.pin,1)}</svg>`});
+  root.querySelectorAll('[data-wave]').forEach(el=>{el.outerHTML=`<svg class="wave" viewBox="0 0 220 140" aria-hidden="true"><circle cx="150" cy="60" r="56" fill="rgba(255,255,255,.12)"/><path d="M0 92 C30 78 50 106 80 92 S130 78 160 92 S210 106 240 92 V140 H0Z" fill="rgba(255,255,255,.18)"/><path d="M0 112 C30 98 50 126 80 112 S130 98 160 112 S210 126 240 112 V140 H0Z" fill="rgba(255,201,60,.55)"/></svg>`});
+  root.querySelectorAll('[data-empty]').forEach(el=>{const w=+el.dataset.empty,k=el.dataset.kind||'river';
+    const extra=k==='search'?'<circle cx="74" cy="44" r="18" fill="#fff" stroke="#12213F" stroke-width="4"/><path d="M87 57 L100 70" stroke="#12213F" stroke-width="5" stroke-linecap="round"/>':k==='lost'?'<text x="60" y="56" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="800" font-size="30" fill="#12213F">?</text>':'<path d="M48 26c0 0-12 13-12 21a12 12 0 0 0 24 0c0-8-12-21-12-21z" fill="#1D6FF2"/>';
+    el.outerHTML=`<svg width="${w}" height="${w*0.75}" viewBox="0 0 120 90" aria-hidden="true" style="display:block;margin:0 auto"><ellipse cx="60" cy="50" rx="56" ry="38" fill="#FFF1C9"/><path d="M8 66 C28 56 44 74 64 64 S100 56 116 64 V80 C100 74 84 86 64 80 S28 74 8 82Z" fill="#19D3BD" opacity=".55"/>${extra}<circle cx="102" cy="22" r="6" fill="#FF6B57"/><circle cx="16" cy="30" r="4" fill="#6B4BF0"/></svg>`;});
+}
+
+/* --- frame --- */
+const urlBar=u=>`${svgIcon('lock','s16')}sipepes.vercel.app${u==='/'?'':u}`;
+const tpl=id=>document.getElementById(id).innerHTML;
+const deskFrame=(id,url)=>`<div class="fr"><div class="frl">${svgIcon('table','s16')}Laptop · 1024 px</div><div class="bw"><div class="bar"><i></i><i></i><i></i><span class="url">${urlBar(url)}</span></div><div class="vp" style="width:1024px"><div class="page">${tpl(id)}</div></div></div></div>`;
+const mobFrame=(id,url)=>`<div class="fr"><div class="frl">${svgIcon('search','s16')}Browser HP · 375 px</div><div class="mw"><div class="mbar"><span class="url">${urlBar(url)}</span>${svgIcon('menu','s18')}</div><div class="vp" style="width:375px"><div class="page">${tpl(id)}</div></div></div></div>`;
+document.querySelectorAll('.pair').forEach(p=>{
+  const {t,code,title,url,only}=p.dataset;const notes=p.innerHTML;
+  p.innerHTML=`<div class="pair-frames">${only==='mobile'?'':deskFrame(t,url)}${only==='desk'?'':mobFrame(t,url)}</div><div class="cap"><div class="h"><span class="code">${code}</span><span class="t">${title}</span><span class="r">${url}</span></div>${notes}</div>`;
+});
+
+/* --- pratinjau interaktif --- */
+const sel=document.getElementById('pvPage'),vp=document.getElementById('pvVp'),pvUrl=document.getElementById('pvUrl');
+const PAGES=[...document.querySelectorAll('.pair')].map(p=>[p.dataset.t,p.dataset.code+' · '+p.dataset.title,p.dataset.url]);
+sel.innerHTML=PAGES.map(([t,l])=>`<option value="${t}">${l}</option>`).join('');
+function renderPv(){const pg=PAGES.find(p=>p[0]===sel.value);pvUrl.innerHTML=urlBar(pg[2]);vp.innerHTML=`<div class="page">${tpl(pg[0])}</div>`;enhance(vp);}
+sel.addEventListener('change',renderPv);
+document.querySelectorAll('#pvW button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#pvW button').forEach(x=>x.classList.remove('on'));b.classList.add('on');vp.style.width=b.dataset.w+'px';}));
+renderPv();
+
+enhance(document.body);
+
+/* --- interaksi kecil --- */
+document.querySelectorAll('[data-toggle] .chip').forEach(ch=>ch.addEventListener('click',()=>{const g=ch.parentElement;g.querySelectorAll('.chip').forEach(c=>{c.classList.remove('on');const s=c.querySelector('svg');if(s)s.remove()});ch.classList.add('on');ch.insertAdjacentHTML('afterbegin',svgIcon('check','s16'));}));
+document.getElementById('rmToggle').addEventListener('change',e=>document.body.classList.toggle('rm',e.target.checked));
+const steps=['Foto bukti','Lokasi kejadian','Ceritakan sedikit','Periksa sebelum dikirim'];let si=1;
+document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',()=>{
+  const d=b.dataset.demo;
+  if(d==='fwd'||d==='back'){si=Math.max(0,Math.min(3,si+(d==='fwd'?1:-1)));document.getElementById('stepN').textContent=si+1;document.getElementById('stepT').textContent=steps[si];const box=document.getElementById('stepBox');box.classList.remove('a-fwd','a-back');void box.offsetWidth;box.classList.add(d==='fwd'?'a-fwd':'a-back');}
+  if(d==='toast'){const st=document.getElementById('toastStage');st.innerHTML=`<div class="toast a-toast"><span class="ok">${svgIcon('check','s16')}</span>Kode tiket disalin</div>`;clearTimeout(window._tt);window._tt=setTimeout(()=>{const t=st.firstChild;if(t){t.style.transition='opacity .25s, transform .25s';t.style.opacity=0;t.style.transform='translateY(-16px)'}},4000);}
+  if(d==='dialog'){document.getElementById('dlgStage').innerHTML=`<div class="overlay a-fade" style="border-radius:24px"><div class="modal a-pop" style="width:240px;padding:20px"><b>Tolak laporan?</b><p class="ps" style="margin:6px 0 12px">Alasan wajib diisi.</p><button class="btn sm b-garis" onclick="this.closest('.overlay').remove()">Tutup</button></div></div>`;}
+  if(d==='menu'){document.getElementById('dlgStage').innerHTML=`<div class="overlay a-fade" style="border-radius:24px;place-items:start stretch"><div class="a-down" style="background:#fff;border-radius:0 0 24px 24px;padding:12px 16px 16px"><div style="font-weight:700;padding:10px 6px">Beranda</div><div style="font-weight:700;padding:10px 6px">Lacak laporan</div><div style="font-weight:700;padding:10px 6px">Panduan</div><button class="btn sm b-garis" onclick="this.closest('.overlay').remove()">Tutup</button></div></div>`;}
+  if(d==='drop'){const st=document.getElementById('dropStage');st.insertAdjacentHTML('beforeend',pinHTML(110+Math.random()*140,110+Math.random()*60,C.b,1,'a-drop'));}
+  if(d==='conf'){document.getElementById('confStage').innerHTML=`<div style="position:relative;text-align:center"><div class="confetti a-conf" style="position:absolute;left:50%;top:48px">${[['--dx:-110px;--dy:-60px;--r:-140deg','koral-500'],['--dx:-70px;--dy:-100px;--r:200deg','ceria-400'],['--dx:80px;--dy:-90px;--r:160deg','musi-600'],['--dx:120px;--dy:-40px;--r:-220deg','ungu-600'],['--dx:-130px;--dy:10px;--r:120deg','toska-400'],['--dx:130px;--dy:20px;--r:-90deg','koral-500']].map(([v,c])=>`<i style="background:var(--${c});${v}"></i>`).join('')}</div><div class="check-c a-check" style="margin:0 auto"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><b style="display:block;margin-top:22px">Laporan terkirim!</b></div>`;}
+  if(d==='stag'){const l=document.getElementById('stagList');l.className='grid a-stag';l.innerHTML=[['oli','Tumpahan oli di Dermaga 7 Ulu','t-berat','Berat'],['sampah','Sampah plastik di Sekanak','t-sedang','Sedang'],['gulma','Eceng gondok di Plaju','t-ringan','Ringan']].map(([f,t,c,n])=>`<div class="rcard" style="padding:10px"><div class="th foto ${f}" style="width:52px;height:52px"></div><div><div class="tt" style="font-size:14px">${t}</div><span class="badge ${c}" style="margin-top:6px">${n}</span></div></div>`).join('');}
+  if(d==='skel'){const l=document.getElementById('stagList');l.className='grid';l.innerHTML=[1,2,3].map(()=>`<div class="rcard" style="padding:10px"><div class="th sk" style="width:52px;height:52px"></div><div style="flex:1"><div class="sk" style="height:12px;width:80%"></div><div class="sk" style="height:20px;width:64px;border-radius:999px;margin-top:10px"></div></div></div>`).join('');}
+}));
+document.querySelector('[data-demo="conf"]').click();
+document.querySelector('[data-demo="stag"]').click();
+</script>
+</body>
+</html>

@@ -1,208 +1,197 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Camera,
   CheckCircle2,
   XCircle,
-  AlertTriangle,
-  Phone,
-  MessageSquare,
-  ShieldCheck,
-  Droplets,
+  AlertCircle,
   HelpCircle,
   ArrowRight,
-  Info
+  Info,
+  Droplets,
+  Plus
 } from 'lucide-react';
+import Card from '../../components/Card';
+import Button from '../../components/Button';
+import Badge from '../../components/Badge';
 
-export default function WargaGuide({ onNavigate }) {
+export default function WargaGuide() {
   const pollutionTypes = [
     {
-      title: 'Limbah Minyak & Kimia B3',
-      badge: 'Prioritas Tinggi / Darurat',
-      badgeColor: 'bg-rose-600 text-white',
-      icon: '🛢️',
-      ciri: 'Tumpahan oli kapal atau buangan industri, air sungai berwarna pelangi/hitam pekat, berbau menyengat.',
-      dampak: 'Mematikan ekosistem ikan Musi dan mencemari bahan baku air bersih PDAM Tirta Musi.'
+      title: 'Limbah Minyak & Bahan Kimia',
+      badge: 'Tingkat Berat',
+      badgeType: 'berat',
+      bgClass: 'bg-koral-100 border-koral-500/30 text-ink',
+      ciri: 'Tumpahan oli kapal atau buangan industri, air sungai berwarna pelangi atau hitam pekat, serta mengeluarkan aroma menyengat.',
+      dampak: 'Merusak ekosistem ikan Musi dan membahayakan sumber air bersih warga tepian.'
     },
     {
       title: 'Sampah Plastik & Domestik',
-      badge: 'Prioritas Sedang',
-      badgeColor: 'bg-amber-500 text-white',
-      icon: '🗑️',
-      ciri: 'Timbulan kantong kresek, botol air mineral, styrofoam, dan limbah rumah tangga menyumbat kolong dermaga getek.',
-      dampak: 'Memicu banjir pasang sungai, pendangkalan alur pelayaran, dan sarang penyakit.'
+      badge: 'Tingkat Sedang',
+      badgeType: 'sedang',
+      bgClass: 'bg-ceria-100 border-ceria-400/40 text-ink',
+      ciri: 'Timbulan kantong kresek, botol plastik, styrofoam, dan sampah rumah tangga yang menyumbat kolong dermaga atau getek.',
+      dampak: 'Memicu pendangkalan alur sungai, menyumbat saluran pembuangan, dan mengotori sempadan.'
     },
     {
-      title: 'Gulma & Eceng Gondok Liar',
-      badge: 'Prioritas Pemantauan',
-      badgeColor: 'bg-slate-800 text-white',
-      icon: '🌿',
-      ciri: 'Hamparan eceng gondok tebal yang menutupi permukaan air sungai dan menghalangi kapal jukung melintas.',
-      dampak: 'Menurunkan kadar oksigen air sungai dan menyumbat pintu pompa air kota.'
+      title: 'Busa Industri & Limbah Pabrik',
+      badge: 'Tingkat Berat',
+      badgeType: 'berat',
+      bgClass: 'bg-musi-100 border-musi-600/30 text-ink',
+      ciri: 'Gumpalan busa putih tebal terapung di permukaan air disertai perubahan warna air sungai menjadi keruh kecokelatan tidak wajar.',
+      dampak: 'Menurunkan kadar oksigen terlarut dan mematikan biota air sungai.'
+    },
+    {
+      title: 'Gulma & Eceng Gondok Tebal',
+      badge: 'Tingkat Ringan',
+      badgeType: 'ringan',
+      bgClass: 'bg-toska-100 border-toska-400/40 text-ink',
+      ciri: 'Hamparan eceng gondok liar yang menutupi alur sempadan sungai hingga menghalangi perahu jukung melintas.',
+      dampak: 'Menghambat sirkulasi air dan menjadi tempat terperangkapnya sampah plastik.'
     }
   ];
 
   return (
-    <div className="space-y-8">
-
-      {/* 1. Header Ringkas & Lebar (Clean Typography) */}
-      <div className="space-y-1.5">
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-          Panduan &amp; Edukasi Warga Sempadan Musi
+    <div className="max-w-4xl mx-auto space-y-8 py-2">
+      {/* 1. Header Panduan */}
+      <div className="space-y-2 text-center sm:text-left">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-musi-100 text-musi-800 text-xs font-bold">
+          <Droplets className="w-3.5 h-3.5" />
+          <span>Edukasi Pelaporan Komunitas Musi</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-ink tracking-tight">
+          Panduan Mengenali &amp; Melaporkan Pencemaran
         </h1>
-        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
-          Ikuti panduan ringkas berikut agar laporan Anda dapat langsung diverifikasi dan ditindaklanjuti cepat oleh petugas.
+        <p className="text-xs sm:text-sm text-ink-soft leading-relaxed max-w-2xl">
+          Ikuti pedoman visual berikut agar foto dan data yang kamu kirimkan mudah diverifikasi oleh tim relawan GG River Care.
         </p>
       </div>
 
-      {/* 2. Kartu Perbandingan Foto Bukti (Clean & High Contrast) */}
-      <div className="space-y-3">
-        <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-          <span>Panduan Pengambilan Foto Bukti yang Valid</span>
+      {/* 2. Jenis-Jenis Pencemaran (Kartu Warna Muda Bergantian) */}
+      <div className="space-y-4">
+        <h2 className="text-base sm:text-lg font-bold text-ink flex items-center gap-2">
+          <span>Jenis Pencemaran yang Dapat Dilaporkan</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Foto Benar (Do) */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-            <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
-              <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                ✓
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-xs sm:text-sm">
-                  Contoh Foto yang Benar (Valid)
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {pollutionTypes.map((item, idx) => (
+            <div
+              key={idx}
+              className={`rounded-3xl p-5 sm:p-6 border space-y-3 shadow-2xs transition-all duration-200 hover:-translate-y-0.5 ${item.bgClass}`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-sm sm:text-base font-bold text-ink">
+                  {item.title}
                 </h3>
-                <p className="text-[11px] text-slate-500">
-                  Cepat lolos verifikasi relawan patroli
-                </p>
+                <Badge type="tingkat" value={item.badgeType} size="md" />
               </div>
-            </div>
 
-            <ul className="space-y-2.5 text-xs text-slate-600">
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span><strong className="text-slate-900">Fokus &amp; Terang:</strong> Objek limbah terlihat jelas saat siang hari atau dengan pencahayaan cukup.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span><strong className="text-slate-900">Ada Patokan Lokasi:</strong> Terlihat latar belakang sempadan, dermaga, tiang jembatan, atau tepian sungai.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span><strong className="text-slate-900">Foto Asli di Tempat:</strong> Diambil langsung di lokasi kejadian saat pencemaran berlangsung.</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Foto Kurang Tepat (Don't) */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-            <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
-              <div className="w-7 h-7 rounded-lg bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                ✕
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-xs sm:text-sm">
-                  Contoh Foto Tidak Valid (Ditolak)
-                </h3>
-                <p className="text-[11px] text-slate-500">
-                  Akan ditolak karena bukti tidak memadai
-                </p>
-              </div>
-            </div>
-
-            <ul className="space-y-2.5 text-xs text-slate-600">
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-600 font-bold shrink-0">✕</span>
-                <span><strong className="text-slate-900">Kabur / Gelap Gulita:</strong> Foto malam hari tanpa lampu sehingga jenis limbah tidak bisa diidentifikasi.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-600 font-bold shrink-0">✕</span>
-                <span><strong className="text-slate-900">Terlalu Zoom Dekat:</strong> Hanya foto botol plastik tanpa terlihat apakah berada di sungai atau di darat.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-600 font-bold shrink-0">✕</span>
-                <span><strong className="text-slate-900">Unduhan Internet / Hoaks:</strong> Menggunakan foto lama dari Google atau media sosial yang tidak relevan.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Tiga Jenis Pencemaran Utama */}
-      <div className="space-y-3">
-        <h2 className="text-sm sm:text-base font-bold text-slate-900">
-          🌊 3 Jenis Pencemaran yang Sering Terjadi di Sungai Musi
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {pollutionTypes.map((type, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-3.5 flex flex-col justify-between">
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl">{type.icon}</span>
-                  <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-md ${type.badgeColor}`}>
-                    {type.badge}
-                  </span>
+              <div className="space-y-2 text-xs leading-relaxed">
+                <div>
+                  <span className="font-bold text-ink block">Ciri visual di lapangan:</span>
+                  <p className="text-ink-soft">{item.ciri}</p>
                 </div>
-                <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                  {type.title}
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {type.ciri}
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500">
-                <strong className="text-slate-700 block mb-0.5">Dampak Lingkungan:</strong>
-                {type.dampak}
+                <div>
+                  <span className="font-bold text-ink block">Dampak lingkungan:</span>
+                  <p className="text-ink-soft">{item.dampak}</p>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 4. Keamanan & FAQ Singkat */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-        <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-emerald-600" />
-          <span>Keamanan &amp; Kerahasiaan Identitas Pelapor</span>
+      {/* 3. Komparasi Foto Valid vs Tidak Valid */}
+      <div className="space-y-4">
+        <h2 className="text-base sm:text-lg font-bold text-ink">
+          Tips Mengambil Foto Bukti yang Sah
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-            <strong className="text-slate-900 block text-xs">Apakah identitas saya aman?</strong>
-            <p className="leading-relaxed">
-              Ya, 100% aman. SIPEPES menyediakan fitur pelaporan anonim. Nama dan kontak Anda tidak akan pernah dipublikasikan pada peta publik.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          {/* Foto Benar (Do) */}
+          <Card className="p-5 sm:p-6 space-y-4 border-toska-400/40">
+            <div className="flex items-center gap-2.5 pb-3 border-b border-garis">
+              <div className="w-8 h-8 rounded-full bg-toska-100 text-toska-800 flex items-center justify-center font-bold text-sm shrink-0">
+                ✓
+              </div>
+              <div>
+                <h3 className="font-bold text-ink text-sm sm:text-base">
+                  Contoh Foto yang Benar (Valid)
+                </h3>
+                <p className="text-xs text-ink-muted">
+                  Cepat lolos verifikasi relawan GG River Care
+                </p>
+              </div>
+            </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-            <strong className="text-slate-900 block text-xs">Berapa lama laporan ditindaklanjuti?</strong>
-            <p className="leading-relaxed">
-              Tim relawan Green Generation memverifikasi laporan maksimal 1x24 jam sebelum diteruskan ke Dinas Lingkungan Hidup Palembang.
-            </p>
-          </div>
+            <ul className="space-y-2.5 text-xs text-ink-soft">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-toska-800 shrink-0 mt-0.5" />
+                <span>Foto diambil dengan pencahayaan cukup di siang hari sehingga warna air tampak jelas.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-toska-800 shrink-0 mt-0.5" />
+                <span>Memuat patokan lokasi sempadan seperti tiang dermaga, getek, atau pemukiman tepian.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-toska-800 shrink-0 mt-0.5" />
+                <span>Jarak pemotretan proporsional (tidak terlalu jauh atau buram).</span>
+              </li>
+            </ul>
+          </Card>
+
+          {/* Foto Salah (Don't) */}
+          <Card className="p-5 sm:p-6 space-y-4 border-tingkat-berat-tx/30">
+            <div className="flex items-center gap-2.5 pb-3 border-b border-garis">
+              <div className="w-8 h-8 rounded-full bg-tingkat-berat-bg text-tingkat-berat-tx flex items-center justify-center font-bold text-sm shrink-0">
+                ✕
+              </div>
+              <div>
+                <h3 className="font-bold text-ink text-sm sm:text-base">
+                  Foto yang Berisiko Ditolak
+                </h3>
+                <p className="text-xs text-ink-muted">
+                  Menyulitkan peninjauan di lapangan
+                </p>
+              </div>
+            </div>
+
+            <ul className="space-y-2.5 text-xs text-ink-soft">
+              <li className="flex items-start gap-2">
+                <XCircle className="w-4 h-4 text-tingkat-berat-tx shrink-0 mt-0.5" />
+                <span>Foto terlalu gelap saat malam hari tanpa bantuan lampu penerang.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <XCircle className="w-4 h-4 text-tingkat-berat-tx shrink-0 mt-0.5" />
+                <span>Hanya memperlihatkan air tanpa patokan sempadan tepian sungai sama sekali.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <XCircle className="w-4 h-4 text-tingkat-berat-tx shrink-0 mt-0.5" />
+                <span>Menggunakan foto unduhan dari internet atau hasil tangkapan layar media sosial lama.</span>
+              </li>
+            </ul>
+          </Card>
         </div>
       </div>
 
-      {/* 5. Bottom CTA Banner (Solid Slate-900 - Premium, Authoritative, Zero Slop) */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-slate-900 text-white shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-        <div className="space-y-1">
-          <h3 className="font-black text-white text-base sm:text-lg">
-            Melihat Pencemaran di Sekitar Anda Sekarang?
+      {/* 4. Banner Ajakan di Bawah */}
+      <Card className="bg-gradient-to-r from-musi-600 to-toska-400 text-white p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lembut">
+        <div className="space-y-1 text-center sm:text-left">
+          <h3 className="text-lg sm:text-xl font-extrabold text-white">
+            Melihat Pencemaran di Sekitarmu?
           </h3>
-          <p className="text-xs sm:text-sm text-slate-300">
-            Kirimkan foto bukti dan titik lokasinya dalam kurang dari 1 menit untuk kelestarian Sungai Musi.
+          <p className="text-xs sm:text-sm text-white/90">
+            Hanya butuh 2 menit untuk mengirimkan laporan tanpa perlu login.
           </p>
         </div>
 
-        <button
-          onClick={() => onNavigate && onNavigate('report')}
-          className="py-3 px-5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-sky-500/20 transition cursor-pointer shrink-0"
-        >
-          <Camera className="w-4 h-4" />
-          <span>Lapor Pencemaran Sekarang</span>
-        </button>
-      </div>
+        <Link to="/lapor" className="shrink-0">
+          <Button variant="ajakan" size="lg">
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <span>Laporkan Sekarang</span>
+          </Button>
+        </Link>
+      </Card>
     </div>
   );
 }

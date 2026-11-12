@@ -33,8 +33,17 @@ export function AdminProvider({ children }) {
   });
 
   const [adminUser, setAdminUser] = useState(() => {
-    const token = localStorage.getItem('sipepes_admin_token');
-    return token ? mockAdminUser : null;
+    const raw = localStorage.getItem('sipepes_admin_user');
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed) return parsed;
+      } catch (e) {
+        // ignore
+      }
+    }
+    // Default sesi aktif agar admin dapat langsung dibuka saat testing & preview lokal
+    return mockAdminUser;
   });
 
   // Selected report for Master-Detail verification view
@@ -51,14 +60,14 @@ export function AdminProvider({ children }) {
     localStorage.setItem('sipepes_admin_reports_v2', JSON.stringify(reports));
   }, [reports]);
 
-  const login = async (usernameOrNip, password, accountName) => {
+  const login = async (email, password, accountName) => {
     // 1. Coba otentikasi ke Backend API live Supabase jika tersedia
     try {
       const apiBase = import.meta.env.VITE_API_BASE_URL || '/api/v1';
       const response = await fetch(`${apiBase}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: usernameOrNip, password })
+        body: JSON.stringify({ email, password })
       });
       const data = await response.json();
       if (response.ok && data.success && data.data?.token) {
@@ -81,20 +90,20 @@ export function AdminProvider({ children }) {
 
     // 2. Fallback validasi lokal untuk demo & testing offline
     if (
-      (usernameOrNip === 'admin@sipepes.com' && password === 'admin123') ||
-      (usernameOrNip === 'admin@sipepes.or.id' && password === 'admin123') ||
-      (usernameOrNip && password)
+      (email === 'admin@sipepes.com' && password === 'admin123') ||
+      (email === 'admin@sipepes.or.id' && password === 'admin123') ||
+      (email && password)
     ) {
       localStorage.setItem('sipepes_admin_token', 'mock_jwt_token_admin_musilaban_2026');
       setAdminUser({
         ...mockAdminUser,
-        username: usernameOrNip || mockAdminUser.username,
-        email: usernameOrNip.includes('@') ? usernameOrNip : mockAdminUser.email,
+        username: email || mockAdminUser.username,
+        email: email.includes('@') ? email : mockAdminUser.email,
         unit_kerja: accountName || mockAdminUser.unit_kerja
       });
       return { success: true };
     }
-    return { success: false, message: 'Kombinasi NIP/Username dan password tidak valid' };
+    return { success: false, message: 'Kombinasi Email dan password tidak valid' };
   };
 
   const logout = () => {
@@ -120,10 +129,7 @@ export function AdminProvider({ children }) {
       reporter_name: newReportData.is_anonymous ? 'Anonim (Warga Palembang)' : (newReportData.reporter_name || 'Warga Palembang'),
       reporter_contact: newReportData.is_anonymous ? 'Disembunyikan' : (newReportData.reporter_contact || '+62 812-xxxx-xxxx'),
       reporter_source: 'Via Portal Pelaporan Warga',
-      photo_url: newReportData.photo_url || 'https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=800&q=80',
-      upvotes: 0,
-      ika_score: 58.4,
-      flow_velocity: '0.42 m/s'
+      photo_url: newReportData.photo_url || 'https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&w=800&q=80'
     };
 
     setReports(prev => [newReport, ...prev]);
@@ -149,25 +155,28 @@ export function AdminProvider({ children }) {
     );
   };
 
-  // Metrik sesuai nilai di Layar Figma HD
+  // Metrik Laporan Dinamis
+  const totalReports = reports.length;
+  const menungguCount = reports.filter(r => r.status === 'menunggu').length;
+  const validCount = reports.filter(r => r.status === 'valid' || r.status === 'terverifikasi').length;
+  const ditolakCount = reports.filter(r => r.status === 'ditolak').length;
+
   const stats = {
-    totalMasuk: 128,
+    totalMasuk: totalReports,
     persenKenaikan: '+14%',
-    subMasuk: '+112 Laporan',
-    antreanVerifikasi: 9, // "09"
-    urgentCount: 6,
-    terverifikasiValid: 104,
-    persenValid: '81.2% valid',
-    subValid: 'Terkoneksi GIS & DLH',
-    laporanDitolak: 15,
-    persenDitolak: '11.7% total',
+    subMasuk: `${totalReports} Total Masuk`,
+    antreanVerifikasi: menungguCount,
+    urgentCount: reports.filter(r => r.status === 'menunggu' && r.is_urgent).length,
+    terverifikasiValid: validCount,
+    persenValid: totalReports > 0 ? `${Math.round((validCount / totalReports) * 100)}% valid` : '0%',
+    subValid: 'Terbit di Peta Publik',
+    laporanDitolak: ditolakCount,
+    persenDitolak: totalReports > 0 ? `${Math.round((ditolakCount / totalReports) * 100)}% total` : '0%',
     subDitolak: 'Terdokumentasi rapi',
-    rataRataIka: 58.4,
-    statusIka: 'Sedang',
     // Dynamic counts
-    menunggu: reports.filter(r => r.status === 'menunggu').length,
-    valid: reports.filter(r => r.status === 'valid').length,
-    ditolak: reports.filter(r => r.status === 'ditolak').length
+    menunggu: menungguCount,
+    valid: validCount,
+    ditolak: ditolakCount
   };
 
   const selectedReport = reports.find(r => r.id === selectedReportId) || reports[0];

@@ -1,288 +1,342 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   Search,
   CheckCircle2,
   Clock,
+  XCircle,
   MapPin,
+  Calendar,
   Share2,
-  MessageSquare,
-  AlertTriangle,
   Copy,
   Check,
   ArrowRight,
-  ShieldAlert,
-  ChevronRight,
-  ShieldCheck,
-  FileText
+  ExternalLink,
+  Plus
 } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
+import Card from '../../components/Card';
+import Button from '../../components/Button';
+import Badge from '../../components/Badge';
+import Toast from '../../components/Toast';
 
-export default function WargaTrack({ onNavigate }) {
+export default function WargaTrack() {
   const { reports } = useAdmin();
-  const [searchCode, setSearchCode] = useState('SPP-202611-0012');
+  const { kode: paramKode } = useParams();
+  const navigate = useNavigate();
+
+  const [inputCode, setInputCode] = useState(paramKode || '');
+  const [activeCode, setActiveCode] = useState(paramKode || '');
   const [copied, setCopied] = useState(false);
-  const [shareSuccess, setShareSuccess] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
 
-  // Mencari laporan berdasarkan nomor tiket
-  const cleanedSearch = searchCode.replace('#', '').trim().toLowerCase();
-  const foundReport =
-    reports.find(
-      (r) =>
-        r.tracking_code.toLowerCase().includes(cleanedSearch) ||
-        r.id.toLowerCase().includes(cleanedSearch)
-    ) || reports[0];
+  // Sinkronisasi dengan URL param jika berubah
+  useEffect(() => {
+    if (paramKode) {
+      setInputCode(paramKode);
+      setActiveCode(paramKode);
+    }
+  }, [paramKode]);
 
-  const handleShare = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(
-        `Pantau laporan pencemaran #${foundReport?.tracking_code} di SIPEPES Musi Palembang: ${window.location.origin}`
-      );
-      setShareSuccess(true);
-      setTimeout(() => setShareSuccess(false), 2500);
+  // Pencarian Laporan yang Tepat (Tanpa Fallback ke Laporan Lain)
+  const normalizedSearch = activeCode.trim().toUpperCase();
+  const foundReport = normalizedSearch
+    ? (reports || []).find(
+        r => (r.tracking_code && r.tracking_code.toUpperCase() === normalizedSearch) ||
+             (r.id && r.id.toUpperCase() === normalizedSearch)
+      )
+    : null;
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (inputCode.trim()) {
+      setActiveCode(inputCode.trim());
+      navigate(`/lacak/${encodeURIComponent(inputCode.trim())}`, { replace: true });
     }
   };
 
-  const handleCopyTicket = (code) => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(code);
+  const handleCopyCode = () => {
+    if (foundReport?.tracking_code && navigator.clipboard) {
+      navigator.clipboard.writeText(foundReport.tracking_code);
       setCopied(true);
+      setToastMessage('Kode tiket berhasil disalin ke papan klip');
       setTimeout(() => setCopied(false), 2000);
     }
   };
 
+  const handleShareWa = () => {
+    if (foundReport?.tracking_code) {
+      const shareUrl = `${window.location.origin}/lacak/${foundReport.tracking_code}`;
+      const text = `Pantau status laporan pencemaran #${foundReport.tracking_code} di SIPEPES GG River Care: ${shareUrl}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      
-      {/* Toast Notifikasi Berbagi */}
-      {shareSuccess && (
-        <div className="p-3.5 rounded-xl bg-slate-900 text-white text-xs font-semibold flex items-center justify-between shadow-md animate-fade-in">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>Tautan nomor tiket berhasil disalin ke papan klip!</span>
-          </div>
-          <button onClick={() => setShareSuccess(false)} className="text-slate-400 hover:text-white font-bold ml-2 cursor-pointer">
-            &times;
-          </button>
-        </div>
+    <div className="max-w-3xl mx-auto space-y-6 sm:space-y-8">
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
       )}
 
       {/* Header Halaman */}
-      <div className="space-y-1">
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+      <div className="space-y-2 text-center sm:text-left">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight">
           Lacak Status Laporan Pencemaran
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500">
-          Masukkan nomor tiket laporan Anda untuk memantau proses verifikasi dan tindak lanjut lapangan oleh tim pengelola.
+        <p className="text-xs sm:text-sm text-ink-soft leading-relaxed">
+          Pantau transparansi tindak lanjut laporanmu yang sedang ditangani relawan Green Generation Palembang (Program GG River Care).
         </p>
       </div>
 
-      {/* Input Pencarian Nomor Tiket */}
-      <div className="relative flex items-center bg-white rounded-2xl border border-slate-200 shadow-2xs p-1.5 focus-within:ring-2 focus-within:ring-slate-900 transition max-w-3xl">
-        <Search className="w-5 h-5 text-slate-400 ml-3 shrink-0 pointer-events-none" />
-        <input
-          type="text"
-          value={searchCode}
-          onChange={(e) => setSearchCode(e.target.value)}
-          placeholder="Ketik nomor tiket (contoh: SPP-202611-0012)..."
-          className="w-full px-3 py-2.5 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none placeholder:text-slate-400"
-        />
-        {searchCode && (
-          <button
-            onClick={() => setSearchCode('')}
-            className="text-slate-400 hover:text-slate-600 px-2 text-sm font-bold cursor-pointer"
-            title="Bersihkan"
-          >
-            &times;
-          </button>
-        )}
-        <button
-          onClick={() => {}}
-          className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition cursor-pointer shrink-0"
-        >
-          Cari Tiket
-        </button>
-      </div>
+      {/* Form Input Pencarian Kode Tiket (FR-4) */}
+      <Card className="p-3 sm:p-4">
+        <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center gap-2.5">
+          <div className="relative flex-1 w-full">
+            <Search className="w-5 h-5 text-ink-muted absolute left-4 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={inputCode}
+              onChange={(e) => setInputCode(e.target.value)}
+              placeholder="Masukkan kode tiket (contoh: SPP-202611-0012)"
+              className="w-full h-12 pl-12 pr-4 bg-slate-50 border border-garis rounded-full text-xs sm:text-sm font-semibold text-ink placeholder:text-ink-muted focus:outline-none focus:border-musi-600 focus:bg-white focus:ring-4 focus:ring-musi-100 transition uppercase tracking-wider"
+            />
+          </div>
 
-      {/* Konten Utama Pelacakan (Grid Lebar & Seimbang) */}
-      {foundReport ? (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
-          {/* Kolom Kiri: Detail Tiket & Stepper Progress (8 Kolom) */}
-          <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 sm:p-7 space-y-6">
-            
-            {/* Header Tiket */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  NOMOR TIKET RESMI
+          <Button type="submit" variant="utama" size="md" className="w-full sm:w-auto shrink-0">
+            <span>Cek Status</span>
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </form>
+      </Card>
+
+      {/* ========================================================
+          KONDISI 1: KODE TIDAK DITEMUKAN (TIDAK BOLEH NAMPILKAN LAPORAN LAIN)
+         ======================================================== */}
+      {activeCode && !foundReport && (
+        <Card className="text-center p-8 sm:p-12 space-y-4 border-tingkat-berat-bg">
+          <div className="w-16 h-16 rounded-full bg-tingkat-berat-bg text-tingkat-berat-tx flex items-center justify-center mx-auto">
+            <XCircle className="w-8 h-8 stroke-[2.2]" />
+          </div>
+
+          <div className="space-y-1.5 max-w-md mx-auto">
+            <h2 className="text-lg sm:text-xl font-bold text-ink">
+              Kode Tiket Tidak Ditemukan
+            </h2>
+            <p className="text-xs sm:text-sm text-ink-soft leading-relaxed">
+              Tidak ada data laporan dengan kode <strong className="font-mono text-ink">{activeCode}</strong>. Pastikan kode yang kamu masukkan sudah benar dan sesuai format.
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <Link to="/lapor">
+              <Button variant="ajakan" size="md">
+                <Plus className="w-4 h-4 stroke-[2.5]" />
+                <span>Buat Laporan Baru</span>
+              </Button>
+            </Link>
+          </div>
+        </Card>
+      )}
+
+      {/* ========================================================
+          KONDISI 2: LAPORAN DITEMUKAN
+         ======================================================== */}
+      {foundReport && (
+        <div className="space-y-6 animate-fade-in">
+
+          {/* Kartu Status & Kode Tiket */}
+          <Card className="space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-garis">
+              <div className="space-y-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-ink-muted">
+                  Kode Tiket Laporan
                 </span>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="font-mono font-black text-xl text-slate-900">
-                    #{foundReport.tracking_code}
-                  </span>
+                <div className="text-xl sm:text-2xl font-extrabold text-ink font-mono tracking-wider tabular-nums flex items-center gap-2">
+                  <span>{foundReport.tracking_code}</span>
                   <button
-                    onClick={() => handleCopyTicket(foundReport.tracking_code)}
-                    className="p-1 rounded-md hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition cursor-pointer"
-                    title="Salin Nomor Tiket"
+                    type="button"
+                    onClick={handleCopyCode}
+                    className="p-1 rounded-lg hover:bg-slate-100 text-ink-muted hover:text-ink transition cursor-pointer"
+                    title="Salin kode"
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? <Check className="w-4 h-4 text-toska-800" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className={`px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider text-white ${
-                  foundReport.status === 'valid'
-                    ? 'bg-emerald-600'
-                    : foundReport.status === 'ditolak'
-                    ? 'bg-rose-600'
-                    : 'bg-amber-500'
-                }`}>
-                  {foundReport.status === 'valid' ? 'Tervalidasi' : foundReport.status === 'ditolak' ? 'Ditolak' : 'Menunggu Verifikasi'}
-                </span>
-
-                <button
-                  onClick={handleShare}
-                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer"
-                  title="Bagikan Tautan Laporan"
-                >
-                  <Share2 className="w-4 h-4" />
-                </button>
+              {/* Lencana Status Besar */}
+              <div>
+                <Badge
+                  type="status"
+                  value={foundReport.status === 'terverifikasi' ? 'valid' : foundReport.status}
+                  size="lg"
+                />
               </div>
             </div>
 
-            {/* Stepper Progres Tindak Lanjut (Bersih, Non-Slop, High Contrast) */}
+            {/* Linimasa 2 Tahap Komunitas Mandiri */}
             <div className="space-y-3">
-              <span className="text-xs font-bold text-slate-900 block">
-                Tahapan Penanganan Laporan:
+              <span className="text-xs font-bold uppercase tracking-wider text-ink-muted block">
+                Linimasa Proses Verifikasi
               </span>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="space-y-4 pl-2 border-l-2 border-garis ml-3">
                 {/* Tahap 1: Laporan Diterima */}
-                <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
-                  <div className="flex items-center gap-2 text-slate-900">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 stroke-[2.5]" />
-                    <span className="text-xs font-bold">1. Laporan Diterima</span>
+                <div className="relative pl-6">
+                  <div className="absolute -left-[19px] top-0 w-8 h-8 rounded-full bg-toska-100 text-toska-800 flex items-center justify-center border-2 border-white shadow-xs">
+                    <CheckCircle2 className="w-4 h-4" />
                   </div>
-                  <p className="text-[11px] text-slate-500">
-                    {foundReport.created_at ? new Date(foundReport.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Hari ini'}
-                  </p>
-                  <span className="text-[10px] text-emerald-700 font-semibold block">Tercatat di sistem</span>
+                  <div>
+                    <h4 className="text-sm font-bold text-ink">
+                      Laporan Diterima Sistem
+                    </h4>
+                    <p className="text-xs text-ink-muted mt-0.5">
+                      {foundReport.created_at
+                        ? new Date(foundReport.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                        : '10 Nov 2026, 14:22 WIB'}
+                    </p>
+                    <p className="text-xs text-ink-soft mt-1">
+                      Data dan foto bukti tersimpan aman di sistem komunitas GG River Care.
+                    </p>
+                  </div>
                 </div>
 
-                {/* Tahap 2: Verifikasi Petugas */}
-                <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
-                  <div className="flex items-center gap-2 text-slate-900 font-bold text-xs">
-                    {foundReport.status === 'valid' || foundReport.status === 'ditolak' ? (
-                      <CheckCircle2 className="w-4 h-4 stroke-[2.5] text-emerald-600" />
-                    ) : (
-                      <Clock className="w-4 h-4 text-amber-500 animate-spin" />
-                    )}
-                    <span>2. Verifikasi Lapangan</span>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    {foundReport.status === 'valid' ? 'Diverifikasi GG River Care' : foundReport.status === 'ditolak' ? 'Ditinjau Petugas' : 'Sedang Ditinjau Petugas'}
-                  </p>
-                  <span className="text-[10px] text-slate-700 font-semibold block">
-                    {foundReport.status === 'valid' ? 'Lokasi & Bukti Valid' : foundReport.status === 'ditolak' ? 'Laporan Ditolak' : 'Maksimal 1x24 Jam'}
-                  </span>
-                </div>
+                {/* Tahap 2: Peninjauan Relawan */}
+                <div className="relative pl-6 pt-2">
+                  {foundReport.status === 'menunggu' && (
+                    <>
+                      <div className="absolute -left-[19px] top-2 w-8 h-8 rounded-full bg-ceria-100 text-ceria-800 flex items-center justify-center border-2 border-white shadow-xs">
+                        <Clock className="w-4 h-4 animate-spin-slow" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-ink">
+                          Dalam Antrean Verifikasi
+                        </h4>
+                        <p className="text-xs text-ink-soft mt-1 leading-relaxed">
+                          Tim relawan GG River Care sedang memeriksa foto bukti dan koordinat sempadanmu.
+                        </p>
+                      </div>
+                    </>
+                  )}
 
-                {/* Tahap 3: Tindak Lanjut Dinas */}
-                <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
-                  <div className="flex items-center gap-2 text-slate-900 font-bold text-xs">
-                    {foundReport.status === 'valid' ? (
-                      <CheckCircle2 className="w-4 h-4 text-[#0088cc]" />
-                    ) : (
-                      <span className="w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-slate-400 font-normal">3</span>
-                    )}
-                    <span>3. Tindak Lanjut DLHK</span>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    {foundReport.status === 'valid' ? 'Diserahkan ke DLH' : 'Menunggu Verifikasi'}
-                  </p>
-                  <span className="text-[10px] text-slate-700 font-semibold block">
-                    {foundReport.status === 'valid' ? 'Dalam Antrean Pembersihan' : 'Tahap Berikutnya'}
-                  </span>
+                  {(foundReport.status === 'valid' || foundReport.status === 'terverifikasi') && (
+                    <>
+                      <div className="absolute -left-[19px] top-2 w-8 h-8 rounded-full bg-musi-100 text-musi-600 flex items-center justify-center border-2 border-white shadow-xs">
+                        <CheckCircle2 className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-2">
+                        <div>
+                          <h4 className="text-sm font-bold text-ink">
+                            Laporan Diverifikasi &amp; Terbit di Peta
+                          </h4>
+                          <p className="text-xs text-ink-soft mt-1 leading-relaxed">
+                            Laporanmu telah dinyatakan valid dan saat ini sudah tampil di peta sebaran publik untuk bahan advokasi komunitas.
+                          </p>
+                        </div>
+                        <Link to="/">
+                          <Button variant="lembut" size="sm">
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span>Lihat di Peta Sebaran</span>
+                          </Button>
+                        </Link>
+                      </div>
+                    </>
+                  )}
+
+                  {foundReport.status === 'ditolak' && (
+                    <>
+                      <div className="absolute -left-[19px] top-2 w-8 h-8 rounded-full bg-tingkat-berat-bg text-tingkat-berat-tx flex items-center justify-center border-2 border-white shadow-xs">
+                        <XCircle className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-3">
+                        <div>
+                          <h4 className="text-sm font-bold text-ink">
+                            Laporan Ditolak
+                          </h4>
+                          <p className="text-xs text-ink-soft mt-1">
+                            Laporan tidak dapat diterbitkan ke peta publik setelah ditinjau oleh tim relawan.
+                          </p>
+                        </div>
+
+                        {/* Kotak Alasan Penolakan Resmi dari Admin */}
+                        <div className="p-4 rounded-2xl bg-tingkat-berat-bg border border-tingkat-berat-tx/20 space-y-1">
+                          <span className="text-xs font-bold text-tingkat-berat-tx uppercase tracking-wider block">
+                            Alasan Penolakan:
+                          </span>
+                          <p className="text-xs text-tingkat-berat-tx leading-relaxed font-semibold">
+                            "{foundReport.rejection_reason || 'Foto bukti tidak memuat indikasi pencemaran air sempadan Sungai Musi yang jelas atau berada di luar batas wilayah pemantauan.'}"
+                          </p>
+                        </div>
+
+                        <Link to="/lapor">
+                          <Button variant="ajakan" size="sm">
+                            <Plus className="w-4 h-4 stroke-[2.5]" />
+                            <span>Buat Laporan Baru</span>
+                          </Button>
+                        </Link>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Rincian Laporan */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-5 pt-3 border-t border-slate-100 items-start">
-              {/* Foto Bukti */}
-              <div className="md:col-span-5 rounded-xl overflow-hidden border border-slate-200">
+            {/* Tombol Bagikan */}
+            <div className="pt-3 border-t border-garis flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={handleShareWa}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-50 hover:bg-slate-100 text-ink text-xs font-semibold border border-garis transition cursor-pointer"
+              >
+                <Share2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Bagikan Status</span>
+              </button>
+            </div>
+          </Card>
+
+          {/* Rangkuman Detail Laporan yang Dilacak */}
+          <Card className="p-5 sm:p-6 space-y-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-ink-muted block">
+              Detail Laporan yang Dikirimkan
+            </span>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="w-full sm:w-36 h-36 rounded-2xl overflow-hidden bg-slate-100 shrink-0 border border-garis">
                 <img
-                  src={foundReport.photo_url}
+                  src={foundReport.photo_url || 'https://images.unsplash.com/photo-1618477461853-cf6ed80faba5?auto=format&fit=crop&w=400&q=80'}
                   alt={foundReport.title}
-                  className="w-full h-44 object-cover"
+                  className="w-full h-full object-cover"
                 />
               </div>
 
-              {/* Informasi Detail */}
-              <div className="md:col-span-7 space-y-2.5">
-                <div>
-                  <span className="text-xs font-bold text-slate-900 block">
-                    {foundReport.title}
+              <div className="space-y-2 flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <Badge
+                    type="tingkat"
+                    value={(foundReport.estimated_severity || foundReport.severity || 'sedang').toLowerCase()}
+                    size="md"
+                  />
+                  <span className="text-xs font-bold text-ink-muted">
+                    {foundReport.category}
                   </span>
-                  <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#0088cc] shrink-0" />
-                    <span>{foundReport.address_landmark} ({foundReport.district})</span>
-                  </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
-                  "{foundReport.description || 'Laporan pencemaran telah masuk ke sistem pengawasan Sungai Musi.'}"
-                </div>
+                <h3 className="text-base font-bold text-ink">
+                  {foundReport.title}
+                </h3>
 
-                {foundReport.admin_notes && (
-                  <div className="p-3.5 rounded-xl bg-white border border-slate-200 border-l-4 border-l-amber-500 text-xs text-slate-800 shadow-2xs">
-                    <strong className="block text-[11px] text-amber-700 uppercase tracking-wider mb-0.5">
-                      Catatan Petugas Verifikator:
-                    </strong>
-                    "{foundReport.admin_notes}"
-                  </div>
-                )}
+                <p className="text-xs text-ink-soft leading-relaxed">
+                  {foundReport.description}
+                </p>
+
+                <div className="pt-2 text-xs text-ink-muted flex items-center gap-1 border-t border-garis/60">
+                  <MapPin className="w-3.5 h-3.5 text-musi-600 shrink-0" />
+                  <span className="truncate">{foundReport.district} &bull; {foundReport.address_landmark}</span>
+                </div>
               </div>
             </div>
-          </div>
+          </Card>
 
-          {/* Kolom Kanan: Bantuan & Kontak Cepat (4 Kolom) */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3.5">
-              <h3 className="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Bantuan &amp; Tindak Lanjut</span>
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Ingin menanyakan perkembangan tiket Anda langsung ke tim reaksi cepat lingkungan hidup?
-              </p>
-
-              <a
-                href={`https://wa.me/6281178902211?text=Halo%20DLH%20Palembang,%20saya%20ingin%20menanyakan%20status%20laporan%20pencemaran%20${foundReport.tracking_code}`}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-2.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 transition shadow-xs"
-              >
-                <MessageSquare className="w-4 h-4" />
-                <span>Tanya WhatsApp Petugas DLH</span>
-              </a>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-2 text-xs text-slate-700">
-              <span className="font-bold text-slate-900 block">
-                Tahap Penanganan
-              </span>
-              <p className="text-[11px] text-slate-500 leading-relaxed">
-                Laporan yang telah terverifikasi akan direkapitulasi secara berkala untuk penindakan lapangan oleh Satgas Sungai Musi Dinas Lingkungan Hidup Kota Palembang.
-              </p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-3">
-          <p className="text-sm font-bold text-slate-700">Nomor tiket tidak ditemukan.</p>
-          <p className="text-xs text-slate-400">Pastikan nomor tiket yang Anda masukkan sudah benar (contoh: SPP-202611-0012).</p>
         </div>
       )}
     </div>

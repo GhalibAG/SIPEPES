@@ -105,7 +105,7 @@ const generatePDF = (reports = []) => {
         .fontSize(10)
         .font('Helvetica')
         .fillColor('#64748B')
-        .text('Green Generation Palembang (Program GG River Care) × DLH Kota Palembang', { align: 'center' });
+        .text('Green Generation Palembang (Program GG River Care)', { align: 'center' });
 
       doc
         .fontSize(9)
