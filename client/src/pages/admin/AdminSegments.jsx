@@ -46,36 +46,33 @@ export default function AdminSegments({ onNavigate }) {
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb Sesuai Desain Figma */}
+      {/* Breadcrumb */}
       <div className="flex items-center gap-1.5 text-xs text-slate-500">
         <span>Portal Admin</span>
         <span>/</span>
         <span>Master Data</span>
         <span>/</span>
-        <span className="text-[#0088cc] font-medium">Titik Sempadan Musi</span>
+        <span className="text-slate-900 font-semibold">Titik Sempadan Musi</span>
       </div>
 
-      {/* Header Utama: Judul Pecah 2 Baris, Badge di Bawahnya, Lalu Paragraf Deskripsi */}
+      {/* Header Utama */}
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         <div>
-          {/* Judul 2 Baris */}
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
-            Kelola Master Titik Sempadan<br />
-            Musi
-          </h1>
-
-          {/* Badge 18 POS DAS AKTIF Tepat di Bawah Judul */}
-          <div className="mt-2.5 mb-2">
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-50 text-[#0088cc] border border-sky-200">
+          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-900 text-white">
               18 POS DAS AKTIF
+            </span>
+            <span className="text-[10px] font-semibold text-slate-400">
+              Perda RTRW Kota Palembang
             </span>
           </div>
 
-          {/* Deskripsi Dibatasi Lebarnya agar Pecah 3 Baris Sesuai Desain */}
-          <p className="text-xs sm:text-sm text-slate-500 max-w-xl leading-relaxed">
-            Inventarisasi 18 pos pantau dan dermaga sempadan DAS Musi Kota<br className="hidden sm:inline" />
-            Palembang untuk validasi geofencing laporan warga, pemetaan<br className="hidden sm:inline" />
-            buangan limbah, &amp; monitoring telemetri indeks kualitas air (IKA).
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight leading-snug">
+            Kelola Master Titik Sempadan Musi
+          </h1>
+
+          <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed mt-1.5">
+            Inventarisasi 18 pos pantau dan dermaga sempadan DAS Musi Kota Palembang untuk validasi geofencing laporan warga, pemetaan buangan limbah, &amp; monitoring telemetri indeks kualitas air (IKA).
           </p>
         </div>
 
@@ -83,7 +80,7 @@ export default function AdminSegments({ onNavigate }) {
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2.5 shrink-0 self-start lg:self-auto w-full sm:w-auto">
           <button
             onClick={() => alert('Sinkronisasi Geospasial dengan Server DLHK Kota Palembang Berhasil.')}
-            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-sm transition"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-2xs transition"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
             <span>Sinkronisasi GIS DLH</span>
@@ -91,7 +88,7 @@ export default function AdminSegments({ onNavigate }) {
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white text-xs font-semibold shadow-sm shadow-[#0088cc]/20 transition"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-2xs transition"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Tambah Titik Sempadan Baru</span>
@@ -102,12 +99,12 @@ export default function AdminSegments({ onNavigate }) {
       {/* 4 Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Total Titik Terdaftar */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
               TOTAL TITIK
             </span>
-            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-sky-50 text-[#0088cc] flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center shrink-0">
               <MapPin className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
@@ -122,12 +119,12 @@ export default function AdminSegments({ onNavigate }) {
         </div>
 
         {/* Pos Kritis / Rentan B3 */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
               POS KRITIS
             </span>
-            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center shrink-0">
               <Flame className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
@@ -142,12 +139,12 @@ export default function AdminSegments({ onNavigate }) {
         </div>
 
         {/* Buffer Sempadan Rata-Rata */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
               BUFFER RATA-RATA
             </span>
-            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center shrink-0">
               <Sliders className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
@@ -162,12 +159,12 @@ export default function AdminSegments({ onNavigate }) {
         </div>
 
         {/* Status Telemetri Sensor */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate">
               TELEMETRI SENSOR
             </span>
-            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 sm:w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
               <Radio className="w-3.5 h-3.5 sm:w-4 h-4" />
             </div>
           </div>
@@ -185,23 +182,21 @@ export default function AdminSegments({ onNavigate }) {
       {/* Main Content: Tabel Kiri + Detail Card Kanan */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Kolom Kiri: Filter & Tabel Master Sempadan */}
-        <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col">
           {/* Header Filter */}
           <div className="p-3.5 sm:p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => setActiveTab('semua')}
-                className={`px-3 py-1.5 rounded-lg font-bold transition text-xs ${
-                  activeTab === 'semua' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
-                }`}
+                className={`px-3 py-1.5 rounded-xl font-bold transition text-xs shadow-2xs ${activeTab === 'semua' ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                  }`}
               >
                 Semua Titik (18)
               </button>
               <button
                 onClick={() => setActiveTab('ulu')}
-                className={`px-3 py-1.5 rounded-lg font-semibold transition text-xs ${
-                  activeTab === 'ulu' ? 'bg-[#0088cc] text-white' : 'text-slate-600 hover:bg-slate-100'
-                }`}
+                className={`px-3 py-1.5 rounded-xl font-semibold transition text-xs shadow-2xs ${activeTab === 'ulu' ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                  }`}
               >
                 Sektor Ulu (12)
               </button>
@@ -215,13 +210,13 @@ export default function AdminSegments({ onNavigate }) {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Cari nama pos, kode..."
-                  className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-xs focus:outline-none"
+                  className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-xs focus:outline-none focus:ring-1 focus:ring-slate-900"
                 />
               </div>
 
               <button
                 onClick={() => alert('Ekspor 18 Master Pos Sungai Musi ke format CSV Berhasil!')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold shadow-sm shrink-0"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold shadow-2xs shrink-0"
               >
                 <Download className="w-3.5 h-3.5 text-slate-400" />
                 <span className="hidden sm:inline">Ekspor CSV</span>
@@ -230,7 +225,7 @@ export default function AdminSegments({ onNavigate }) {
             </div>
           </div>
 
-          {/* Tampilan Mobile: List Card Rapi Tanpa Perlu Digeser Horizontal (< md) */}
+          {/* Tampilan Mobile */}
           <div className="p-3.5 space-y-3 md:hidden divide-y divide-slate-100">
             {filteredPoints.map((p) => {
               const isSelected = selectedPoint.kode === p.kode;
@@ -238,51 +233,41 @@ export default function AdminSegments({ onNavigate }) {
                 <div
                   key={p.kode}
                   onClick={() => setSelectedPoint(p)}
-                  className={`p-3 rounded-xl border transition cursor-pointer space-y-2 text-xs ${
-                    isSelected
-                      ? 'bg-sky-50/60 border-[#0088cc] shadow-sm'
-                      : 'bg-white border-slate-200 hover:bg-slate-50'
-                  }`}
+                  className={`p-3 rounded-xl border transition cursor-pointer space-y-2 text-xs ${isSelected
+                    ? 'bg-slate-50 border-l-4 border-slate-900 shadow-2xs'
+                    : 'bg-white border-slate-200 hover:bg-slate-50/60'
+                    }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-xs text-[#0088cc]">{p.kode}</span>
+                        <span className="font-mono font-bold text-xs text-slate-900">{p.kode}</span>
                         <span className="text-[10px] text-slate-400">&bull; {p.wilayah}</span>
                       </div>
                       <h4 className="font-bold text-slate-900 text-xs mt-0.5">{p.nama}</h4>
                     </div>
 
                     <span
-                      className={`font-mono font-bold text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0 ${
-                        p.ika_status === 'Kritis'
-                          ? 'bg-rose-50 text-rose-600 border border-rose-200'
-                          : p.ika_status === 'Sedang'
-                          ? 'bg-amber-50 text-amber-600 border border-amber-200'
-                          : 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                      }`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          p.ika_status === 'Kritis'
-                            ? 'bg-rose-500'
-                            : p.ika_status === 'Sedang'
-                            ? 'bg-amber-500'
-                            : 'bg-emerald-500'
+                      className={`font-mono font-bold text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0 ${p.ika_status === 'Kritis'
+                        ? 'bg-rose-600 text-white'
+                        : p.ika_status === 'Sedang'
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-emerald-600 text-white'
                         }`}
-                      ></span>
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
                       {p.ika} ({p.ika_status})
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 pt-1.5 border-t border-slate-100 text-[11px]">
                     <div>
-                      <span className="text-[10px] text-slate-400 block">Buffer Sempadan:</span>
+                      <span className="text-[10px] text-slate-400 block font-medium">Buffer Sempadan:</span>
                       <span className="font-mono font-bold text-slate-800">{p.buffer}</span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] text-slate-400 block">Laporan Warga:</span>
+                      <span className="text-[10px] text-slate-400 block font-medium">Laporan Warga:</span>
                       <span className="font-mono font-bold text-slate-800">{p.laporan_warga} <span className="text-[10px] text-slate-400 font-normal">aktif</span></span>
                     </div>
                   </div>
@@ -294,12 +279,12 @@ export default function AdminSegments({ onNavigate }) {
                         e.stopPropagation();
                         handleCopy(`${p.lat}, ${p.lon}`, p.kode);
                       }}
-                      className="flex items-center gap-1 text-[10px] font-sans font-semibold text-[#0088cc] hover:underline shrink-0"
+                      className="flex items-center gap-1 text-[10px] font-sans font-semibold text-slate-800 hover:underline shrink-0"
                     >
                       {copiedCode === p.kode ? (
                         <>
                           <Check className="w-3 h-3 text-emerald-600" />
-                          <span className="text-emerald-600">Disalin</span>
+                          <span className="text-emerald-600 font-bold">Disalin</span>
                         </>
                       ) : (
                         <>
@@ -314,7 +299,7 @@ export default function AdminSegments({ onNavigate }) {
             })}
           </div>
 
-          {/* Tampilan Desktop / Tablet Lebar: Tabel Klasik Penuh (>= md) */}
+          {/* Tampilan Desktop */}
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200">
@@ -324,7 +309,7 @@ export default function AdminSegments({ onNavigate }) {
                   <th className="py-3 px-4">GEOSPASIAL (LAT, LON)</th>
                   <th className="py-3 px-4">BUFFER</th>
                   <th className="py-3 px-4">INDEKS MUTU AIR</th>
-                  <th className="py-3 px-4">LAP. WARG</th>
+                  <th className="py-3 px-4">LAP. WARGA</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -334,11 +319,10 @@ export default function AdminSegments({ onNavigate }) {
                     <tr
                       key={p.kode}
                       onClick={() => setSelectedPoint(p)}
-                      className={`cursor-pointer transition ${
-                        isSelected ? 'bg-sky-50/50' : 'hover:bg-slate-50/70'
-                      }`}
+                      className={`cursor-pointer transition ${isSelected ? 'bg-slate-50' : 'hover:bg-slate-50/60'
+                        }`}
                     >
-                      <td className="py-3.5 px-4 font-mono font-bold text-[#0088cc] whitespace-nowrap">
+                      <td className="py-3.5 px-4 font-mono font-bold text-slate-900 whitespace-nowrap">
                         {p.kode}
                       </td>
 
@@ -369,22 +353,20 @@ export default function AdminSegments({ onNavigate }) {
 
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <span
-                          className={`font-mono font-bold flex items-center gap-1.5 ${
-                            p.ika_status === 'Kritis'
-                              ? 'text-rose-600'
-                              : p.ika_status === 'Sedang'
+                          className={`font-mono font-bold flex items-center gap-1.5 ${p.ika_status === 'Kritis'
+                            ? 'text-rose-600'
+                            : p.ika_status === 'Sedang'
                               ? 'text-amber-600'
                               : 'text-emerald-600'
-                          }`}
+                            }`}
                         >
                           <span
-                            className={`w-2 h-2 rounded-full ${
-                              p.ika_status === 'Kritis'
-                                ? 'bg-rose-500'
-                                : p.ika_status === 'Sedang'
+                            className={`w-2 h-2 rounded-full ${p.ika_status === 'Kritis'
+                              ? 'bg-rose-600'
+                              : p.ika_status === 'Sedang'
                                 ? 'bg-amber-500'
-                                : 'bg-emerald-500'
-                            }`}
+                                : 'bg-emerald-600'
+                              }`}
                           ></span>
                           {p.ika}
                         </span>
@@ -404,39 +386,38 @@ export default function AdminSegments({ onNavigate }) {
           <div className="p-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500">
             <span>Menampilkan 1-6 dari 18 Master Pos Sungai Musi</span>
             <div className="flex items-center gap-1">
-              <button className="px-2 py-1 rounded border border-slate-200 text-slate-400">&lt;</button>
-              <button className="px-2.5 py-1 rounded bg-[#0088cc] text-white font-bold">1</button>
-              <button className="px-2.5 py-1 rounded border border-slate-200 hover:bg-slate-50">2</button>
-              <button className="px-2.5 py-1 rounded border border-slate-200 hover:bg-slate-50">3</button>
-              <button className="px-2 py-1 rounded border border-slate-200 text-slate-600">&gt;</button>
+              <button className="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-400">&lt;</button>
+              <button className="px-3 py-1 rounded-lg bg-slate-900 text-white font-bold">1</button>
+              <button className="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">2</button>
+              <button className="px-3 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">3</button>
+              <button className="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-600">&gt;</button>
             </div>
           </div>
         </div>
 
         {/* Kolom Kanan: Detail Titik Terpilih */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
-                <span className="text-[#0088cc]">📍</span>
+                <MapPin className="w-3.5 h-3.5 text-slate-700" />
                 <span>DETAIL TITIK TERPILIH</span>
               </div>
               <span
-                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                  selectedPoint.ika_status === 'Kritis'
-                    ? 'bg-rose-50 text-rose-600 border border-rose-200'
-                    : 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                }`}
+                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${selectedPoint.ika_status === 'Kritis'
+                  ? 'bg-rose-600 text-white'
+                  : 'bg-emerald-600 text-white'
+                  }`}
               >
-                {selectedPoint.ika_status} &bull;
+                {selectedPoint.ika_status}
               </span>
             </div>
 
             <div>
-              <span className="font-mono font-bold text-xs text-[#0088cc]">
+              <span className="font-mono font-bold text-xs text-slate-900">
                 {selectedPoint.kode}
               </span>
-              <h3 className="text-lg font-black text-slate-900 leading-snug">
+              <h3 className="text-lg font-bold text-slate-900 leading-snug">
                 {selectedPoint.nama}
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -445,16 +426,16 @@ export default function AdminSegments({ onNavigate }) {
             </div>
 
             {/* Visualisasi Geofence Mini Map */}
-            <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-sky-50/50 p-4 h-48 flex flex-col justify-between">
+            <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-50 p-4 h-48 flex flex-col justify-between">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/90 backdrop-blur-sm text-slate-700 shadow-sm border border-slate-200">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white text-slate-700 shadow-2xs border border-slate-200">
                   🌐 Buffer Aktif: {selectedPoint.buffer} Geofence
                 </span>
               </div>
 
               {/* Mock Peta Grafis */}
               <div className="text-center space-y-1">
-                <div className="w-8 h-8 rounded-full bg-rose-500/20 ring-4 ring-rose-500/40 flex items-center justify-center mx-auto text-rose-600 animate-pulse">
+                <div className="w-8 h-8 rounded-full bg-rose-600/20 ring-4 ring-rose-600/40 flex items-center justify-center mx-auto text-rose-600 animate-pulse">
                   <span className="w-3 h-3 rounded-full bg-rose-600"></span>
                 </div>
                 <p className="text-[10px] font-mono text-slate-600 font-bold">
@@ -464,7 +445,7 @@ export default function AdminSegments({ onNavigate }) {
 
               <button
                 onClick={() => onNavigate && onNavigate('map')}
-                className="w-full py-2 bg-slate-900/90 hover:bg-slate-900 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition"
+                className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 shadow-2xs transition"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>Buka di GIS Full</span>
@@ -473,23 +454,23 @@ export default function AdminSegments({ onNavigate }) {
 
             {/* Metrik IKA & Laporan Warga */}
             <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                 <p className="text-[10px] text-slate-400 font-semibold">Indeks Mutu Air (IKA)</p>
                 <p className="text-base font-extrabold text-rose-600 mt-0.5">
                   {selectedPoint.ika} <span className="text-[10px] font-normal text-slate-500">PPM Cemar</span>
                 </p>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                 <p className="text-[10px] text-slate-400 font-semibold">Laporan Warga Tertaut</p>
-                <p className="text-base font-extrabold text-[#0088cc] mt-0.5">
+                <p className="text-base font-extrabold text-slate-900 mt-0.5">
                   {selectedPoint.laporan_warga} <span className="text-[10px] font-normal text-slate-500">Verifikasi</span>
                 </p>
               </div>
             </div>
 
             {/* Regu Patroli Lapangan */}
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-2 text-xs">
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
               <div className="flex items-start gap-2">
                 <span className="text-emerald-600 mt-0.5">🛡️</span>
                 <div>
@@ -524,7 +505,7 @@ export default function AdminSegments({ onNavigate }) {
 
               <button
                 onClick={() => window.print()}
-                className="p-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b3] text-white transition shadow-sm"
+                className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition shadow-2xs"
                 title="Cetak Berkas Titik"
               >
                 <FileText className="w-4 h-4" />
@@ -532,14 +513,14 @@ export default function AdminSegments({ onNavigate }) {
             </div>
           </div>
 
-          {/* Dasar Hukum Buffer Sempadan Card */}
-          <div className="bg-emerald-50/40 p-4 rounded-2xl border border-emerald-200/80 text-xs flex items-start gap-3">
+          {/* Dasar Hukum Buffer Sempadan Card: Crisp White Card with Left Border Accent */}
+          <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs text-xs flex items-start gap-3">
             <span className="text-emerald-600 text-lg">📜</span>
             <div>
-              <h4 className="font-bold text-emerald-950 text-xs mb-1">
+              <h4 className="font-bold text-slate-900 text-xs mb-1">
                 Dasar Hukum Buffer Sempadan
               </h4>
-              <p className="text-[11px] text-emerald-900/80 leading-relaxed">
+              <p className="text-[11px] text-slate-600 leading-relaxed">
                 {selectedPoint.dasar_hukum}
               </p>
             </div>
